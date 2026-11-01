@@ -72,7 +72,6 @@
   --shadow-card: 0 6px 20px -10px oklch(0.35 0.09 255 / 0.22);
 }
 
-
 :root {
   --radius: 0.625rem;
   /* FaresDream brand: royal blue primary with a high-visibility orange CTA.
@@ -174,8 +173,51 @@
     font-family: var(--font-sans);
   }
 
-
-  h1, h2, .font-display {
+  h1,
+  h2,
+  .font-display {
     font-family: var(--font-display);
+  }
+}
+
+/* Homepage hero sky (MovingSky): a slowly panning cloud photo plus drifting wisps. */
+@layer components {
+  .sky-pan {
+    animation: sky-pan 40s ease-in-out infinite alternate;
+  }
+
+  .cloud-puff {
+    background:
+      radial-gradient(45% 60% at 28% 60%, rgb(255 255 255 / 0.95), transparent 70%),
+      radial-gradient(40% 75% at 52% 45%, rgb(255 255 255 / 0.9), transparent 70%),
+      radial-gradient(45% 55% at 78% 62%, rgb(255 255 255 / 0.85), transparent 70%);
+    filter: blur(6px);
+    animation: cloud-drift linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sky-pan,
+    .cloud-puff {
+      animation: none;
+    }
+  }
+}
+
+@keyframes sky-pan {
+  from {
+    transform: translateX(-3%) scale(1.04);
+  }
+  to {
+    transform: translateX(3%) scale(1.1);
+  }
+}
+
+/* Needs a container-type: inline-size ancestor for the cqw unit. */
+@keyframes cloud-drift {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100cqw);
   }
 }

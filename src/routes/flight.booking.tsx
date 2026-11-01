@@ -17,6 +17,7 @@ import {
   type BookingRecord,
 } from "@/lib/booking-store";
 import { getClickId, getUtmSource } from "@/lib/click-id";
+import { saveRecentSearch } from "@/lib/recent-searches";
 
 
 
@@ -214,6 +215,24 @@ function BookingPage() {
     // Fires once per checkout entry.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Remember the picked fare for the homepage "Recent Searches", so a visitor who
+  // leaves at checkout sees this route again. Only when the link really carries a
+  // price (parseFlightSearch fills in a placeholder otherwise); passengers only when given.
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search);
+    if (!raw.has("price")) return;
+    const pax = (search.adults ?? 1) + (search.children ?? 0) + (search.infants ?? 0);
+    saveRecentSearch({
+      origin: search.origin,
+      destination: search.destination,
+      date: search.departDate,
+      cabin: search.cabin,
+      currency: search.currency,
+      price: baseTotal,
+      ...(raw.has("adults") ? { passengers: pax } : {}),
+    });
+  }, [search, baseTotal]);
 
 
   const [step, setStep] = useState<1 | 2 | 3>(1);

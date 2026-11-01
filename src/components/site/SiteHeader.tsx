@@ -20,7 +20,6 @@ import { CurrencySelect } from "@/components/site/CurrencyContext";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
 
 const navLinks = [
-  { to: "/deals", label: "Hotels" },
   { to: "/deals", label: "Deals" },
   { to: "/about", label: "About Us" },
   { to: "/contact", label: "Contact Us" },

@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { format, parseISO } from "date-fns";
 import { Plane, Clock, Briefcase, Sparkles, GitCompare, X, TrendingDown, Loader2, SlidersHorizontal } from "lucide-react";
 import { searchFlights, type PkfareNormalisedFare } from "@/services/pkfareApi";
+import { saveRecentSearch } from "@/lib/recent-searches";
 
 type SearchParams = {
   origin: string;
@@ -438,6 +439,20 @@ function SearchPage() {
     : allFlights;
 
   const bounds = useMemo(() => computeBounds(carrierFlights), [carrierFlights]);
+
+  // Remember this search (and its cheapest per-person fare) for the homepage "Recent Searches".
+  const lowestPrice = carrierFlights.length ? bounds.minPrice : 0;
+  useEffect(() => {
+    saveRecentSearch({
+      origin,
+      destination,
+      date,
+      passengers,
+      cabin,
+      currency: currency || "USD",
+      ...(lowestPrice > 0 ? { price: lowestPrice } : {}),
+    });
+  }, [origin, destination, date, passengers, cabin, currency, lowestPrice]);
   const flights = useMemo(
     () => sortFares(applyFilters(carrierFlights, filters), sort, bounds),
     [carrierFlights, filters, sort, bounds],

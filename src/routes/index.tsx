@@ -1,19 +1,30 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import {
-  Plane,
-  BadgeDollarSign,
-  Headphones,
-  ShieldCheck,
-  ChevronDown,
-  ArrowRight,
-} from "lucide-react";
-import { FlightSearchWidget } from "@/components/site/FlightSearchWidget";
+import { useEffect, type ReactNode } from "react";
+import { FaqAccordion, type Faq } from "@/components/site/FaqAccordion";
+import { FlightSearchBar } from "@/components/site/FlightSearchBar";
+import { MovingSky } from "@/components/site/MovingSky";
 import { NewsletterCard } from "@/components/site/NewsletterCard";
-import { FLIGHT_SEARCH_ID, focusFlightSearch } from "@/lib/focus-search";
-import { PHONE_DISPLAY } from "@/lib/brand";
+import { OfferCards } from "@/components/site/OfferCards";
+import { WhyBookCards } from "@/components/site/WhyBookCards";
+import { TrendingDestinations } from "@/components/site/TrendingDestinations";
+import { PopularRoutes } from "@/components/site/PopularRoutes";
+import { FeaturedDeals } from "@/components/site/FeaturedDeals";
+import { RecentSearches } from "@/components/site/RecentSearches";
+import { FLIGHT_SEARCH_ID, focusFlightSearch, searchFlightsTo } from "@/lib/focus-search";
+import { PHONE_DISPLAY, SUPPORT_EMAIL } from "@/lib/brand";
+
+type HomeSearch = { from?: string | undefined; to?: string | undefined };
+
+const iata = (v: unknown) =>
+  typeof v === "string" && /^[A-Za-z]{3}$/.test(v) ? v.toUpperCase() : undefined;
 
 export const Route = createFileRoute("/")({
+  // ?to=LHR (and optional &from=JFK) pre-fills the search bar, e.g. from footer route links.
+  validateSearch: (search: Record<string, unknown>): HomeSearch => {
+    const to = iata(search["to"]);
+    const from = iata(search["from"]);
+    return { ...(to ? { to } : {}), ...(to && from && from !== to ? { from } : {}) };
+  },
   head: () => ({
     meta: [
       { title: "FaresDream — Compare Cheap Flights & Wholesale Airfare Deals" },
@@ -25,160 +36,132 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "FaresDream — Compare Cheap Flights & Airfare Deals" },
       {
         property: "og:description",
-        content:
-          "Wholesale airfare deals, instant flight comparison and a 24/7 phone concierge.",
+        content: "Wholesale airfare deals, instant flight comparison and a 24/7 phone concierge.",
       },
     ],
   }),
   component: Home,
 });
 
-const whyUs = [
+/** Refund and change answers follow /refund-policy and /terms; keep them in sync. */
+const faqs: Faq[] = [
   {
-    icon: BadgeDollarSign,
-    title: "Wholesale Price Comparison",
-    body: "We compare published and negotiated wholesale fares from the world's leading travel providers so you always see the lowest available price.",
+    q: "What is the Best Time to Book Flights for Cheap Airfares?",
+    a: "Fares are usually lowest outside school holidays and peak seasons. As a rule of thumb, book international trips around 60 days ahead and domestic trips around 30 days ahead. Flying mid-week and picking early-morning or late-night departures often lowers the price further.",
   },
   {
-    icon: Headphones,
-    title: "24/7 Dedicated Phone Concierge",
-    body: `Real travel agents on call day and night at ${PHONE_DISPLAY} — for phone-only fares, changes, seats, baggage and special requests.`,
+    q: "How Can I Find the Cheapest Flights?",
+    a: `Search with FaresDream to compare published, wholesale and unpublished fares side by side, then sort the results by Cheapest. Being flexible helps: try nearby dates, other airports in the same city, and itineraries with a stop. For phone-only fares, call ${PHONE_DISPLAY} and mention code DIAL50 to save up to $50.`,
   },
   {
-    icon: ShieldCheck,
-    title: "100% Secure & Verified Checkout",
-    body: "Encrypted payments, verified fare rules and clear pricing. The price you are shown at checkout is the price you pay.",
+    q: "Can I Book Flights for Last-Minute Travel?",
+    a: `Yes. You can search and book flights close to your departure date, subject to seat availability. Last-minute fares are sometimes cheaper on quieter routes when airlines release unsold seats, but popular routes usually get more expensive in the final two weeks. Need to fly urgently? Call ${PHONE_DISPLAY} for the fastest options.`,
   },
-];
-
-const featuredDeals = [
-  { from: "New York", to: "London", trip: "Round-Trip", price: 449 },
-  { from: "Los Angeles", to: "Paris", trip: "Round-Trip", price: 528 },
-  { from: "Miami", to: "Cancun", trip: "One Way", price: 129 },
-  { from: "Chicago", to: "Rome", trip: "Round-Trip", price: 561 },
-  { from: "New York", to: "Dubai", trip: "Round-Trip", price: 599 },
-  { from: "Boston", to: "Lisbon", trip: "One Way", price: 289 },
-];
-
-const popularRoundTrips = [
-  { label: "New York to Los Angeles", price: 340 },
-  { label: "New York to Barcelona", price: 740 },
-  { label: "New York to Dallas", price: 140 },
-  { label: "New York to Miami", price: 100 },
-  { label: "New York to London", price: 640 },
-];
-
-const faqs = [
   {
-    q: "How does FaresDream find cheaper flight tickets?",
+    q: "Is It Possible to Get Refundable or Changeable Flight Tickets?",
+    a: "Yes, depending on the fare. Every ticket follows the rules of the airline that issues it: some fares can be changed or refunded for a penalty, while discounted and unpublished fares are often non-refundable and non-changeable. Before you pay, our team confirms in writing whether your fare is refundable, partially refundable or fully restricted. Changes cost the airline penalty plus any fare difference and our USD 50 reissue fee per passenger.",
+  },
+  {
+    q: "What Happens if I Need to Cancel My Flight Ticket?",
+    a: (
+      <>
+        If your booking hasn&apos;t been ticketed yet, you can cancel free of charge. Once it&apos;s
+        ticketed, any refund is the fare paid minus the airline&apos;s cancellation penalty,
+        non-refundable taxes and our USD 75 service fee per passenger. Email {SUPPORT_EMAIL} or call{" "}
+        {PHONE_DISPLAY} with your booking ID; approved refunds are filed with the airline within 3
+        business days. Read our <Link to="/refund-policy">Refund &amp; Cancellation Policy</Link>{" "}
+        for full details.
+      </>
+    ),
+  },
+  {
+    q: "How Does FaresDream Find Cheaper Flight Tickets?",
     a: "We compare live published fares with wholesale and unpublished inventory from our travel provider network, then show you the cheapest combination for your dates.",
   },
   {
-    q: "Can I get an extra discount on three or four tickets?",
-    a: `Yes — group and multi-passenger bookings often qualify for an extra saving. Call our travel desk at ${PHONE_DISPLAY} before you confirm so the discount can be applied.`,
+    q: "Can I Get an Extra Discount on Three or Four Tickets?",
+    a: `Yes. Group and multi-passenger bookings often qualify for an extra saving. Call our travel desk at ${PHONE_DISPLAY} before you confirm so the discount can be applied.`,
   },
   {
-    q: "How many days before departure should I book?",
-    a: "Booking around 60 days ahead usually returns the cheapest international fares, while domestic trips are typically best around 30 days out.",
-  },
-  {
-    q: "Are last-minute flights cheaper?",
-    a: "Sometimes. Airlines release unsold seats close to departure on quieter routes, but popular routes usually get more expensive in the final two weeks.",
-  },
-  {
-    q: "Which promo code is currently active?",
-    a: "DIAL50 — mention it to an agent when you book by phone and save up to $50 on your reservation.",
+    q: "Which Promo Code Is Currently Active?",
+    a: "DIAL50. Mention it to an agent when you book by phone and save up to $50 on your reservation.",
   },
 ];
 
 function Home() {
+  const prefill = Route.useSearch();
+
   useEffect(() => {
     if (window.location.hash === `#${FLIGHT_SEARCH_ID}`) focusFlightSearch();
   }, []);
 
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-
   return (
     <div className="bg-background pb-16">
-      {/* HERO + SEARCH — kept above the fold on mobile and desktop */}
-      <section className="bg-linear-to-b from-secondary to-background">
-        <div className="mx-auto max-w-6xl px-4 py-4 text-left sm:py-8">
-          <h1 className="font-display text-xl font-bold leading-tight text-navy sm:text-3xl lg:text-4xl">
-            Fares Dream for All Your Travel Requirements
-          </h1>
-          <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-            Compare flight ticket prices and enjoy wholesale airfare deals.
-          </p>
+      {/* HERO + SEARCH on a moving sky — kept above the fold on mobile and desktop */}
+      <section className="px-3 pt-4 sm:px-6 sm:pt-6">
+        <div className="relative mx-auto max-w-7xl rounded-3xl px-4 pb-8 pt-6 sm:px-8 sm:pb-12 lg:min-h-[375px] lg:pb-10">
+          <MovingSky />
+          <div className="relative">
+            <h1 className="mx-auto mb-4 max-w-[1116px] font-display text-xl font-bold leading-tight text-white [text-shadow:0_2px_12px_rgb(0_0_0/0.25)] sm:text-2xl">
+              Compare Cheap Flights &amp; Wholesale Airfare Deals
+            </h1>
+            <FlightSearchBar prefill={prefill} />
+          </div>
+        </div>
+      </section>
 
-          <div className="mt-3 sm:mt-5">
-            <FlightSearchWidget />
+      {/* RECENT SEARCHES — only for returning visitors with saved searches */}
+      <RecentSearches />
+
+      {/* OFFERS & DISCOUNTS */}
+      <section className="px-4 pb-6 pt-8 sm:px-6 sm:pt-10 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading
+            title="Flight Booking Offers & Discounts"
+            subtitle="Exclusive savings on domestic and international flights."
+          />
+          <div className="mt-6">
+            <OfferCards />
           </div>
         </div>
       </section>
 
       {/* WHY BOOK WITH FARESDREAM */}
-      <section className="px-4 py-14 sm:px-6 lg:px-8">
+      <section className="px-4 pb-14 pt-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <SectionHeading title="Why Book With FaresDream?" />
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {whyUs.map((w) => (
-              <div
-                key={w.title}
-                className="rounded-2xl border border-border bg-card p-6 shadow-card"
-              >
-                <span className="grid size-12 place-items-center rounded-xl bg-primary/10 text-primary">
-                  <w.icon className="size-6" />
-                </span>
-                <h3 className="mt-4 font-display text-lg font-semibold text-navy">{w.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{w.body}</p>
-              </div>
-            ))}
+          <SectionHeading
+            title="Why Book With FaresDream?"
+            subtitle="Wholesale fares, secure booking and real people on call 24/7."
+          />
+          <div className="mt-6">
+            <WhyBookCards />
           </div>
         </div>
       </section>
 
-      {/* ABOUT FARESDREAM */}
-      <section className="bg-secondary px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
-          <SectionHeading title="Fares Dream for All Your Travel Requirements" />
-          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-            Faresdream is a leading flight price comparison website that finds you the best deal on
-            air tickets. Faresdream is the leading and cutting-edge website for flight fare
-            comparison, and you can find the best deals on flight tickets here. At Faresdream, you
-            can explore the ideal ways to save money on traveling, and now there is no need to spend
-            hours and money because you can compare flight ticket prices at Faresdream. Working with
-            the world’s leading travel providers, all you need to do is enter your origin,
-            destination, and dates, and we will immediately display the best and most cost-effective
-            options for you.
-          </p>
+      {/* TRENDING DESTINATIONS */}
+      <section className="px-4 pb-14 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <TrendingDestinations
+            heading={
+              <SectionHeading
+                title="Trending Destinations"
+                subtitle="Tap a destination to start your flight search."
+              />
+            }
+          />
         </div>
       </section>
 
       {/* FEATURED DEALS */}
       <section className="px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <SectionHeading title="Featured Flight Deals" />
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredDeals.map((d) => (
-              <Link
-                key={`${d.from}-${d.to}-${d.trip}`}
-                to="/deals"
-                className="group rounded-2xl border border-border bg-card p-5 shadow-card transition hover:border-primary"
-              >
-                <span className="inline-flex rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">
-                  {d.trip}
-                </span>
-                <p className="mt-3 flex items-center gap-2 font-display text-lg font-semibold text-navy">
-                  {d.from} <ArrowRight className="size-4 text-primary" /> {d.to}
-                </p>
-                <p className="mt-3 text-sm text-muted-foreground">
-                  From <span className="font-display text-2xl font-bold text-gold">${d.price}</span>
-                </p>
-                <span className="mt-3 inline-block text-xs font-semibold text-primary group-hover:underline">
-                  View deal
-                </span>
-              </Link>
-            ))}
+          <SectionHeading
+            title="Featured Flight Deals"
+            subtitle="Tap a deal to start your search."
+          />
+          <div className="mt-8">
+            <FeaturedDeals onPick={(d) => searchFlightsTo(d.to, d.from, d.trip)} />
           </div>
         </div>
       </section>
@@ -193,55 +176,31 @@ function Home() {
       {/* POPULAR ROUND TRIPS */}
       <section className="bg-secondary px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <SectionHeading title="Most Popular Round-trip Flight Destinations" />
-          <ul className="mt-8 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card shadow-card">
-            {popularRoundTrips.map((r) => (
-              <li key={r.label} className="flex items-center justify-between gap-4 px-5 py-4">
-                <span className="flex min-w-0 items-center gap-3">
-                  <Plane className="size-4 shrink-0 text-primary" />
-                  <span className="truncate text-sm font-semibold text-navy">{r.label}</span>
-                </span>
-                <span className="font-display text-lg font-bold text-gold">${r.price}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-3 text-xs text-muted-foreground">
-            Average round-trip price per person, taxes and fees included.
-          </p>
+          <SectionHeading
+            title={
+              <>
+                Most Popular Round-trip Flights from <span className="text-gold">New York</span>
+              </>
+            }
+            subtitle="Average round-trip price per person, taxes and fees included."
+          />
+          <div className="mt-8">
+            <PopularRoutes
+              onPick={(to, from) => searchFlightsTo(to, from, "round")}
+              onSearchOther={focusFlightSearch}
+            />
+          </div>
         </div>
       </section>
 
       {/* FAQ */}
       <section className="px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
-          <SectionHeading title="FAQs" />
-          <div className="mt-8 space-y-3">
-            {faqs.map((f, i) => {
-              const open = openFaq === i;
-              return (
-                <div
-                  key={f.q}
-                  className="overflow-hidden rounded-xl border border-border bg-card shadow-card"
-                >
-                  <button
-                    type="button"
-                    aria-expanded={open}
-                    onClick={() => setOpenFaq(open ? null : i)}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-semibold text-navy"
-                  >
-                    {f.q}
-                    <ChevronDown
-                      className={`size-4 shrink-0 text-primary transition ${open ? "rotate-180" : ""}`}
-                    />
-                  </button>
-                  {open ? (
-                    <p className="border-t border-border px-5 py-4 text-sm leading-relaxed text-muted-foreground">
-                      {f.a}
-                    </p>
-                  ) : null}
-                </div>
-              );
-            })}
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-center font-display text-2xl font-bold text-foreground sm:text-3xl">
+            Frequently Asked Questions
+          </h2>
+          <div className="mt-8">
+            <FaqAccordion items={faqs} />
           </div>
         </div>
       </section>
@@ -249,11 +208,14 @@ function Home() {
   );
 }
 
-function SectionHeading({ title }: { title: string }) {
+function SectionHeading({ title, subtitle }: { title: ReactNode; subtitle?: string }) {
   return (
     <div>
       <h2 className="font-display text-2xl font-bold text-navy sm:text-3xl">{title}</h2>
       <span className="mt-3 block h-1 w-16 rounded-full bg-gold" />
+      {subtitle ? (
+        <p className="mt-3 text-sm text-muted-foreground sm:text-base">{subtitle}</p>
+      ) : null}
     </div>
   );
 }
