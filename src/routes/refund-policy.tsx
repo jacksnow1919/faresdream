@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageShell, Card } from "@/components/site/ui";
+import { LegalPage, type LegalSection } from "@/components/site/LegalPage";
 
 export const Route = createFileRoute("/refund-policy")({
   head: () => ({
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/refund-policy")({
   component: RefundPage,
 });
 
-const sections: { h: string; p: string[] }[] = [
+const sections: LegalSection[] = [
   {
     h: "1. Fare rules govern every refund",
     p: [
@@ -76,25 +76,11 @@ const sections: { h: string; p: string[] }[] = [
 
 function RefundPage() {
   return (
-    <PageShell
-      eyebrow="Legal"
+    <LegalPage
+      crumb="Refund & Cancellation Policy"
       title="Refund & Cancellation Policy"
       subtitle="What happens when plans change — penalties, fees and timelines."
-    >
-      <Card>
-        <div className="space-y-6">
-          {sections.map((s) => (
-            <section key={s.h}>
-              <h2 className="font-display text-lg font-semibold text-navy">{s.h}</h2>
-              {s.p.map((para) => (
-                <p key={para} className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {para}
-                </p>
-              ))}
-            </section>
-          ))}
-        </div>
-      </Card>
-    </PageShell>
+      sections={sections}
+    />
   );
 }

@@ -71,6 +71,55 @@ export interface PkfareSearchResponse {
   };
 }
 
+/** One flight within a journey, for the results page's Flight Details panel. */
+export interface FareSegment {
+  carrierCode: string;
+  flightNo: string;
+  origin: string;
+  destination: string;
+  /** Local "yyyy-MM-ddTHH:mm" at the departure airport. */
+  departAt: string;
+  /** Local "yyyy-MM-ddTHH:mm" at the arrival airport. */
+  arriveAt: string;
+  durationMinutes: number;
+  /** Details below are only sent by some providers (Duffel). */
+  carrierName?: string | undefined;
+  logoUrl?: string | undefined;
+  /** Set when another airline flies the plane (codeshare). */
+  operatedBy?: string | undefined;
+  aircraft?: string | undefined;
+  originName?: string | undefined;
+  destinationName?: string | undefined;
+  originTerminal?: string | undefined;
+  destinationTerminal?: string | undefined;
+  /** Bags included per traveller, as piece counts. */
+  checkedBags?: number | undefined;
+  carryOnBags?: number | undefined;
+}
+
+/** An airline refund or change rule; `penalty` is the airline's fee for the booking. */
+export interface FareRule {
+  allowed: boolean;
+  penalty?: number | undefined;
+  currency?: string | undefined;
+}
+
+/** One direction of a trip: the outbound fields of a fare, or its return journey. */
+export interface FareJourney {
+  flightNo: string;
+  origin: string;
+  destination: string;
+  departDate: string;
+  departTime: string;
+  arriveTime: string;
+  duration: string;
+  durationMinutes: number;
+  departMinutes: number;
+  arriveMinutes: number;
+  maxLayoverMinutes: number;
+  stops: number;
+  segments: FareSegment[];
+}
 
 export interface PkfareNormalisedFare {
   id: string;
@@ -97,4 +146,20 @@ export interface PkfareNormalisedFare {
   price: number;
   refundable: boolean;
   stops: number;
+  /** Outbound flights in order. */
+  segments?: FareSegment[] | undefined;
+  /** Return journey on round-trip fares; `price` then covers both directions. */
+  inbound?: FareJourney | undefined;
+  /** Estimated CO₂ per traveller in kg, when the provider reports it. */
+  co2Kg?: number | undefined;
+  /** Airline logo URL, when the provider supplies one. */
+  logoUrl?: string | undefined;
+  /** Per-traveller split of `price` (baseFare + taxes = price). */
+  baseFare?: number | undefined;
+  taxes?: number | undefined;
+  /** Airline's name for the fare, e.g. "Basic" or "Main Cabin". */
+  fareBrand?: string | undefined;
+  /** Airline rules before departure; absent when the provider doesn't say. */
+  refundRule?: FareRule | undefined;
+  changeRule?: FareRule | undefined;
 }

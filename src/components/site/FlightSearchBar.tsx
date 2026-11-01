@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useEffectEvent, useRef, useState, type ReactNode } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { format, isBefore } from "date-fns";
+import { format, isBefore, parseISO } from "date-fns";
 import {
   ArrowLeftRight,
   CalendarDays,
@@ -29,6 +29,7 @@ import {
   FLIGHT_SEARCH_ID,
   SEARCH_DESTINATION_EVENT,
   searchFlightsTo,
+  shortcutDates,
   type SearchDestination,
 } from "@/lib/focus-search";
 
@@ -46,10 +47,12 @@ const FARES = [
 ] as const;
 
 /** One segment of the joined bar; the active one gets an orange underline. */
-const segCls = (active = false) =>
-  `relative flex h-full min-h-[68px] w-full min-w-0 flex-col justify-center gap-1 px-3.5 py-3 text-left sm:px-[18px] lg:h-[84px] lg:min-h-0 lg:py-0 after:absolute after:inset-x-[18px] after:bottom-0 after:h-0.5 after:rounded-full after:transition ${
-    active ? "after:bg-gold" : "after:bg-transparent"
-  }`;
+const segCls = (active = false, compact = false) =>
+  `relative flex h-full w-full min-w-0 flex-col justify-center px-3.5 text-left lg:min-h-0 lg:py-0 after:absolute after:inset-x-[18px] after:bottom-0 after:h-0.5 after:rounded-full after:transition ${
+    compact
+      ? "min-h-[56px] gap-0.5 py-2 lg:h-[60px] xl:px-[18px]"
+      : "min-h-[68px] gap-1 py-3 sm:px-[18px] lg:h-[84px]"
+  } ${active ? "after:bg-gold" : "after:bg-transparent"}`;
 
 function SegLabel({ icon: Icon, children }: { icon?: LucideIcon; children: ReactNode }) {
   return (
@@ -61,6 +64,8 @@ function SegLabel({ icon: Icon, children }: { icon?: LucideIcon; children: React
 }
 
 const valueCls = "block truncate font-display text-base font-semibold text-navy";
+const compactValueCls =
+  "block truncate font-display text-sm font-semibold text-navy xl:text-[15px]";
 
 /** One flight of a multi-city trip; `date` is null until picked. */
 type Leg = { id: number; from: string; to: string; date: Date | null };
@@ -80,31 +85,63 @@ function SwapButton({ onClick }: { onClick: () => void }) {
   );
 }
 
+/** A search to start from (the results page passes its current one); dates are yyyy-MM-dd. */
+export type SearchStart = {
+  origin: string;
+  destination: string;
+  date: string;
+  returnDate?: string | undefined;
+  passengers: number;
+  cabin: Cabin;
+};
+
 /**
- * Homepage flight search: trip-type pills, one joined white bar, fare type. Sits on MovingSky.
- * `prefill` (from the home URL, e.g. footer route links) sets From/To and opens the calendar.
+ * Flight search: trip-type pills, one joined white bar, fare type.
+ * - "home" sits on MovingSky; `prefill` (from the home URL's ?from=&to=) sets
+ *   From/To and opens the calendar.
+ * - "results" sits on the results page's blue panel and starts from `initial`.
  */
 export function FlightSearchBar({
   prefill,
+  initial,
+  variant = "home",
 }: {
   prefill?: { to?: string | undefined; from?: string | undefined } | undefined;
+  initial?: SearchStart | undefined;
+  variant?: "home" | "results";
 }) {
   const navigate = useNavigate();
   const { currency } = useCurrency();
-  const [trip, setTrip] = useState<Trip>("round");
+  // The results page uses a compact bar (60px fields, fare type beside the trip pills).
+  const onBlue = variant === "results";
+  const seg = (active = false) => segCls(active, onBlue);
+  const value = onBlue ? compactValueCls : valueCls;
+  const [trip, setTrip] = useState<Trip>(
+    initial ? (initial.returnDate ? "round" : "one") : "round",
+  );
   const [fare, setFare] = useState<(typeof FARES)[number]["id"]>("regular");
-  const [origin, setOrigin] = useState(prefill?.from ?? (prefill?.to === "JFK" ? "MIA" : "JFK"));
-  const [destination, setDestination] = useState(prefill?.to ?? "MIA");
-  const [date, setDate] = useState<Date>(new Date());
-  const [returnDate, setReturnDate] = useState<Date>(new Date());
-  const [travelers, setTravelers] = useState<Travelers>({ adults: 1, children: 0, infants: 0 });
-  const [cabin, setCabin] = useState<Cabin>("Economy");
+  const [origin, setOrigin] = useState(
+    initial?.origin ?? prefill?.from ?? (prefill?.to === "JFK" ? "MIA" : "JFK"),
+  );
+  const [destination, setDestination] = useState(initial?.destination ?? prefill?.to ?? "MIA");
+  const [date, setDate] = useState<Date>(() => (initial ? parseISO(initial.date) : new Date()));
+  const [returnDate, setReturnDate] = useState<Date>(() =>
+    initial ? parseISO(initial.returnDate ?? initial.date) : new Date(),
+  );
+  const [travelers, setTravelers] = useState<Travelers>({
+    adults: initial?.passengers ?? 1,
+    children: 0,
+    infants: 0,
+  });
+  const [cabin, setCabin] = useState<Cabin>(initial?.cabin ?? "Economy");
   const [dateField, setDateField] = useState<"depart" | "return" | null>(null);
   const [travellersOpen, setTravellersOpen] = useState(false);
   const [legs, setLegs] = useState<Leg[]>([]);
   const [legDateOpen, setLegDateOpen] = useState<number | null>(null);
   const [legError, setLegError] = useState<string | null>(null);
   const [quoteLegs, setQuoteLegs] = useState<MultiCityLeg[] | null>(null);
+  // Until the visitor picks dates, both default to today; shortcuts then use later ones.
+  const [datesPicked, setDatesPicked] = useState(Boolean(initial));
   const legId = useRef(0);
 
   const round = trip === "round";
@@ -178,25 +215,50 @@ export function FlightSearchBar({
     setQuoteLegs(legs.map((l) => ({ from: l.from, to: l.to, date: l.date! })));
   };
 
+  const runSearch = (from: string, to: string, roundTrip: boolean, depart: Date, back: Date) =>
+    navigate({
+      to: "/flight/search",
+      search: {
+        origin: from,
+        destination: to,
+        date: format(depart, "yyyy-MM-dd"),
+        ...(roundTrip ? { returnDate: format(back, "yyyy-MM-dd") } : {}),
+        passengers: travelerCount(travelers),
+        cabin,
+        currency: currency || DEFAULT_CURRENCY,
+      },
+    });
+
+  const submitSearch = () => runSearch(origin, destination, round, date, returnDate);
+
   // Destination shortcuts elsewhere on the page (see searchFlightsTo): fill "To"
   // (and "From" when given), bring the bar into view, then ask for the departure date.
+  // With `go` (showFlightsTo) they open the results page instead.
+  const onPick = useEffectEvent(({ to, from, trip: pickedTrip, go }: SearchDestination) => {
+    const nextTrip = pickedTrip ?? (trip === "multi" ? "round" : trip);
+    const nextOrigin = from ?? (to === origin ? destination : origin);
+    if (go) {
+      const { depart, back } = shortcutDates(datesPicked ? date : undefined);
+      const backPicked = datesPicked && !isBefore(returnDate, depart);
+      void runSearch(nextOrigin, to, nextTrip === "round", depart, backPicked ? returnDate : back);
+      return;
+    }
+    setTrip(nextTrip);
+    setOrigin(nextOrigin);
+    setDestination(to);
+    setTravellersOpen(false);
+    document
+      .getElementById(FLIGHT_SEARCH_ID)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    window.setTimeout(() => setDateField("depart"), 600);
+  });
   useEffect(() => {
-    const onPick = (e: Event) => {
-      const { to, from, trip: pickedTrip } = (e as CustomEvent<SearchDestination>).detail;
-      if (pickedTrip) setTrip(pickedTrip);
-      else if (trip === "multi") setTrip("round");
-      if (from) setOrigin(from);
-      else if (to === origin) setOrigin(destination);
-      setDestination(to);
-      setTravellersOpen(false);
-      document
-        .getElementById(FLIGHT_SEARCH_ID)
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
-      window.setTimeout(() => setDateField("depart"), 600);
-    };
-    window.addEventListener(SEARCH_DESTINATION_EVENT, onPick);
-    return () => window.removeEventListener(SEARCH_DESTINATION_EVENT, onPick);
-  }, [trip, origin, destination]);
+    const listener = (e: Event) => onPick((e as CustomEvent<SearchDestination>).detail);
+    window.addEventListener(SEARCH_DESTINATION_EVENT, listener);
+    return () => window.removeEventListener(SEARCH_DESTINATION_EVENT, listener);
+    // onPick is an effect event (always sees the latest state), so it isn't a dependency.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // A URL prefill goes through the same path (after the listener above is attached),
   // so it also scrolls to the bar and opens the calendar, on load or on a later link click.
@@ -216,6 +278,7 @@ export function FlightSearchBar({
   };
 
   const selectDate = (d: Date) => {
+    setDatesPicked(true);
     if (dateField === "depart") {
       setDate(d);
       if (round) {
@@ -233,19 +296,6 @@ export function FlightSearchBar({
     }
   };
 
-  const submitSearch = () =>
-    navigate({
-      to: "/flight/search",
-      search: {
-        origin,
-        destination,
-        date: format(date, "yyyy-MM-dd"),
-        passengers: travelerCount(travelers),
-        cabin,
-        currency: currency || DEFAULT_CURRENCY,
-      },
-    });
-
   const count = travelerCount(travelers);
   const travellersLabel = `${count} ${count === 1 ? "Traveller" : "Travellers"}`;
 
@@ -258,10 +308,10 @@ export function FlightSearchBar({
         onCabinChange={setCabin}
         open={travellersOpen}
         onOpenChange={setTravellersOpen}
-        className={segCls(travellersOpen)}
+        className={seg(travellersOpen)}
       >
         <SegLabel icon={ChevronDown}>Travellers/Class</SegLabel>
-        <span className={valueCls}>
+        <span className={value}>
           {travellersLabel}{" "}
           <span className="font-sans text-[15px] font-semibold text-muted-foreground">
             {cabinLabel(cabin)}
@@ -271,10 +321,43 @@ export function FlightSearchBar({
     </div>
   );
 
+  // Fare type: under the bar on the home page, beside the trip pills on the results page.
+  const fareTypes = (
+    <div
+      role="radiogroup"
+      aria-label="Fare type"
+      className={`flex flex-wrap items-center ${onBlue ? "ml-auto gap-4" : "mt-4 gap-6"}`}
+    >
+      {FARES.map((f) => (
+        <label
+          key={f.id}
+          className={`flex cursor-pointer items-center gap-2 font-medium ${onBlue ? "text-sm" : "text-base"} ${
+            onBlue ? "text-white" : "text-navy [text-shadow:0_0_10px_rgb(255_255_255/0.9)]"
+          }`}
+        >
+          <input
+            type="radio"
+            name="fare-type"
+            value={f.id}
+            checked={fare === f.id}
+            onChange={() => setFare(f.id)}
+            className={`cursor-pointer accent-navy ${onBlue ? "size-4" : "size-[18px]"}`}
+          />
+          {f.label}
+        </label>
+      ))}
+    </div>
+  );
+
   return (
-    <div id={FLIGHT_SEARCH_ID} className="mx-auto max-w-[1116px] text-left">
-      {/* Trip type */}
-      <div className="flex flex-wrap gap-2 sm:gap-4">
+    <div
+      id={onBlue ? undefined : FLIGHT_SEARCH_ID}
+      className={onBlue ? "text-left" : "mx-auto max-w-[1116px] text-left"}
+    >
+      {/* Trip type (and, on the results page, fare type on the same row) */}
+      <div
+        className={`flex flex-wrap items-center ${onBlue ? "gap-2 sm:gap-3" : "gap-2 sm:gap-4"}`}
+      >
         {TRIPS.map((t) => {
           const active = trip === t.id;
           return (
@@ -283,10 +366,14 @@ export function FlightSearchBar({
               type="button"
               aria-pressed={active}
               onClick={() => changeTrip(t.id)}
-              className={`inline-flex h-[33px] items-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition ${
-                active
-                  ? "bg-navy text-navy-foreground"
-                  : "bg-card text-foreground hover:bg-gold-soft"
+              className={`inline-flex items-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition ${onBlue ? "h-[30px]" : "h-[33px]"} ${
+                onBlue
+                  ? active
+                    ? "border border-yellow-300 bg-yellow-300/10 text-yellow-300"
+                    : "border border-white/70 text-white hover:bg-white/10"
+                  : active
+                    ? "bg-navy text-navy-foreground"
+                    : "bg-card text-foreground hover:bg-gold-soft"
               }`}
             >
               <t.icon className="size-4" strokeWidth={2} />
@@ -294,11 +381,12 @@ export function FlightSearchBar({
             </button>
           );
         })}
+        {onBlue ? fareTypes : null}
       </div>
 
       {trip === "multi" ? (
         /* Multi-city: one row per flight; travellers on the first, Add city + Search beside the last */
-        <div className="mt-4 space-y-4">
+        <div className={`space-y-4 ${onBlue ? "mt-2.5" : "mt-4"}`}>
           {legs.map((leg, i) => (
             <div key={leg.id} className="grid gap-3 lg:grid-cols-4 lg:gap-0">
               <p className="-mb-1 text-xs font-semibold text-white [text-shadow:0_1px_6px_rgb(0_0_0/0.35)] md:hidden">
@@ -311,12 +399,14 @@ export function FlightSearchBar({
               >
                 <div className="relative grid divide-y divide-border md:col-span-2 md:grid-cols-2 md:divide-x md:divide-y-0">
                   <AirportField
+                    compact={onBlue}
                     label="From"
                     value={leg.from}
                     onChange={(v) => updateLeg(i, { from: v })}
                   />
                   <SwapButton onClick={() => updateLeg(i, { from: leg.to, to: leg.from })} />
                   <AirportField
+                    compact={onBlue}
                     label="To"
                     value={leg.to}
                     onChange={(v) => updateLeg(i, { to: v })}
@@ -330,13 +420,13 @@ export function FlightSearchBar({
                     aria-haspopup="dialog"
                     aria-expanded={legDateOpen === i}
                     onClick={() => setLegDateOpen(i)}
-                    className={`${segCls(legDateOpen === i)} ${i >= 2 ? "pr-9" : ""}`}
+                    className={`${seg(legDateOpen === i)} ${i >= 2 ? "pr-9" : ""}`}
                   >
                     <SegLabel icon={CalendarDays}>Departure</SegLabel>
                     {leg.date ? (
-                      <span className={valueCls}>{format(leg.date, "EEE, d MMM yy")}</span>
+                      <span className={value}>{format(leg.date, "EEE, d MMM yy")}</span>
                     ) : (
-                      <span className={`${valueCls} !text-muted-foreground`}>Select date</span>
+                      <span className={`${value} !text-muted-foreground`}>Select date</span>
                     )}
                   </button>
                   {i >= 2 ? (
@@ -375,7 +465,7 @@ export function FlightSearchBar({
                     <button
                       type="button"
                       onClick={addLeg}
-                      className="flex h-12 flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/80 bg-white/10 text-base font-semibold text-white backdrop-blur-sm transition hover:bg-white/25 lg:h-[84px]"
+                      className={`flex h-12 flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/80 bg-white/10 text-base font-semibold text-white backdrop-blur-sm transition hover:bg-white/25 ${onBlue ? "lg:h-[60px]" : "lg:h-[84px]"}`}
                     >
                       <Plus className="size-5" /> Add city
                     </button>
@@ -383,7 +473,7 @@ export function FlightSearchBar({
                   <button
                     type="button"
                     onClick={searchMulti}
-                    className="h-12 flex-1 rounded-lg bg-navy font-display text-lg font-semibold text-navy-foreground transition hover:brightness-110 lg:h-[84px]"
+                    className={`h-12 flex-1 rounded-lg bg-navy font-display text-lg font-semibold text-navy-foreground transition hover:brightness-110 ${onBlue ? "lg:h-[60px]" : "lg:h-[84px]"}`}
                   >
                     Search
                   </button>
@@ -401,16 +491,23 @@ export function FlightSearchBar({
           ) : null}
         </div>
       ) : (
-        <div className="relative mt-4 flex flex-col rounded-lg bg-card shadow-lux lg:flex-row">
+        <div
+          className={`relative flex flex-col rounded-lg bg-card shadow-lux lg:flex-row ${onBlue ? "mt-2.5" : "mt-4"}`}
+        >
           <div className="relative grid divide-y divide-border md:grid-cols-2 md:divide-x md:divide-y-0 lg:w-[44.3%] lg:flex-none">
-            <AirportField label="From" value={origin} onChange={setOrigin} />
+            <AirportField compact={onBlue} label="From" value={origin} onChange={setOrigin} />
             <SwapButton
               onClick={() => {
                 setOrigin(destination);
                 setDestination(origin);
               }}
             />
-            <AirportField label="To" value={destination} onChange={setDestination} />
+            <AirportField
+              compact={onBlue}
+              label="To"
+              value={destination}
+              onChange={setDestination}
+            />
           </div>
 
           <div className="relative grid grid-cols-2 border-t border-border md:grid-cols-[165fr_165fr_208fr] lg:flex-1 lg:border-l lg:border-t-0">
@@ -420,10 +517,10 @@ export function FlightSearchBar({
               aria-haspopup="dialog"
               aria-expanded={dateField === "depart"}
               onClick={() => setDateField("depart")}
-              className={segCls(dateField === "depart")}
+              className={seg(dateField === "depart")}
             >
               <SegLabel icon={CalendarDays}>Departure</SegLabel>
-              <span className={valueCls}>{format(date, "EEE, d MMM yy")}</span>
+              <span className={value}>{format(date, "EEE, d MMM yy")}</span>
             </button>
 
             <div className="relative min-w-0 border-l border-border">
@@ -433,13 +530,13 @@ export function FlightSearchBar({
                 aria-haspopup="dialog"
                 aria-expanded={dateField === "return"}
                 onClick={() => setDateField("return")}
-                className={`${segCls(dateField === "return")} ${round ? "pr-8" : ""}`}
+                className={`${seg(dateField === "return")} ${round ? "pr-8" : ""}`}
               >
                 <SegLabel icon={CalendarDays}>Return</SegLabel>
                 {round ? (
-                  <span className={valueCls}>{format(returnDate, "EEE, d MMM yy")}</span>
+                  <span className={value}>{format(returnDate, "EEE, d MMM yy")}</span>
                 ) : (
-                  <span className={`${valueCls} !text-muted-foreground`}>Select Date</span>
+                  <span className={`${value} !text-muted-foreground`}>Select Date</span>
                 )}
               </button>
               {round ? (
@@ -472,36 +569,16 @@ export function FlightSearchBar({
           <button
             type="button"
             onClick={submitSearch}
-            className="h-12 rounded-b-lg bg-navy px-6 font-display text-lg font-semibold text-navy-foreground transition hover:brightness-110 lg:h-auto lg:w-[84px] lg:shrink-0 lg:rounded-none lg:rounded-r-lg lg:px-0"
+            className={`rounded-b-lg bg-navy px-6 font-display font-semibold text-navy-foreground transition hover:brightness-110 lg:h-auto lg:shrink-0 lg:rounded-none lg:rounded-r-lg lg:px-0 ${
+              onBlue ? "h-11 text-base lg:w-[88px] xl:w-[104px]" : "h-12 text-lg lg:w-[84px]"
+            }`}
           >
             Search
           </button>
         </div>
       )}
 
-      {/* Fare type */}
-      <div
-        role="radiogroup"
-        aria-label="Fare type"
-        className="mt-4 flex flex-wrap items-center gap-6"
-      >
-        {FARES.map((f) => (
-          <label
-            key={f.id}
-            className="flex cursor-pointer items-center gap-2 text-base font-medium text-navy [text-shadow:0_0_10px_rgb(255_255_255/0.9)]"
-          >
-            <input
-              type="radio"
-              name="fare-type"
-              value={f.id}
-              checked={fare === f.id}
-              onChange={() => setFare(f.id)}
-              className="size-[18px] cursor-pointer accent-navy"
-            />
-            {f.label}
-          </label>
-        ))}
-      </div>
+      {onBlue ? null : fareTypes}
 
       {quoteLegs ? (
         <MultiCityQuoteModal
@@ -513,12 +590,14 @@ export function FlightSearchBar({
       ) : null}
 
       {/* Secondary phone CTA — mobile first view */}
-      <a
-        href={`tel:${PHONE_TEL}`}
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border-2 border-primary bg-card px-4 py-2.5 text-xs font-bold text-primary transition hover:bg-accent lg:hidden"
-      >
-        <Phone className="size-4" /> Call for special phone deals: {PHONE_DISPLAY}
-      </a>
+      {onBlue ? null : (
+        <a
+          href={`tel:${PHONE_TEL}`}
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border-2 border-primary bg-card px-4 py-2.5 text-xs font-bold text-primary transition hover:bg-accent lg:hidden"
+        >
+          <Phone className="size-4" /> Call for special phone deals: {PHONE_DISPLAY}
+        </a>
+      )}
     </div>
   );
 }

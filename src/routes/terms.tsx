@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageShell, Card } from "@/components/site/ui";
+import { LegalPage, type LegalSection } from "@/components/site/LegalPage";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/terms")({
   component: TermsPage,
 });
 
-const sections: { h: string; p: string[] }[] = [
+const sections: LegalSection[] = [
   {
     h: "1. Agreement",
     p: [
@@ -83,25 +83,11 @@ const sections: { h: string; p: string[] }[] = [
 
 function TermsPage() {
   return (
-    <PageShell
-      eyebrow="Legal"
+    <LegalPage
+      crumb="Terms of Use"
       title="Terms & Conditions"
       subtitle="Please read these terms carefully before submitting an online booking."
-    >
-      <Card>
-        <div className="space-y-6">
-          {sections.map((s) => (
-            <section key={s.h}>
-              <h2 className="font-display text-lg font-semibold text-navy">{s.h}</h2>
-              {s.p.map((para) => (
-                <p key={para} className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {para}
-                </p>
-              ))}
-            </section>
-          ))}
-        </div>
-      </Card>
-    </PageShell>
+      sections={sections}
+    />
   );
 }

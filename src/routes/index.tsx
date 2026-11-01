@@ -10,7 +10,7 @@ import { TrendingDestinations } from "@/components/site/TrendingDestinations";
 import { PopularRoutes } from "@/components/site/PopularRoutes";
 import { FeaturedDeals } from "@/components/site/FeaturedDeals";
 import { RecentSearches } from "@/components/site/RecentSearches";
-import { FLIGHT_SEARCH_ID, focusFlightSearch, searchFlightsTo } from "@/lib/focus-search";
+import { FLIGHT_SEARCH_ID, focusFlightSearch, showFlightsTo } from "@/lib/focus-search";
 import { PHONE_DISPLAY, SUPPORT_EMAIL } from "@/lib/brand";
 
 type HomeSearch = { from?: string | undefined; to?: string | undefined };
@@ -19,7 +19,7 @@ const iata = (v: unknown) =>
   typeof v === "string" && /^[A-Za-z]{3}$/.test(v) ? v.toUpperCase() : undefined;
 
 export const Route = createFileRoute("/")({
-  // ?to=LHR (and optional &from=JFK) pre-fills the search bar, e.g. from footer route links.
+  // ?to=LHR (and optional &from=JFK) pre-fills the search bar, for links into the home page.
   validateSearch: (search: Record<string, unknown>): HomeSearch => {
     const to = iata(search["to"]);
     const from = iata(search["from"]);
@@ -161,7 +161,7 @@ function Home() {
             subtitle="Tap a deal to start your search."
           />
           <div className="mt-8">
-            <FeaturedDeals onPick={(d) => searchFlightsTo(d.to, d.from, d.trip)} />
+            <FeaturedDeals onPick={(d) => showFlightsTo(d.to, d.from, d.trip)} />
           </div>
         </div>
       </section>
@@ -186,7 +186,7 @@ function Home() {
           />
           <div className="mt-8">
             <PopularRoutes
-              onPick={(to, from) => searchFlightsTo(to, from, "round")}
+              onPick={(to, from) => showFlightsTo(to, from, "round")}
               onSearchOther={focusFlightSearch}
             />
           </div>

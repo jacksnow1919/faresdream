@@ -1,8 +1,18 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { Lock, ShieldCheck, CreditCard, CheckCircle2, User } from "lucide-react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { format } from "date-fns";
+import { ArrowLeft, ArrowRight, CreditCard, Info, Lock, User } from "lucide-react";
 import { parseFlightSearch, currencySymbol } from "@/lib/flight-search-params";
-import { Steps } from "@/components/site/ui";
+import { cityOf } from "@/lib/airports";
+import {
+  CheckoutCard,
+  CheckoutShell,
+  PriceSummary,
+  TripSummary,
+  TrustPoints,
+} from "@/components/site/checkout";
+import { loadSelectedFare, type SelectedFare } from "@/lib/selected-fare";
+import { DatePicker } from "@/components/site/DatePicker";
 import { track } from "@/lib/analytics";
 import {
   validateTraveller,
@@ -18,8 +28,6 @@ import {
 } from "@/lib/booking-store";
 import { getClickId, getUtmSource } from "@/lib/click-id";
 import { saveRecentSearch } from "@/lib/recent-searches";
-
-
 
 export const Route = createFileRoute("/flight/booking")({
   validateSearch: parseFlightSearch,
@@ -58,14 +66,24 @@ const formatPan = (v: string) =>
     .replace(/(.{4})/g, "$1 ")
     .trim();
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+const inputCls = (error?: string | undefined) =>
+  `mt-1.5 h-11 w-full rounded-lg border bg-card px-3.5 text-[15px] text-foreground outline-none transition placeholder:text-muted-foreground/70 focus:ring-2 ${
+    error
+      ? "border-destructive focus:ring-destructive/15"
+      : "border-border focus:border-primary focus:ring-primary/15"
+  }`;
 
+function FieldLabel({ label, required }: { label: string; required?: boolean | undefined }) {
   return (
-    <section className="rounded-2xl border border-border bg-card p-4 shadow-card sm:p-6">
-      <h2 className="font-display text-lg font-semibold text-navy">{title}</h2>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">{children}</div>
-    </section>
+    <span className="text-sm font-medium text-foreground">
+      {label}
+      {required ? <span className="text-destructive"> *</span> : null}
+    </span>
   );
+}
+
+function FieldError({ children }: { children: ReactNode }) {
+  return <span className="mt-1 block text-xs font-medium text-destructive">{children}</span>;
 }
 
 function Text({
@@ -96,11 +114,8 @@ function Text({
   min?: string;
 }) {
   return (
-    <label className={`relative z-20 block ${full ? "sm:col-span-2" : ""}`}>
-      <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-        {label}
-        {required ? " *" : ""}
-      </span>
+    <label className={`block ${full ? "sm:col-span-2" : ""}`}>
+      <FieldLabel label={label} required={required} />
       <input
         type={type}
         min={min}
@@ -111,16 +126,12 @@ function Text({
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
         aria-invalid={error ? true : undefined}
-        className={`mt-1 w-full rounded-xl border bg-background px-3 py-2.5 text-sm outline-none ${
-          error ? "border-destructive focus:border-destructive" : "border-input focus:border-gold"
-        }`}
+        className={inputCls(error)}
       />
-      {error ? <span className="mt-1 block text-[11px] font-semibold text-destructive">{error}</span> : null}
+      {error ? <FieldError>{error}</FieldError> : null}
     </label>
   );
 }
-
-
 
 function Choice({
   label,
@@ -136,14 +147,12 @@ function Choice({
   full?: boolean;
 }) {
   return (
-    <label className={`relative z-20 block ${full ? "sm:col-span-2" : ""}`}>
-      <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-        {label}
-      </span>
+    <label className={`block ${full ? "sm:col-span-2" : ""}`}>
+      <FieldLabel label={label} />
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-gold"
+        className={`${inputCls()} cursor-pointer`}
       >
         {options.map((o) => (
           <option key={o}>{o}</option>
@@ -152,6 +161,20 @@ function Choice({
     </label>
   );
 }
+
+function Note({ children }: { children: ReactNode }) {
+  return (
+    <p className="flex items-start gap-2 rounded-lg bg-sky-50 px-3 py-2.5 text-sm text-foreground">
+      <Info className="mt-0.5 size-4 shrink-0 text-primary" />
+      <span>{children}</span>
+    </p>
+  );
+}
+
+const primaryBtn =
+  "inline-flex items-center justify-center gap-2 rounded-lg bg-navy px-6 py-3 text-sm font-semibold text-navy-foreground transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50";
+const backBtn =
+  "inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition hover:text-navy";
 
 function BookingPage() {
   const search = Route.useSearch();
@@ -165,7 +188,6 @@ function BookingPage() {
     Number.isFinite(quotedTaxes) && quotedTaxes > 0 ? quotedTaxes : Math.round(baseTotal * 0.18);
   const baseFareDisplay =
     Number.isFinite(quotedBase) && quotedBase > 0 ? quotedBase : baseTotal - taxes;
-
 
   const partnerPromo = search.promo_code ?? "";
   const discountPct = Number(search.discount_pct) || 0;
@@ -229,11 +251,24 @@ function BookingPage() {
       date: search.departDate,
       cabin: search.cabin,
       currency: search.currency,
-      price: baseTotal,
+      // `price` is the booking total; Recent Searches shows a per-person fare.
+      price: raw.has("adults") ? Math.round(baseTotal / pax) : baseTotal,
       ...(raw.has("adults") ? { passengers: pax } : {}),
     });
   }, [search, baseTotal]);
 
+  // The picked fare's times (results page → this tab's storage), for the trip summary only.
+  const [selected, setSelected] = useState<SelectedFare | null>(null);
+  useEffect(() => {
+    setSelected(
+      loadSelectedFare({
+        origin: search.origin,
+        destination: search.destination,
+        departDate: search.departDate,
+        flightNo: search.flightNo,
+      }),
+    );
+  }, [search.origin, search.destination, search.departDate, search.flightNo]);
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [card, setCard] = useState({ holder: "", number: "", expMonth: "", expYear: "", cvv: "" });
@@ -277,7 +312,6 @@ function BookingPage() {
   ]
     .filter(Boolean)
     .join(", ");
-
 
   const markAllTouched = () =>
     setTouched(
@@ -388,325 +422,433 @@ function BookingPage() {
     navigate({ to: "/flight/Confirm", search });
   };
 
+  // Local "today" for the date pickers (toISOString would give the UTC date).
+  const todayYmd = format(new Date(), "yyyy-MM-dd");
+  const dobError = errorFor("dobDay") || errorFor("dobMonth") || errorFor("dobYear");
 
+  const priceLines = [
+    { label: `Base fare (${travellerSummary})`, value: baseFareDisplay },
+    { label: "Taxes and fees", value: taxes },
+    ...(appliedPromo ? [{ label: `Promo ${appliedPromo}`, value: discount, discount: true }] : []),
+  ];
 
   return (
-    <div className="min-h-[100dvh] bg-secondary/50 px-4 py-6 pb-24 sm:pb-40">
-      <div className="mx-auto max-w-7xl space-y-4">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-gold/40 bg-gold/5 px-4 py-3 text-sm text-navy">
-          <User className="size-4 shrink-0 text-gold" />
-          <span className="text-muted-foreground">Already have an account?</span>
-          <Link to="/auth" className="font-bold text-gold underline-offset-4 hover:underline">
-            Sign In
-          </Link>
-          <span className="text-muted-foreground">
-            for faster booking and to earn loyalty points. Guest checkout is fine too.
-          </span>
-        </div>
-        {search.locked ? (
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-navy/20 bg-navy/5 px-4 py-3 text-sm text-navy">
-            <Lock className="size-4 shrink-0 text-navy" />
-            <span className="font-bold">Fare locked from your search</span>
-            <span className="text-muted-foreground">
-              {search.origin} → {search.destination} · {search.cabin} · {search.departDate}
-              {search.returnDate ? ` – ${search.returnDate}` : ""} · {travellerSummary} ·{" "}
-              {sym}
-              {Number(search.price).toLocaleString()} — no need to search again, just add traveller
-              details.
-            </span>
-          </div>
-        ) : null}
-        <Steps current={step === 1 ? 3 : step === 2 ? 4 : 5} />
-
-      </div>
-
-      <div className="mx-auto mt-4 grid max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+    <CheckoutShell
+      step={step === 1 ? 3 : step === 2 ? 4 : 5}
+      title={step === 1 ? "Traveller details" : step === 2 ? "Contact details" : "Payment"}
+      subtitle={`${cityOf(search.origin)} to ${cityOf(search.destination)} · ${travellerSummary} · ${search.cabin}`}
+    >
+      <div className="grid gap-5 pb-20 lg:grid-cols-[minmax(0,1fr)_340px] lg:pb-0">
         <div className="space-y-4">
-          <section className="rounded-2xl border border-border bg-card p-4 shadow-card sm:p-6">
-            <h2 className="font-display text-lg font-semibold text-navy">Promo Code</h2>
-            <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-              <input
-                value={promoInput}
-                onChange={(e) => setPromoInput(e.target.value)}
-                placeholder="Enter promo code"
-                className="relative z-20 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm uppercase outline-none focus:border-gold"
-              />
-              <button
-                onClick={applyPromo}
-                className="shrink-0 rounded-xl bg-navy px-6 py-2.5 text-sm font-bold text-navy-foreground transition hover:brightness-125"
-              >
-                Apply
-              </button>
-            </div>
-            {appliedPromo ? (
-              <p className="mt-2 text-sm font-semibold text-emerald-600">
-                {autoApplied && appliedPromo === partnerPromo
-                  ? "✓ Partner discount applied automatically!"
-                  : `✓ Promo code ${appliedPromo} applied — you save ${sym}${discount.toLocaleString()}.`}
-              </p>
-            ) : promoError ? (
-              <p className="mt-2 text-sm font-semibold text-destructive">{promoError}</p>
-            ) : null}
-          </section>
+          <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 rounded-lg border border-border bg-card px-4 py-2.5 text-sm text-muted-foreground">
+            <User className="size-4 shrink-0 text-primary" />
+            Already have an account?
+            <Link to="/auth" className="font-semibold text-primary hover:underline">
+              Sign in
+            </Link>
+            for faster booking and to earn loyalty points. Guest checkout is fine too.
+          </p>
+
+          {search.locked ? (
+            <p className="flex items-start gap-2 rounded-lg border border-navy/20 bg-navy/5 px-4 py-3 text-sm text-foreground">
+              <Lock className="mt-0.5 size-4 shrink-0 text-navy" />
+              <span>
+                <span className="font-semibold">Fare locked from your search: </span>
+                {search.origin} → {search.destination} · {search.cabin} · {search.departDate}
+                {search.returnDate ? ` – ${search.returnDate}` : ""} · {travellerSummary} · {sym}
+                {Number(search.price).toLocaleString()}. No need to search again, just add traveller
+                details.
+              </span>
+            </p>
+          ) : null}
 
           {step === 1 ? (
             <>
-              <Section title="Step 1 · Traveller Details">
-                <div className="grid grid-cols-2 gap-2 sm:col-span-2">
-                  <Choice label="Title" value={t.title} onChange={set("title")} options={["Mr", "Mrs", "Ms"]} />
-                  <Choice label="Gender" value={t.gender} onChange={set("gender")} options={["Male", "Female"]} />
-                </div>
-                <Text label="First Name" value={t.firstName} onChange={set("firstName")} onBlur={touch("firstName")} error={errorFor("firstName")} placeholder="As on passport" required />
-                <Text label="Last Name" value={t.lastName} onChange={set("lastName")} onBlur={touch("lastName")} error={errorFor("lastName")} placeholder="As on passport" required />
-                <label className="relative z-20 block sm:col-span-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-                    Date of Birth *
-                  </span>
-                  <input
-                    type="date"
-                    max={new Date().toISOString().slice(0, 10)}
-                    value={
-                      t.dobYear && t.dobMonth && t.dobDay
-                        ? `${t.dobYear}-${t.dobMonth.padStart(2, "0")}-${t.dobDay.padStart(2, "0")}`
-                        : ""
-                    }
-                    onChange={(e) => {
-                      const [y, m, d] = (e.target.value ?? "").split("-");
-                      set("dobYear")(y ?? "");
-                      set("dobMonth")(m ? String(Number(m)) : "");
-                      set("dobDay")(d ? String(Number(d)) : "");
-                    }}
-                    onBlur={() => { touch("dobDay")(); touch("dobMonth")(); touch("dobYear")(); }}
-                    className={`mt-1 w-full rounded-xl border bg-background px-3 py-2.5 text-sm outline-none ${
-                      errorFor("dobDay") || errorFor("dobMonth") || errorFor("dobYear")
-                        ? "border-destructive"
-                        : "border-input focus:border-gold"
-                    }`}
+              <CheckoutCard title="Lead traveller">
+                <Note>Enter names exactly as they appear on the passport.</Note>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <Choice
+                    label="Title"
+                    value={t.title}
+                    onChange={set("title")}
+                    options={["Mr", "Mrs", "Ms"]}
                   />
-                  {(errorFor("dobDay") || errorFor("dobMonth") || errorFor("dobYear")) && (
-                    <span className="mt-1 block text-[11px] font-semibold text-destructive">
-                      Please enter a valid date of birth.
-                    </span>
-                  )}
-                </label>
-                <Text label="Passport Number" value={t.passportNo} onChange={(v) => set("passportNo")(v.replace(/[^A-Za-z0-9]/g, "").toUpperCase())} onBlur={touch("passportNo")} error={errorFor("passportNo")} placeholder="X1234567" required />
-                <Text label="Passport Expiry" type="date" min={new Date().toISOString().slice(0, 10)} value={t.passportExpiry} onChange={set("passportExpiry")} onBlur={touch("passportExpiry")} error={errorFor("passportExpiry")} required />
-                <Choice label="Nationality" value={t.nationality} onChange={set("nationality")} options={COUNTRIES} full />
-              </Section>
+                  <Choice
+                    label="Gender"
+                    value={t.gender}
+                    onChange={set("gender")}
+                    options={["Male", "Female"]}
+                  />
+                  <Text
+                    label="First name"
+                    value={t.firstName}
+                    onChange={set("firstName")}
+                    onBlur={touch("firstName")}
+                    error={errorFor("firstName")}
+                    placeholder="As on passport"
+                    required
+                  />
+                  <Text
+                    label="Last name"
+                    value={t.lastName}
+                    onChange={set("lastName")}
+                    onBlur={touch("lastName")}
+                    error={errorFor("lastName")}
+                    placeholder="As on passport"
+                    required
+                  />
+                  <div className="sm:col-span-2">
+                    <FieldLabel label="Date of birth" required />
+                    <DatePicker
+                      ariaLabel="Date of birth"
+                      min="1900-01-01"
+                      max={todayYmd}
+                      defaultMonth={`${new Date().getFullYear() - 30}-01-01`}
+                      value={
+                        t.dobYear && t.dobMonth && t.dobDay
+                          ? `${t.dobYear}-${t.dobMonth.padStart(2, "0")}-${t.dobDay.padStart(2, "0")}`
+                          : ""
+                      }
+                      onChange={(v) => {
+                        const [y, m, d] = v.split("-");
+                        set("dobYear")(y ?? "");
+                        set("dobMonth")(m ? String(Number(m)) : "");
+                        set("dobDay")(d ? String(Number(d)) : "");
+                      }}
+                      onClose={() => {
+                        touch("dobDay")();
+                        touch("dobMonth")();
+                        touch("dobYear")();
+                      }}
+                      invalid={!!dobError}
+                      error={dobError ? "Please enter a valid date of birth." : undefined}
+                      className={inputCls(dobError)}
+                    />
+                  </div>
+                  <Text
+                    label="Passport number"
+                    value={t.passportNo}
+                    onChange={(v) =>
+                      set("passportNo")(v.replace(/[^A-Za-z0-9]/g, "").toUpperCase())
+                    }
+                    onBlur={touch("passportNo")}
+                    error={errorFor("passportNo")}
+                    placeholder="X1234567"
+                    required
+                  />
+                  <div>
+                    <FieldLabel label="Passport expiry" required />
+                    <DatePicker
+                      ariaLabel="Passport expiry"
+                      // Matches checkout-validation: the expiry year must be after this year.
+                      min={`${new Date().getFullYear() + 1}-01-01`}
+                      max={`${new Date().getFullYear() + 20}-12-31`}
+                      value={t.passportExpiry}
+                      onChange={set("passportExpiry")}
+                      onClose={touch("passportExpiry")}
+                      invalid={!!errorFor("passportExpiry")}
+                      error={errorFor("passportExpiry")}
+                      className={inputCls(errorFor("passportExpiry"))}
+                    />
+                  </div>
+                  <Choice
+                    label="Nationality"
+                    value={t.nationality}
+                    onChange={set("nationality")}
+                    options={COUNTRIES}
+                    full
+                  />
+                </div>
+              </CheckoutCard>
 
-              {error ? <p className="text-sm font-semibold text-destructive">{error}</p> : null}
+              {error ? <p className="text-sm font-medium text-destructive">{error}</p> : null}
 
-              <div className="rounded-2xl border border-border bg-card p-4 shadow-card sm:p-6">
-                <button
-                  onClick={continueToContact}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3.5 text-sm font-bold text-gold-foreground transition hover:brightness-110"
-                >
-                  <User className="size-4" /> Continue to Contact Info
+              <div className="flex justify-end">
+                <button onClick={continueToContact} className={`${primaryBtn} w-full sm:w-auto`}>
+                  Continue to contact details <ArrowRight className="size-4" />
                 </button>
-                <p className="mt-3 text-center text-xs font-semibold text-muted-foreground">
-                  Step 1 of 3 — names must match your passport exactly.
-                </p>
               </div>
             </>
           ) : step === 2 ? (
             <>
-              <Section title="Step 2 · Contact Info">
-                <Text label="Email" type="email" inputMode="email" value={t.email} onChange={set("email")} onBlur={touch("email")} error={errorFor("email")} placeholder="you@email.com" full required />
-                <Text label="Phone Number" type="tel" inputMode="tel" value={t.phone} onChange={(v) => set("phone")(v.replace(/[^\d+\s]/g, ""))} onBlur={touch("phone")} error={errorFor("phone")} placeholder="+1 888 596 7882" full required />
-                <p className="text-xs text-muted-foreground sm:col-span-2">
-                  Your e-ticket and any schedule changes go to this email and phone number.
-                </p>
-              </Section>
+              <CheckoutCard title="Contact details">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Text
+                    label="Email"
+                    type="email"
+                    inputMode="email"
+                    value={t.email}
+                    onChange={set("email")}
+                    onBlur={touch("email")}
+                    error={errorFor("email")}
+                    placeholder="you@email.com"
+                    required
+                  />
+                  <Text
+                    label="Phone number"
+                    type="tel"
+                    inputMode="tel"
+                    value={t.phone}
+                    onChange={(v) => set("phone")(v.replace(/[^\d+\s]/g, ""))}
+                    onBlur={touch("phone")}
+                    error={errorFor("phone")}
+                    placeholder="+1 888 596 7882"
+                    required
+                  />
+                </div>
+                <div className="mt-4">
+                  <Note>
+                    Your e-ticket and any schedule changes go to this email and phone number.
+                  </Note>
+                </div>
+              </CheckoutCard>
 
-              <Section title="Billing Address">
-                <Text label="Address" value={t.address} onChange={set("address")} onBlur={touch("address")} error={errorFor("address")} placeholder="Street address" full required />
-                <Choice label="Country" value={t.country} onChange={set("country")} options={COUNTRIES} />
-                <Text label="City" value={t.city} onChange={set("city")} onBlur={touch("city")} error={errorFor("city")} placeholder="City" required />
-                <Text label="Postal Code" value={t.postalCode} onChange={set("postalCode")} onBlur={touch("postalCode")} error={errorFor("postalCode")} placeholder="110041" required />
-              </Section>
+              <CheckoutCard title="Billing address">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Text
+                    label="Address"
+                    value={t.address}
+                    onChange={set("address")}
+                    onBlur={touch("address")}
+                    error={errorFor("address")}
+                    placeholder="Street address"
+                    full
+                    required
+                  />
+                  <Choice
+                    label="Country"
+                    value={t.country}
+                    onChange={set("country")}
+                    options={COUNTRIES}
+                  />
+                  <Text
+                    label="City"
+                    value={t.city}
+                    onChange={set("city")}
+                    onBlur={touch("city")}
+                    error={errorFor("city")}
+                    placeholder="City"
+                    required
+                  />
+                  <Text
+                    label="Postal code"
+                    value={t.postalCode}
+                    onChange={set("postalCode")}
+                    onBlur={touch("postalCode")}
+                    error={errorFor("postalCode")}
+                    placeholder="110041"
+                    required
+                  />
+                </div>
+              </CheckoutCard>
 
-              {error ? <p className="text-sm font-semibold text-destructive">{error}</p> : null}
+              {error ? <p className="text-sm font-medium text-destructive">{error}</p> : null}
 
-              <div className="rounded-2xl border border-border bg-card p-4 shadow-card sm:p-6">
-                <button
-                  onClick={continueToPayment}
-                  disabled={!travellerValid}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3.5 text-sm font-bold text-gold-foreground transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <ShieldCheck className="size-4" /> Continue to Payment
+              <div className="flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <button onClick={() => setStep(1)} className={backBtn}>
+                  <ArrowLeft className="size-4" /> Back to traveller details
                 </button>
-                <p className="mt-3 text-center text-xs font-semibold text-muted-foreground">
-                  {travellerValid ? "🔒 Your payment is 100% safe" : "Complete every required field above to continue."}
-                </p>
+                <div className="text-right">
+                  <button
+                    onClick={continueToPayment}
+                    disabled={!travellerValid}
+                    className={`${primaryBtn} w-full sm:w-auto`}
+                  >
+                    Continue to payment <ArrowRight className="size-4" />
+                  </button>
+                  {!travellerValid ? (
+                    <p className="mt-1.5 text-xs text-muted-foreground">
+                      Complete every required field to continue.
+                    </p>
+                  ) : null}
+                </div>
               </div>
-
-              <button
-                onClick={() => setStep(1)}
-                className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-navy"
-              >
-                ← Back to traveller details
-              </button>
             </>
           ) : (
             <>
-              <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border p-4 sm:p-6">
-                  <h2 className="font-display text-lg font-semibold text-navy">Step 3 · Make Your Payment</h2>
-                  <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold">
+              <CheckoutCard
+                title="Card details"
+                action={
+                  <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-bold">
                     {["VISA", "Mastercard", "AMEX", "Maestro"].map((b) => (
                       <span
                         key={b}
-                        className="rounded-md border border-border bg-secondary px-2 py-1 uppercase tracking-widest text-navy"
+                        className="rounded border border-border bg-secondary px-1.5 py-0.5 uppercase tracking-wide text-navy"
                       >
                         {b}
                       </span>
                     ))}
                   </div>
-                </div>
-                <div className="grid gap-3 p-4 sm:p-6 sm:grid-cols-2">
-                  <div className="flex items-center gap-2 text-navy sm:col-span-2">
-                    <CreditCard className="size-4 text-gold" />
-                    <span className="text-sm font-bold">Card details</span>
-                  </div>
-                  <Text label="Name on Card" value={card.holder} onChange={(v) => setCard((p) => ({ ...p, holder: v }))} placeholder="As printed on the card" full required />
-                  <Text label="Card Number" value={card.number} onChange={(v) => setCard((p) => ({ ...p, number: formatPan(v) }))} placeholder="4242 4242 4242 4242" inputMode="numeric" maxLength={23} full required />
-                  <div className="grid grid-cols-3 items-start gap-2 sm:col-span-2">
-                    <Text label="Exp. Month" value={card.expMonth} onChange={(v) => setCard((p) => ({ ...p, expMonth: v.replace(/\D/g, "").slice(0, 2) }))} placeholder="MM" inputMode="numeric" maxLength={2} required />
-                    <Text label="Exp. Year" value={card.expYear} onChange={(v) => setCard((p) => ({ ...p, expYear: v.replace(/\D/g, "").slice(0, 4) }))} placeholder="YYYY" inputMode="numeric" maxLength={4} required />
-                    <Text label="CVV" type="password" value={card.cvv} onChange={(v) => setCard((p) => ({ ...p, cvv: v.replace(/\D/g, "").slice(0, 4) }))} placeholder="•••" inputMode="numeric" maxLength={4} required />
-                  </div>
-                  <p className="text-xs text-muted-foreground sm:col-span-2">
-                    Your card is authorised now and captured only after our team verifies the booking.
-                    The security code is used for this authorisation and is never stored; the card
-                    number is encrypted at rest and shown to staff as{" "}
-                    <span className="font-semibold text-navy">•••• •••• •••• {card.number.replace(/\D/g, "").slice(-4) || "1234"}</span>.
-                  </p>
-
-                  <label className="relative z-20 mt-2 flex cursor-pointer items-start gap-3 rounded-xl border border-border p-3 sm:col-span-2">
-                    <input
-                      type="checkbox"
-                      checked={accepted}
-                      onChange={(e) => setAccepted(e.target.checked)}
-                      className="mt-0.5 size-4 accent-[var(--gold)]"
-                    />
-                    <span className="text-xs text-muted-foreground">
-                      By clicking on "Make Payments" I accept the Terms &amp; Conditions of FaresDream and
-                      I accept that my bank card will be authorised for the above total amount for this
-                      purchase.
-                    </span>
-                  </label>
-
-                  {error ? (
-                    <p className="text-sm font-semibold text-destructive sm:col-span-2">{error}</p>
-                  ) : null}
-                </div>
-              </section>
-
-              <button
-                onClick={() => setStep(2)}
-                className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-navy"
+                }
               >
-                ← Back to contact info
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Text
+                    label="Name on card"
+                    value={card.holder}
+                    onChange={(v) => setCard((p) => ({ ...p, holder: v }))}
+                    placeholder="As printed on the card"
+                    full
+                    required
+                  />
+                  <Text
+                    label="Card number"
+                    value={card.number}
+                    onChange={(v) => setCard((p) => ({ ...p, number: formatPan(v) }))}
+                    placeholder="4242 4242 4242 4242"
+                    inputMode="numeric"
+                    maxLength={23}
+                    full
+                    required
+                  />
+                  <div className="grid grid-cols-3 items-start gap-3 sm:col-span-2">
+                    <Text
+                      label="Exp. month"
+                      value={card.expMonth}
+                      onChange={(v) =>
+                        setCard((p) => ({ ...p, expMonth: v.replace(/\D/g, "").slice(0, 2) }))
+                      }
+                      placeholder="MM"
+                      inputMode="numeric"
+                      maxLength={2}
+                      required
+                    />
+                    <Text
+                      label="Exp. year"
+                      value={card.expYear}
+                      onChange={(v) =>
+                        setCard((p) => ({ ...p, expYear: v.replace(/\D/g, "").slice(0, 4) }))
+                      }
+                      placeholder="YYYY"
+                      inputMode="numeric"
+                      maxLength={4}
+                      required
+                    />
+                    <Text
+                      label="CVV"
+                      type="password"
+                      value={card.cvv}
+                      onChange={(v) =>
+                        setCard((p) => ({ ...p, cvv: v.replace(/\D/g, "").slice(0, 4) }))
+                      }
+                      placeholder="•••"
+                      inputMode="numeric"
+                      maxLength={4}
+                      required
+                    />
+                  </div>
+                </div>
+                <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
+                  <CreditCard className="mt-0.5 size-4 shrink-0 text-primary" />
+                  <span>
+                    Your card is authorised now and captured only after our team verifies the
+                    booking. The security code is used for this authorisation and is never stored;
+                    the card number is encrypted at rest and shown to staff as{" "}
+                    <span className="font-semibold text-navy">
+                      •••• •••• •••• {card.number.replace(/\D/g, "").slice(-4) || "1234"}
+                    </span>
+                    .
+                  </span>
+                </p>
+
+                <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-lg border border-border p-3">
+                  <input
+                    type="checkbox"
+                    checked={accepted}
+                    onChange={(e) => setAccepted(e.target.checked)}
+                    className="mt-0.5 size-4 accent-navy"
+                  />
+                  <span className="text-xs text-muted-foreground">
+                    By clicking on &quot;Make Payment&quot; I accept the{" "}
+                    <Link to="/terms" className="font-medium text-primary hover:underline">
+                      Terms &amp; Conditions
+                    </Link>{" "}
+                    of FaresDream and I accept that my bank card will be authorised for the above
+                    total amount for this purchase.
+                  </span>
+                </label>
+
+                {error ? (
+                  <p className="mt-3 text-sm font-medium text-destructive">{error}</p>
+                ) : null}
+              </CheckoutCard>
+
+              <button onClick={() => setStep(2)} className={backBtn}>
+                <ArrowLeft className="size-4" /> Back to contact details
               </button>
             </>
           )}
-
         </div>
 
-        <aside className="lg:sticky lg:top-32 lg:self-start">
-          <div className="overflow-hidden rounded-2xl bg-navy text-navy-foreground shadow-lux">
-            <div className="border-b border-white/10 p-5">
-              <h2 className="font-display text-lg font-semibold">Trip Summary</h2>
-              <p className="mt-1 text-xs text-navy-foreground/60">
-                Price parity locked from your referring search.
+        <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
+          <TripSummary flight={search} selected={selected}>
+            <PriceSummary
+              sym={sym}
+              lines={priceLines}
+              total={total}
+              totalLabel={paxCount > 1 ? `Total (${paxCount} travellers)` : "Total"}
+            />
+            {search.itineraryId ? (
+              <p className="mt-3 text-xs text-muted-foreground">
+                Itinerary ID: {search.itineraryId}
               </p>
-            </div>
-            <dl className="space-y-3 p-5 text-sm">
-              <Row label="Route" value={`${search.origin} → ${search.destination}`} />
-              <Row
-                label="Airline"
-                value={
-                  search.airlineCode && search.airlineCode !== search.airline
-                    ? `${search.airline} (${search.airlineCode})`
-                    : search.airline
-                }
+            ) : null}
+          </TripSummary>
+
+          <CheckoutCard title="Promo code">
+            <div className="flex gap-2">
+              <input
+                value={promoInput}
+                onChange={(e) => setPromoInput(e.target.value)}
+                placeholder="Enter code"
+                aria-label="Promo code"
+                className={`${inputCls()} !mt-0 uppercase`}
               />
-              <Row label="Flight" value={search.flightNo} />
-              <Row label="Cabin" value={search.cabin} />
-              <Row label="Depart" value={search.departDate} />
-              {search.returnDate ? <Row label="Return" value={search.returnDate} /> : null}
-              <Row label="Travellers" value={travellerSummary} />
-              {search.itineraryId ? (
-                <Row label="Itinerary ID" value={search.itineraryId} />
-              ) : null}
-
-              <div className="border-t border-white/10 pt-3">
-                <Row label="Base fare" value={`${sym}${baseFareDisplay.toLocaleString()}`} />
-
-                <Row label="Taxes & fees" value={`${sym}${taxes.toLocaleString()}`} />
-                {appliedPromo ? (
-                  <div className="flex items-baseline justify-between gap-3">
-                    <dt className="text-xs uppercase tracking-widest text-red-400">
-                      Promo Code ({appliedPromo})
-                    </dt>
-                    <dd className="font-semibold text-red-400">
-                      -{sym}
-                      {discount.toLocaleString()}
-                    </dd>
-                  </div>
-                ) : null}
-              </div>
-
-              <div className="flex items-baseline justify-between border-t border-white/10 pt-3">
-                <dt className="text-xs uppercase tracking-widest text-navy-foreground/60">
-                  Total per person
-                </dt>
-                <dd className="font-display text-2xl font-semibold text-gold">
-                  {sym}
-                  {total.toLocaleString()}
-                </dd>
-              </div>
-            </dl>
-            <div className="p-5 pt-0 text-[11px] text-navy-foreground/60">
-              <p className="flex items-center gap-2">
-                <CreditCard className="size-3.5" /> No hidden booking fees · 24/7 assistance
-              </p>
-              <p className="mt-2 flex items-center gap-2">
-                <CheckCircle2 className="size-3.5" /> Demo checkout — no real payment is processed.
-              </p>
+              <button
+                onClick={applyPromo}
+                className="shrink-0 rounded-lg border border-navy px-4 text-sm font-semibold text-navy transition hover:bg-navy hover:text-navy-foreground"
+              >
+                Apply
+              </button>
             </div>
-          </div>
+            {appliedPromo ? (
+              <p className="mt-2 text-sm font-medium text-emerald-700">
+                {autoApplied && appliedPromo === partnerPromo
+                  ? "✓ Partner discount applied automatically!"
+                  : `✓ Promo code ${appliedPromo} applied — you save ${sym}${discount.toLocaleString()}.`}
+              </p>
+            ) : promoError ? (
+              <p className="mt-2 text-sm font-medium text-destructive">{promoError}</p>
+            ) : null}
+          </CheckoutCard>
+
+          <TrustPoints />
+          <p className="px-1 text-xs text-muted-foreground">
+            Demo checkout — no real payment is processed.
+          </p>
         </aside>
       </div>
 
       {step === 3 ? (
-        <div className="fixed inset-x-0 bottom-14 z-30 border-t border-border bg-card/95 px-4 py-3 backdrop-blur md:bottom-0">
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
-            <p className="text-sm font-bold text-navy">
-              You Pay: {sym}
-              {total.toLocaleString()}{" "}
-              <span className="text-xs font-normal text-muted-foreground">incl. taxes &amp; fees</span>
+        <div className="fixed inset-x-0 bottom-14 z-30 border-t border-border bg-card/95 px-4 py-3 shadow-[0_-4px_16px_rgb(15_23_42/0.08)] backdrop-blur md:bottom-0">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 sm:px-2 lg:px-4">
+            <p className="text-sm text-muted-foreground">
+              You pay{" "}
+              <span className="font-display text-xl font-bold text-foreground">
+                {sym}
+                {total.toLocaleString()}
+              </span>{" "}
+              <span className="text-xs">incl. taxes &amp; fees</span>
             </p>
             <button
               onClick={makePayment}
               disabled={submitting}
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-gold px-6 py-3 text-sm font-bold text-gold-foreground transition hover:brightness-110 disabled:opacity-60 sm:flex-none"
+              className={`${primaryBtn} flex-1 sm:flex-none`}
             >
-              <Lock className="size-4" /> {submitting ? "Processing…" : "Make Payments"}
+              <Lock className="size-4" /> {submitting ? "Processing…" : "Make Payment"}
             </button>
           </div>
         </div>
       ) : null}
-
-    </div>
-  );
-}
-
-function Row({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-baseline justify-between gap-3">
-      <dt className="text-xs uppercase tracking-widest text-navy-foreground/60">{label}</dt>
-      <dd className="min-w-0 truncate text-right font-semibold">{value}</dd>
-    </div>
+    </CheckoutShell>
   );
 }

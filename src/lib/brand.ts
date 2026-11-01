@@ -7,6 +7,13 @@ export const SUPPORT_EMAIL = "support@faresdream.com";
 export const OFFICE_ADDRESS = "Ground Floor, 13th Street. 47 W 13th St, New York, NY 10011, USA";
 export const PROMO_CODE = "DIAL50";
 
+/** The site logo (from faresdream.com, trimmed of its empty margins), served from /public. */
+export const LOGO = { src: "/brand/faresdream-logo.webp", width: 687, height: 128 } as const;
+
+/** Our own fees per passenger; keep in sync with /refund-policy and the home FAQ. */
+export const CANCEL_SERVICE_FEE_USD = 75;
+export const CHANGE_SERVICE_FEE_USD = 50;
+
 export const CURRENCIES = [
   { code: "USD", symbol: "$", label: "USD ($)" },
   { code: "EUR", symbol: "€", label: "EUR (€)" },

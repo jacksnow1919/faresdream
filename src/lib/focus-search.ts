@@ -1,4 +1,11 @@
+import { addDays, startOfToday } from "date-fns";
+
 export const FLIGHT_SEARCH_ID = "flight-search";
+
+/** Dates for shortcut searches with none picked: leave in a week, come back a week later. */
+export function shortcutDates(depart = addDays(startOfToday(), 7)) {
+  return { depart, back: addDays(depart, 7) };
+}
 
 /**
  * Scrolls the homepage flight search widget into view and focuses the origin field.
@@ -19,9 +26,20 @@ export const SEARCH_DESTINATION_EVENT = "faresdream:search-destination";
 
 /**
  * Detail of SEARCH_DESTINATION_EVENT: airport codes and trip type. `from` and `trip`
- * are left as the visitor set them when omitted.
+ * are left as the visitor set them when omitted. `go` runs the search straight away.
  */
-export type SearchDestination = { to: string; from?: string; trip?: "one" | "round" };
+export type SearchDestination = {
+  to: string;
+  from?: string;
+  trip?: "one" | "round";
+  go?: boolean;
+};
+
+function sendToSearchBar(detail: SearchDestination): boolean {
+  if (typeof document === "undefined" || !document.getElementById(FLIGHT_SEARCH_ID)) return false;
+  window.dispatchEvent(new CustomEvent(SEARCH_DESTINATION_EVENT, { detail }));
+  return true;
+}
 
 /**
  * Asks the homepage search widget to search flights to `to` (and from `from`, as
@@ -29,8 +47,13 @@ export type SearchDestination = { to: string; from?: string; trip?: "one" | "rou
  * picker. Returns false when the widget is not on the current page.
  */
 export function searchFlightsTo(to: string, from?: string, trip?: "one" | "round"): boolean {
-  if (typeof document === "undefined" || !document.getElementById(FLIGHT_SEARCH_ID)) return false;
-  const detail: SearchDestination = { to, ...(from ? { from } : {}), ...(trip ? { trip } : {}) };
-  window.dispatchEvent(new CustomEvent(SEARCH_DESTINATION_EVENT, { detail }));
-  return true;
+  return sendToSearchBar({ to, ...(from ? { from } : {}), ...(trip ? { trip } : {}) });
+}
+
+/**
+ * Like searchFlightsTo, but opens the results page at once, keeping the visitor's
+ * travellers, cabin and currency (and dates, if they picked any) from the widget.
+ */
+export function showFlightsTo(to: string, from?: string, trip?: "one" | "round"): boolean {
+  return sendToSearchBar({ to, ...(from ? { from } : {}), ...(trip ? { trip } : {}), go: true });
 }

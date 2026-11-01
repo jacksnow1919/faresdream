@@ -15,10 +15,15 @@ const searchSchema = z.object({
   airline: z.string().max(3).optional(),
 });
 
-/** Searches live PKFARE inventory on the server; credentials stay server-side. */
+/**
+ * Searches live PKFARE inventory on the server; credentials stay server-side.
+ * Without PKFARE credentials, a DUFFEL_ACCESS_TOKEN (e.g. in .env.local) serves the search.
+ */
 export const searchPkfare = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => searchSchema.parse(input))
   .handler(async ({ data }) => {
+    const { duffelEnabled, runDuffelSearch } = await import("./duffel.server");
+    if (duffelEnabled()) return runDuffelSearch(data);
     const { runPkfareSearch } = await import("./pkfare.server");
     return runPkfareSearch(data);
   });

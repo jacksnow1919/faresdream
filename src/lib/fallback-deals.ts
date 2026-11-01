@@ -92,6 +92,3 @@ export const FALLBACK_DEALS: FallbackDeal[] = [
     expires_at: null,
   },
 ];
-
-/** Depart date used for prefilled deep links (about six weeks out). */
-export const FALLBACK_DEPART_DATE = "2026-10-01";

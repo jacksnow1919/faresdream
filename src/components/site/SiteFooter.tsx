@@ -1,19 +1,50 @@
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { Link } from "@tanstack/react-router";
+import { format } from "date-fns";
 import { ArrowRight, ArrowUp, ChevronDown, Headphones, Mail, MapPin, Phone } from "lucide-react";
-import logoAsset from "@/assets/faresdream-logo.png.asset.json";
-import { OFFICE_ADDRESS, PHONE_DISPLAY, PHONE_TEL, SUPPORT_EMAIL } from "@/lib/brand";
+import { useCurrency } from "@/components/site/CurrencyContext";
+import {
+  DEFAULT_CURRENCY,
+  LOGO,
+  OFFICE_ADDRESS,
+  PHONE_DISPLAY,
+  PHONE_TEL,
+  SUPPORT_EMAIL,
+} from "@/lib/brand";
+import { shortcutDates, showFlightsTo } from "@/lib/focus-search";
+
+/** A route to show results for; without `from`, flights leave from New York (JFK). */
+type FooterFlights = { to: string; from?: string };
 
 type FooterLink =
   | { label: string; to: "/deals" | "/about" | "/contact" | "/privacy" | "/terms" | "/sitemap" }
-  /** Opens the home page with the search bar filled in (see validateSearch in routes/index). */
-  | { label: string; search: { to: string; from?: string } };
+  | { label: string; flights: FooterFlights };
 
 const route = (label: string, from: string, to: string): FooterLink => ({
   label,
-  search: { from, to },
+  flights: { from, to },
 });
-const city = (label: string, to: string): FooterLink => ({ label, search: { to } });
+const city = (label: string, to: string): FooterLink => ({ label, flights: { to } });
+
+/** Results page search for a footer route: round trip a week out, one adult in economy. */
+function flightsSearch({ to, from = "JFK" }: FooterFlights, currency: string) {
+  const { depart, back } = shortcutDates();
+  return {
+    origin: from,
+    destination: to,
+    date: format(depart, "yyyy-MM-dd"),
+    returnDate: format(back, "yyyy-MM-dd"),
+    passengers: 1,
+    cabin: "Economy" as const,
+    currency,
+  };
+}
+
+/** On the home page the search bar runs the search instead, keeping the visitor's picks. */
+function searchFromBar(e: MouseEvent, { to, from }: FooterFlights) {
+  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  if (showFlightsTo(to, from)) e.preventDefault();
+}
 
 const COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
@@ -73,6 +104,7 @@ const BADGES = [
 
 function LinkColumn({ title, links }: { title: string; links: FooterLink[] }) {
   const [open, setOpen] = useState(false);
+  const { currency } = useCurrency();
   return (
     <div className="border-b border-white/10 lg:border-none">
       <button
@@ -100,8 +132,13 @@ function LinkColumn({ title, links }: { title: string; links: FooterLink[] }) {
           );
           return (
             <li key={l.label}>
-              {"search" in l ? (
-                <Link to="/" search={l.search} className={cls}>
+              {"flights" in l ? (
+                <Link
+                  to="/flight/search"
+                  search={flightsSearch(l.flights, currency || DEFAULT_CURRENCY)}
+                  onClick={(e) => searchFromBar(e, l.flights)}
+                  className={cls}
+                >
                   {body}
                 </Link>
               ) : (
@@ -161,12 +198,12 @@ export function SiteFooter() {
           <div className="lg:col-span-4">
             <Link to="/" className="inline-flex items-center rounded-lg bg-white px-3 py-2">
               <img
-                src={logoAsset.url}
+                src={LOGO.src}
                 alt="FaresDream"
                 className="h-8 w-auto max-w-[170px] object-contain"
                 loading="lazy"
-                width={1504}
-                height={608}
+                width={LOGO.width}
+                height={LOGO.height}
               />
             </Link>
             <p className="mt-5 text-sm leading-relaxed text-white/65">

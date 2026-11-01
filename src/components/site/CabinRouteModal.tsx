@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { addYears, format } from "date-fns";
 import { X, Plane, ArrowRight } from "lucide-react";
 import { AirportAutocomplete } from "@/components/site/AirportAutocomplete";
+import { DatePicker } from "@/components/site/DatePicker";
 
 export type CabinRouteTarget = {
   product: string;
@@ -10,7 +12,8 @@ export type CabinRouteTarget = {
   cabin: "Business" | "First";
 };
 
-const today = () => new Date().toISOString().slice(0, 10);
+/** Local date (toISOString would give the UTC date, a day off in the evening). */
+const today = () => format(new Date(), "yyyy-MM-dd");
 
 export function CabinRouteModal({
   target,
@@ -42,7 +45,11 @@ export function CabinRouteModal({
 
   return (
     <div className="fixed inset-0 z-[60] grid place-items-center px-4">
-      <button aria-label="Close" onClick={onClose} className="absolute inset-0 bg-navy/75 backdrop-blur-sm" />
+      <button
+        aria-label="Close"
+        onClick={onClose}
+        className="absolute inset-0 bg-navy/75 backdrop-blur-sm"
+      />
       <div className="relative w-full max-w-md rounded-2xl border border-gold/25 bg-navy p-5 text-navy-foreground shadow-lux sm:p-6">
         <button
           onClick={onClose}
@@ -63,19 +70,31 @@ export function CabinRouteModal({
         </p>
 
         <form onSubmit={submit} className="mt-5 grid gap-3 sm:grid-cols-2">
-          <AirportAutocomplete label="From" tone="dark" value={origin} onChange={setOrigin} required />
-          <AirportAutocomplete label="To" tone="dark" value={destination} onChange={setDestination} required />
-          <label className="block sm:col-span-2">
+          <AirportAutocomplete
+            label="From"
+            tone="dark"
+            value={origin}
+            onChange={setOrigin}
+            required
+          />
+          <AirportAutocomplete
+            label="To"
+            tone="dark"
+            value={destination}
+            onChange={setDestination}
+            required
+          />
+          <div className="sm:col-span-2">
             <span className={labelCls}>Departure date</span>
-            <input
-              required
-              type="date"
+            <DatePicker
+              ariaLabel="Departure date"
               value={date}
               min={today()}
-              onChange={(e) => setDate(e.target.value)}
+              max={format(addYears(new Date(), 1), "yyyy-MM-dd")}
+              onChange={(v) => setDate(v || today())}
               className={inputCls}
             />
-          </label>
+          </div>
           <button
             type="submit"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3 text-sm font-bold text-gold-foreground sm:col-span-2"

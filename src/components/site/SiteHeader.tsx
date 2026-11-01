@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import {
   Phone,
   Menu,
@@ -13,17 +13,9 @@ import {
   MessageSquare,
   DollarSign,
 } from "lucide-react";
-import logoAsset from "@/assets/faresdream-logo.png.asset.json";
 import agentAsset from "@/assets/agent-avatar.jpg.asset.json";
-import { focusFlightSearch, FLIGHT_SEARCH_ID } from "@/lib/focus-search";
 import { CurrencySelect } from "@/components/site/CurrencyContext";
-import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
-
-const navLinks = [
-  { to: "/deals", label: "Deals" },
-  { to: "/about", label: "About Us" },
-  { to: "/contact", label: "Contact Us" },
-] as const;
+import { LOGO, PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
 
 const drawerLinks = [
   { to: "/destinations", label: "Explore Travel", icon: Compass },
@@ -34,67 +26,53 @@ const drawerLinks = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-
-  function goToFlights() {
-    if (!focusFlightSearch()) void navigate({ to: "/", hash: FLIGHT_SEARCH_ID });
-  }
 
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-border bg-background shadow-card">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4">
-          <Link to="/" className="flex min-w-0 items-center">
+        <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 lg:gap-6">
+          <Link to="/" className="flex min-w-0 shrink-0 items-center">
             <img
-              src={logoAsset.url}
+              src={LOGO.src}
               alt="FaresDream — cheap flights and airfare comparison"
-              className="h-8 w-auto max-w-[170px] object-contain"
-              width={1920}
-              height={640}
+              className="h-6 w-auto max-w-[130px] object-contain sm:h-7 sm:max-w-[150px]"
+              width={LOGO.width}
+              height={LOGO.height}
             />
           </Link>
 
-          <nav className="hidden items-center gap-6 whitespace-nowrap text-sm font-semibold text-foreground lg:flex">
-            <button type="button" onClick={goToFlights} className="hover:text-primary">
-              Flights
-            </button>
-            {navLinks.map((l) => (
-              <Link
-                key={l.label}
-                to={l.to}
-                className="hover:text-primary"
-                activeProps={{ className: "text-primary" }}
-              >
-                {l.label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="flex shrink-0 items-center gap-2 whitespace-nowrap lg:gap-3">
+          <div className="ml-auto flex shrink-0 items-center gap-2 whitespace-nowrap lg:gap-3">
             <a
               href={`tel:${PHONE_TEL}`}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-2 text-xs font-bold text-primary-foreground transition hover:brightness-110 lg:pl-1.5 lg:pr-4 lg:text-sm"
+              className="hidden items-center gap-2.5 rounded-full border border-primary/15 bg-sky-50 py-1.5 pl-1.5 pr-4 transition hover:border-primary/40 lg:flex"
             >
-              <img
-                src={agentAsset.url}
-                alt=""
-                loading="lazy"
-                width={512}
-                height={512}
-                className="hidden size-8 rounded-full object-cover lg:block"
-              />
-              <Phone className="size-4 lg:hidden" />
-              <span className="hidden lg:inline">Call Us: {PHONE_DISPLAY}</span>
-              <span className="lg:hidden">Call</span>
+              <span className="grid size-8 place-items-center rounded-full bg-primary text-primary-foreground">
+                <Phone className="size-4" />
+              </span>
+              <span className="leading-tight">
+                <span className="block text-[11px] font-medium text-muted-foreground">
+                  24/7 phone deals
+                </span>
+                <span className="block text-sm font-bold text-navy">{PHONE_DISPLAY}</span>
+              </span>
+            </a>
+            <a
+              href={`tel:${PHONE_TEL}`}
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground transition hover:brightness-110 lg:hidden"
+            >
+              <Phone className="size-4" /> Call
             </a>
 
-            <CurrencySelect className="hidden lg:inline-flex" />
+            <CurrencySelect className="hidden h-9 py-0 lg:inline-flex" />
 
             <Link
               to="/auth"
-              className="hidden items-center gap-1.5 rounded-full border border-border px-3.5 py-2 text-sm font-semibold text-navy hover:border-primary hover:text-primary lg:inline-flex"
+              className="hidden items-center gap-2 rounded-full px-2 py-1.5 text-sm font-semibold text-navy transition hover:text-primary lg:inline-flex"
             >
-              <User className="size-4" /> Sign In / Join
+              <span className="grid size-8 place-items-center rounded-full border border-border">
+                <User className="size-4" />
+              </span>
+              Sign in
             </Link>
 
             <button
@@ -119,12 +97,12 @@ export function SiteHeader() {
           <aside className="absolute right-0 top-0 flex h-full w-80 max-w-[88vw] flex-col bg-background shadow-lux">
             <div className="flex items-center justify-between px-4 pt-4">
               <img
-                src={logoAsset.url}
+                src={LOGO.src}
                 alt="FaresDream"
                 loading="lazy"
-                width={1920}
-                height={640}
-                className="h-7 w-auto max-w-[140px] object-contain"
+                width={LOGO.width}
+                height={LOGO.height}
+                className="h-6 w-auto max-w-[130px] object-contain"
               />
               <button
                 onClick={() => setOpen(false)}

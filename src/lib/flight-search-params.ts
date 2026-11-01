@@ -28,7 +28,6 @@ export type FlightSearch = {
   final_price?: string;
 };
 
-
 const str = (v: unknown, fallback: string) => {
   if (typeof v === "number") return String(v);
   return typeof v === "string" && v.trim() !== "" ? v : fallback;
@@ -85,7 +84,9 @@ export const parseFlightSearch = (search: Record<string, unknown>): FlightSearch
     ...(clickId ? { click_id: clickId } : {}),
     ...(str(search["promo_code"], "") ? { promo_code: str(search["promo_code"], "") } : {}),
     ...(str(search["discount_val"], "") ? { discount_val: str(search["discount_val"], "") } : {}),
-    ...(str(search["discount_type"], "") ? { discount_type: str(search["discount_type"], "") } : {}),
+    ...(str(search["discount_type"], "")
+      ? { discount_type: str(search["discount_type"], "") }
+      : {}),
     ...(str(search["discount_pct"], "") ? { discount_pct: str(search["discount_pct"], "") } : {}),
     ...(str(search["discount_amount"], "")
       ? { discount_amount: str(search["discount_amount"], "") }
@@ -97,7 +98,19 @@ export const parseFlightSearch = (search: Record<string, unknown>): FlightSearch
   };
 };
 
-
-
 export const currencySymbol = (c: string) =>
   ({ USD: "$", EUR: "€", GBP: "£", INR: "₹", AED: "AED " })[c.toUpperCase()] ?? `${c} `;
+
+/** "2 adults, 1 child" for a booking's travellers. */
+export const travellerText = (flight: FlightSearch) => {
+  const adults = flight.adults ?? 1;
+  const children = flight.children ?? 0;
+  const infants = flight.infants ?? 0;
+  return [
+    `${adults} adult${adults > 1 ? "s" : ""}`,
+    children > 0 ? `${children} child${children > 1 ? "ren" : ""}` : "",
+    infants > 0 ? `${infants} infant${infants > 1 ? "s" : ""}` : "",
+  ]
+    .filter(Boolean)
+    .join(", ");
+};

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageShell, Card } from "@/components/site/ui";
+import { LegalPage, type LegalSection } from "@/components/site/LegalPage";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/privacy")({
   component: PrivacyPage,
 });
 
-const sections: { h: string; p: string[] }[] = [
+const sections: LegalSection[] = [
   {
     h: "1. Information we collect",
     p: [
@@ -70,25 +70,11 @@ const sections: { h: string; p: string[] }[] = [
 
 function PrivacyPage() {
   return (
-    <PageShell
-      eyebrow="Legal"
+    <LegalPage
+      crumb="Privacy Policy"
       title="Privacy Policy"
       subtitle="How we handle traveller, passport and payment information."
-    >
-      <Card>
-        <div className="space-y-6">
-          {sections.map((s) => (
-            <section key={s.h}>
-              <h2 className="font-display text-lg font-semibold text-navy">{s.h}</h2>
-              {s.p.map((para) => (
-                <p key={para} className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {para}
-                </p>
-              ))}
-            </section>
-          ))}
-        </div>
-      </Card>
-    </PageShell>
+      sections={sections}
+    />
   );
 }

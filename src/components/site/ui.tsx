@@ -1,35 +1,93 @@
 import type { ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
+import { ChevronRight } from "lucide-react";
 
+/**
+ * Standard page: blue header (breadcrumb, optional eyebrow tag, title, subtitle, action)
+ * over a light body, like the results and checkout pages. The breadcrumb names the page
+ * with `crumb`, or the title when there's none.
+ */
 export function PageShell({
   title,
   eyebrow,
+  crumb,
   subtitle,
+  action,
   children,
 }: {
   title: string;
-  eyebrow?: string;
-  subtitle?: string;
+  eyebrow?: string | undefined;
+  crumb?: string | undefined;
+  subtitle?: ReactNode;
+  action?: ReactNode;
   children: ReactNode;
 }) {
   return (
     <div className="min-h-[100dvh] bg-secondary/40 pb-20">
-      <div className="bg-navy px-4 py-8 text-navy-foreground sm:py-12">
-        <div className="mx-auto max-w-7xl">
-          {eyebrow ? (
-            <span className="inline-flex rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-gold">
-              {eyebrow}
+      <div className="relative overflow-hidden bg-linear-to-r from-primary to-sky-500 px-4 pb-8 pt-5 text-white sm:px-6 sm:pb-10 lg:px-8">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgb(255_255_255/0.14)_1px,transparent_1px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_60%)]"
+        />
+        <div className="relative mx-auto max-w-7xl">
+          <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1 text-xs">
+            <Link to="/" className="shrink-0 text-white/80 hover:text-white hover:underline">
+              Home
+            </Link>
+            <ChevronRight className="size-3.5 shrink-0 text-white/60" />
+            <span aria-current="page" className="truncate font-medium">
+              {crumb ?? title}
             </span>
-          ) : null}
-          <h1 className="mt-3 font-display text-3xl font-semibold sm:text-4xl">{title}</h1>
-          {subtitle ? (
-            <p className="mt-2 max-w-2xl text-sm text-navy-foreground/70">{subtitle}</p>
-          ) : null}
+          </nav>
+          <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
+            <div className="min-w-0 max-w-3xl">
+              {eyebrow ? (
+                <span className="mb-2 inline-flex rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold uppercase tracking-wider">
+                  {eyebrow}
+                </span>
+              ) : null}
+              <h1 className="font-display text-2xl font-bold leading-tight sm:text-3xl">{title}</h1>
+              {subtitle ? (
+                <p className="mt-2 text-sm text-white/85 sm:text-base">{subtitle}</p>
+              ) : null}
+            </div>
+            {action}
+          </div>
         </div>
       </div>
-      <div className="mx-auto max-w-7xl px-4 py-6">{children}</div>
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">{children}</div>
     </div>
   );
 }
+
+/** Navy closing band with a heading, a line of text and up to two buttons. */
+export function CtaBand({
+  title,
+  text,
+  children,
+}: {
+  title: string;
+  text: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="relative overflow-hidden rounded-2xl bg-linear-to-r from-navy to-primary p-6 text-white shadow-lux sm:p-8">
+      <div className="relative flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="font-display text-xl font-bold sm:text-2xl">{title}</p>
+          <p className="mt-1 text-sm text-white/80">{text}</p>
+        </div>
+        <div className="flex flex-wrap gap-3">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+/** Button styles for CtaBand and other navy or blue surfaces. */
+export const ctaPrimaryCls =
+  "inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-bold text-gold-foreground transition hover:brightness-110";
+export const ctaOutlineCls =
+  "inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10";
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
@@ -88,23 +146,5 @@ export function Pill({ children }: { children: ReactNode }) {
     <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-3 py-1 text-[11px] font-semibold text-navy">
       {children}
     </span>
-  );
-}
-
-export function Steps({ current }: { current: number }) {
-  const labels = ["Search", "Fare", "Traveller", "Upsell", "Payment", "Confirm"];
-  return (
-    <ol className="flex flex-wrap gap-2 text-[11px] font-semibold">
-      {labels.map((l, i) => (
-        <li
-          key={l}
-          className={`rounded-full px-3 py-1 ${
-            i + 1 <= current ? "bg-gold text-gold-foreground" : "bg-secondary text-muted-foreground"
-          }`}
-        >
-          {i + 1}. {l}
-        </li>
-      ))}
-    </ol>
   );
 }

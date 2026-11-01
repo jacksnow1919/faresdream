@@ -2,15 +2,20 @@ import { useMemo, useRef, useState } from "react";
 import { PlaneTakeoff } from "lucide-react";
 import { airports, searchAirports } from "@/lib/airports";
 
-/** From/To segment of the homepage search bar: shows "City CODE", becomes a search box on focus. */
+/**
+ * From/To segment of the search bar: shows "City CODE", becomes a search box on focus.
+ * `compact` is the shorter size used on the results page.
+ */
 export function AirportField({
   label,
   value,
   onChange,
+  compact = false,
 }: {
   label: string;
   value: string;
   onChange: (code: string) => void;
+  compact?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -28,7 +33,13 @@ export function AirportField({
 
   return (
     <div className={`relative min-w-0 ${open ? "z-40" : "z-10"}`}>
-      <label className="relative flex h-full min-h-[68px] w-full cursor-pointer flex-col justify-center gap-1 px-[18px] py-3 text-left lg:h-[84px] lg:min-h-0 lg:py-0">
+      <label
+        className={`relative flex h-full w-full cursor-pointer flex-col justify-center text-left lg:min-h-0 lg:py-0 ${
+          compact
+            ? "min-h-[56px] gap-0.5 px-3.5 py-2 lg:h-[60px] xl:px-[18px]"
+            : "min-h-[68px] gap-1 px-[18px] py-3 lg:h-[84px]"
+        }`}
+      >
         <span className="text-xs text-muted-foreground">{label}</span>
         <span className="relative w-full min-w-0">
           <input
@@ -75,7 +86,9 @@ export function AirportField({
             </span>
           ) : (
             <span className="flex min-w-0 items-baseline gap-2">
-              <span className="truncate font-display text-base font-semibold text-navy">
+              <span
+                className={`truncate font-display font-semibold text-navy ${compact ? "text-sm xl:text-[15px]" : "text-base"}`}
+              >
                 {selected?.city ?? value}
               </span>
               <span className="shrink-0 text-xs font-semibold text-navy sm:text-[13px]">

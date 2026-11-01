@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Building2, FileText, Plane, User, type LucideIcon } from "lucide-react";
 import { PageShell } from "@/components/site/ui";
 
 export const Route = createFileRoute("/sitemap")({
@@ -17,57 +18,91 @@ export const Route = createFileRoute("/sitemap")({
   component: SitemapPage,
 });
 
-const groups = [
+const groups: {
+  title: string;
+  icon: LucideIcon;
+  links: {
+    label: string;
+    to:
+      | "/"
+      | "/deals"
+      | "/destinations"
+      | "/airlines"
+      | "/about"
+      | "/contact"
+      | "/auth"
+      | "/dashboard"
+      | "/privacy"
+      | "/terms"
+      | "/refund-policy";
+  }[];
+}[] = [
   {
-    title: "Explore",
+    title: "Book flights",
+    icon: Plane,
     links: [
-      { label: "Home", to: "/" as const },
-      { label: "Deals", to: "/deals" as const },
-      { label: "Destinations", to: "/destinations" as const },
-      { label: "Airlines", to: "/airlines" as const },
+      { label: "Search flights", to: "/" },
+      { label: "Flight deals", to: "/deals" },
+      { label: "Destinations", to: "/destinations" },
+      { label: "Airlines", to: "/airlines" },
     ],
   },
   {
     title: "Company",
+    icon: Building2,
     links: [
-      { label: "About Us", to: "/about" as const },
-      { label: "Contact Us", to: "/contact" as const },
-      { label: "Login / Signup", to: "/auth" as const },
+      { label: "About us", to: "/about" },
+      { label: "Contact us", to: "/contact" },
+    ],
+  },
+  {
+    title: "Your account",
+    icon: User,
+    links: [
+      { label: "Sign in or join", to: "/auth" },
+      { label: "My trips", to: "/dashboard" },
     ],
   },
   {
     title: "Legal",
+    icon: FileText,
     links: [
-      { label: "Privacy Policy", to: "/privacy" as const },
-      { label: "Terms of Use", to: "/terms" as const },
-      { label: "Refund & Cancellation Policy", to: "/refund-policy" as const },
+      { label: "Privacy policy", to: "/privacy" },
+      { label: "Terms of use", to: "/terms" },
+      { label: "Refund & cancellation policy", to: "/refund-policy" },
     ],
   },
 ];
 
 function SitemapPage() {
   return (
-    <PageShell
-      eyebrow="Sitemap"
-      title="All FaresDream pages"
-      subtitle="Find any page on FaresDream in one place."
-    >
-      <div className="grid gap-6 sm:grid-cols-3">
+    <PageShell title="Sitemap" subtitle="Every FaresDream page in one place.">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {groups.map((g) => (
-          <div key={g.title}>
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
+          <section
+            key={g.title}
+            className="rounded-2xl border border-border bg-card p-5 shadow-card"
+          >
+            <h2 className="flex items-center gap-3 font-display text-base font-bold text-navy">
+              <span className="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary">
+                <g.icon className="size-4" />
+              </span>
               {g.title}
             </h2>
-            <ul className="mt-3 space-y-2 text-sm">
+            <ul className="mt-3 divide-y divide-border">
               {g.links.map((l) => (
                 <li key={l.label}>
-                  <Link to={l.to} className="text-foreground hover:text-primary">
+                  <Link
+                    to={l.to}
+                    className="group flex items-center justify-between gap-3 py-2.5 text-sm font-medium text-foreground transition hover:text-primary"
+                  >
                     {l.label}
+                    <ArrowRight className="size-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-primary" />
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </section>
         ))}
       </div>
     </PageShell>

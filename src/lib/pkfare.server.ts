@@ -8,6 +8,7 @@
  *  - flights/segments come back as flat pools referenced by id
  */
 import type {
+  FareJourney,
   PkfareNormalisedFare,
   PkfareRawFlight,
   PkfareRawSegment,
@@ -20,16 +21,15 @@ const BASE_URL = "https://api.pkfare.com";
 const SHOPPING_PATH = "/shoppingV4";
 const REQUEST_TIMEOUT_MS = 30_000;
 
-
 /** Minimal dependency-free MD5 (RFC 1321) — PKFARE requires MD5(partnerId + partnerKey). */
 export function md5(input: string): string {
   const rotl = (n: number, c: number) => (n << c) | (n >>> (32 - c));
   const add = (a: number, b: number) => (a + b) | 0;
 
   const S = [
-    7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14,
-    20, 5, 9, 14, 20, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 6, 10, 15, 21, 6,
-    10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21,
+    7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9,
+    14, 20, 5, 9, 14, 20, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 6, 10, 15, 21,
+    6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21,
   ];
   const K = Array.from({ length: 64 }, (_, i) => Math.floor(Math.abs(Math.sin(i + 1)) * 2 ** 32));
 
@@ -77,9 +77,9 @@ export function md5(input: string): string {
   }
 
   const hex = (n: number) =>
-    Array.from({ length: 4 }, (_, i) => ((n >>> (i * 8)) & 0xff).toString(16).padStart(2, "0")).join(
-      "",
-    );
+    Array.from({ length: 4 }, (_, i) =>
+      ((n >>> (i * 8)) & 0xff).toString(16).padStart(2, "0"),
+    ).join("");
   return hex(a0) + hex(b0) + hex(c0) + hex(d0);
 }
 
@@ -116,7 +116,9 @@ export async function pkfarePost<T>(path: string, body: Record<string, unknown>)
     });
   } catch (error) {
     console.error("[PKFARE] transport failure", error);
-    throw new Error("We couldn't reach the flight provider just now. Please try again in a moment.");
+    throw new Error(
+      "We couldn't reach the flight provider just now. Please try again in a moment.",
+    );
   }
 
   if (!res.ok) {
@@ -176,38 +178,10 @@ function solutionJourneys(
   return { journeys, journeyTime };
 }
 
-function solutionSegments(
-  solution: PkfareRawSolution,
-  flightsById: Map<string, PkfareRawFlight>,
-  segmentsById: Map<string, PkfareRawSegment>,
-): { segments: PkfareRawSegment[]; journeyTime: number } | null {
-  const resolved = solutionJourneys(solution, flightsById, segmentsById);
-  if (!resolved) return null;
-  return { segments: resolved.journeys[0]!, journeyTime: resolved.journeyTime };
-}
-
-function normaliseSolution(
-  solution: PkfareRawSolution,
-  index: number,
-  flightsById: Map<string, PkfareRawFlight>,
-  segmentsById: Map<string, PkfareRawSegment>,
-  fallbackCabin: string,
-): PkfareNormalisedFare | null {
-  const resolved = solutionSegments(solution, flightsById, segmentsById);
-  if (!resolved) return null;
-
-
-  const { segments } = resolved;
+/** Times, stops and flights of one journey (journey 0 = outbound, 1 = return). */
+function journeyOf(segments: PkfareRawSegment[]): FareJourney {
   const first = segments[0]!;
   const last = segments[segments.length - 1]!;
-
-  const price =
-    (solution.adtFare ?? 0) +
-    (solution.adtTax ?? 0) +
-    (solution.qCharge ?? 0) +
-    (solution.tktFee ?? 0);
-  if (price <= 0) return null;
-
   const segmentMinutes = segments.reduce((sum, seg) => sum + (seg.flightTime ?? 0), 0);
 
   // Layovers = gap between one segment's arrival and the next segment's departure.
@@ -220,12 +194,7 @@ function normaliseSolution(
     }
   }
 
-  const carrierCode = (solution.platingCarrier || first.airline || "").toUpperCase().slice(0, 2);
-
   return {
-    id: solution.solutionId || solution.solutionKey || `solution-${index}`,
-    airline: solution.platingCarrier || first.airline,
-    carrierCode,
     flightNo: `${first.airline} ${first.flightNum}`,
     origin: first.departure,
     destination: last.arrival,
@@ -237,11 +206,53 @@ function normaliseSolution(
     departMinutes: clockMinutes(first.strDepartureTime),
     arriveMinutes: clockMinutes(last.strArrivalTime),
     maxLayoverMinutes,
+    stops: Math.max(0, segments.length - 1),
+    segments: segments.map((seg) => ({
+      carrierCode: seg.airline,
+      flightNo: `${seg.airline} ${seg.flightNum}`,
+      origin: seg.departure,
+      destination: seg.arrival,
+      departAt: `${seg.strDepartureDate ?? ""}T${timeOf(seg.strDepartureTime)}`,
+      arriveAt: `${seg.strArrivalDate ?? ""}T${timeOf(seg.strArrivalTime)}`,
+      durationMinutes: seg.flightTime ?? 0,
+    })),
+  };
+}
+
+function normaliseSolution(
+  solution: PkfareRawSolution,
+  index: number,
+  flightsById: Map<string, PkfareRawFlight>,
+  segmentsById: Map<string, PkfareRawSegment>,
+  fallbackCabin: string,
+): PkfareNormalisedFare | null {
+  const resolved = solutionJourneys(solution, flightsById, segmentsById);
+  if (!resolved) return null;
+
+  const [outboundSegments, inboundSegments] = resolved.journeys;
+  const first = outboundSegments![0]!;
+
+  const price =
+    (solution.adtFare ?? 0) +
+    (solution.adtTax ?? 0) +
+    (solution.qCharge ?? 0) +
+    (solution.tktFee ?? 0);
+  if (price <= 0) return null;
+
+  const carrierCode = (solution.platingCarrier || first.airline || "").toUpperCase().slice(0, 2);
+  const baseFare = Math.min(Math.round(price), Math.round(solution.adtFare ?? 0));
+
+  return {
+    id: solution.solutionId || solution.solutionKey || `solution-${index}`,
+    airline: solution.platingCarrier || first.airline,
+    carrierCode,
+    ...journeyOf(outboundSegments!),
     cabin: first.cabinClass || fallbackCabin,
     currency: solution.currency || "USD",
     price: Math.round(price),
+    ...(baseFare > 0 ? { baseFare, taxes: Math.round(price) - baseFare } : {}),
     refundable: solution.refundable === true,
-    stops: Math.max(0, segments.length - 1),
+    ...(inboundSegments ? { inbound: journeyOf(inboundSegments) } : {}),
   };
 }
 
@@ -379,7 +390,6 @@ export async function runPkfareSearch(query: PkfareSearchQuery): Promise<PkfareN
   const cabinClass = query.cabinClass ?? "Business";
   const res = await pkfareShopping(query, cabinClass);
 
-
   const code = String(res.errorCode ?? "0");
   if (code !== "0" && code !== "S") {
     console.error(`[PKFARE] api error ${code}: ${res.errorMsg ?? ""}`);
@@ -404,4 +414,3 @@ export async function runPkfareSearch(query: PkfareSearchQuery): Promise<PkfareN
   console.info(`[PKFARE] ${solutions.length} solutions -> ${fares.length} fares`);
   return fares;
 }
-

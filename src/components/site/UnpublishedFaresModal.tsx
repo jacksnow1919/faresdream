@@ -2,6 +2,8 @@ import { useState } from "react";
 import { X, Lock, Loader2, CheckCircle2, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { AirportAutocomplete } from "@/components/site/AirportAutocomplete";
+import { MonthPicker } from "@/components/site/DatePicker";
+import { format } from "date-fns";
 import { track } from "@/lib/analytics";
 
 const CABINS = ["Business", "First", "Premium Economy"] as const;
@@ -50,7 +52,11 @@ export function UnpublishedFaresModal({
 
   return (
     <div className="fixed inset-0 z-[60] grid place-items-center px-4">
-      <button aria-label="Close" onClick={onClose} className="absolute inset-0 bg-navy/75 backdrop-blur-sm" />
+      <button
+        aria-label="Close"
+        onClick={onClose}
+        className="absolute inset-0 bg-navy/75 backdrop-blur-sm"
+      />
       <div className="relative max-h-[88dvh] w-full max-w-md overflow-y-auto rounded-2xl border border-gold/25 bg-navy text-navy-foreground shadow-lux">
         <button
           onClick={onClose}
@@ -97,13 +103,26 @@ export function UnpublishedFaresModal({
               ) : null}
 
               <form onSubmit={submit} className="mt-4 grid grid-cols-2 gap-2.5">
-                <AirportAutocomplete label="From" tone="dark" value={origin} onChange={setOrigin} required />
-                <AirportAutocomplete label="To" tone="dark" value={destination} onChange={setDestination} required />
-                <ModalField label="Travel month">
-                  <input
-                    type="month"
+                <AirportAutocomplete
+                  label="From"
+                  tone="dark"
+                  value={origin}
+                  onChange={setOrigin}
+                  required
+                />
+                <AirportAutocomplete
+                  label="To"
+                  tone="dark"
+                  value={destination}
+                  onChange={setDestination}
+                  required
+                />
+                <ModalField label="Travel month" group>
+                  <MonthPicker
+                    ariaLabel="Travel month"
                     value={month}
-                    onChange={(e) => setMonth(e.target.value)}
+                    onChange={setMonth}
+                    min={format(new Date(), "yyyy-MM")}
                     className={inputCls}
                   />
                 </ModalField>
@@ -139,9 +158,7 @@ export function UnpublishedFaresModal({
                   />
                 </ModalField>
 
-                {error ? (
-                  <p className="col-span-2 text-xs text-destructive">{error}</p>
-                ) : null}
+                {error ? <p className="col-span-2 text-xs text-destructive">{error}</p> : null}
 
                 <button
                   type="submit"
@@ -163,21 +180,25 @@ export function UnpublishedFaresModal({
 const inputCls =
   "mt-1 w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-navy-foreground outline-none placeholder:text-navy-foreground/40 focus:border-gold";
 
+/** `group` renders a plain block instead of a <label> (for pickers with their own buttons). */
 function ModalField({
   label,
   full,
+  group = false,
   children,
 }: {
   label: string;
   full?: boolean;
+  group?: boolean;
   children: React.ReactNode;
 }) {
+  const Wrapper = group ? "div" : "label";
   return (
-    <label className={`block ${full ? "col-span-2" : ""}`}>
+    <Wrapper className={`block ${full ? "col-span-2" : ""}`}>
       <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-foreground/50">
         {label}
       </span>
       {children}
-    </label>
+    </Wrapper>
   );
 }

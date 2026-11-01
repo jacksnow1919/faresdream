@@ -2,11 +2,11 @@ import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Plane } from "lucide-react";
 import { ScrollRow } from "@/components/site/ScrollRow";
-import { searchFlightsTo } from "@/lib/focus-search";
+import { showFlightsTo } from "@/lib/focus-search";
 
 type Destination = {
   city: string;
-  /** Airport code put into the search widget's "To" field. */
+  /** Airport code searched as the destination. */
   code: string;
   /** Unsplash photo id (free Unsplash License). */
   photo: string;
@@ -54,7 +54,7 @@ function DestinationCard({ d }: { d: Destination }) {
   return (
     <button
       type="button"
-      onClick={() => searchFlightsTo(d.code)}
+      onClick={() => showFlightsTo(d.code)}
       aria-label={`Search flights to ${d.city} (${d.code})`}
       className={`group relative block aspect-[2/3] overflow-hidden rounded-full bg-muted text-white shadow-card transition hover:-translate-y-1 hover:shadow-lux ${ITEM_CLS}`}
     >
@@ -83,7 +83,7 @@ function DestinationCard({ d }: { d: Destination }) {
   );
 }
 
-/** Trending destinations with International / USA tabs; a card pre-fills the search widget. */
+/** Trending destinations with International / USA tabs; a card shows flights there from the search widget's origin. */
 export function TrendingDestinations({ heading }: { heading: ReactNode }) {
   const [tabId, setTabId] = useState<(typeof TABS)[number]["id"]>("international");
   const tab = TABS.find((t) => t.id === tabId) ?? TABS[0];
