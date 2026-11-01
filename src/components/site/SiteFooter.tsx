@@ -1,7 +1,7 @@
 import { useState, type MouseEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { format } from "date-fns";
-import { ArrowRight, ArrowUp, ChevronDown, Headphones, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, ArrowUp, ChevronDown, Mail, MapPin, Phone } from "lucide-react";
 import { useCurrency } from "@/components/site/CurrencyContext";
 import {
   DEFAULT_CURRENCY,
@@ -154,7 +154,7 @@ function LinkColumn({ title, links }: { title: string; links: FooterLink[] }) {
   );
 }
 
-/** Site footer: help card, brand + link columns, grouped trust badges, bottom bar. */
+/** Site footer: brand + link columns, grouped trust badges, bottom bar. */
 export function SiteFooter() {
   return (
     <footer className="relative overflow-hidden bg-blue-950 pb-24 text-white lg:pb-0">
@@ -163,36 +163,7 @@ export function SiteFooter() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgb(255_255_255/0.09)_1px,transparent_1px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_65%)]"
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
-        {/* Help card */}
-        <div className="flex flex-col gap-5 rounded-2xl bg-linear-to-r from-navy to-primary p-6 shadow-lux sm:flex-row sm:items-center sm:justify-between sm:p-8">
-          <div className="flex items-center gap-4">
-            <span className="grid size-12 shrink-0 place-items-center rounded-full bg-white/15 ring-4 ring-white/10">
-              <Headphones className="size-6" />
-            </span>
-            <div>
-              <p className="font-display text-xl font-bold sm:text-2xl">
-                Need help with a booking?
-              </p>
-              <p className="text-sm text-white/80">Talk to a real travel expert, 24/7.</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold text-gold-foreground transition hover:brightness-110"
-            >
-              <Phone className="size-4" /> {PHONE_DISPLAY}
-            </a>
-            <a
-              href={`mailto:${SUPPORT_EMAIL}`}
-              className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-3 text-sm font-semibold transition hover:bg-white/10"
-            >
-              <Mail className="size-4" /> Email us
-            </a>
-          </div>
-        </div>
-
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Brand + links */}
         <div className="grid gap-8 py-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-4">
