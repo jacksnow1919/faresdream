@@ -197,13 +197,10 @@ function sessionConfig() {
     password: process.env["SESSION_SECRET"]!,
     name: "bcd-admin",
     maxAge: 60 * 60 * 8,
-    // The preview renders the app in a cross-site iframe, where SameSite=Lax
-    // cookies are never sent back. None+Secure+Partitioned keeps the session.
     cookie: {
       httpOnly: true,
       secure: true,
-      sameSite: "none" as const,
-      partitioned: true,
+      sameSite: "lax" as const,
       path: "/",
     },
   };

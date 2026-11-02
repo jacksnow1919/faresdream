@@ -16,6 +16,8 @@ npm run dev
 
 Secrets go in `.env.local`, which is never committed. `.env` only holds the public Supabase values.
 
+Cloudflare builds with npm 10, which checks the lockfile more strictly than npm 11. After changing packages, refresh the lockfile with `npx npm@10.9.2 install`.
+
 ## Checks
 
 ```bash

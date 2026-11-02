@@ -41,6 +41,13 @@ function isH3SwallowedErrorBody(body: string): boolean {
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    // The site lives on www; 308 keeps POST requests intact.
+    const url = new URL(request.url);
+    if (url.hostname === "faresdream.com") {
+      url.hostname = "www.faresdream.com";
+      return Response.redirect(url.toString(), 308);
+    }
+
     try {
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

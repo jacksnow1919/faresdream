@@ -16,8 +16,7 @@ export function adminSessionConfig() {
     cookie: {
       httpOnly: true,
       secure: true,
-      sameSite: "none" as const,
-      partitioned: true,
+      sameSite: "lax" as const,
       path: "/",
     },
   };
