@@ -1,4 +1,7 @@
-/** Filtering and sorting for the flight results page. Filters look at the outbound journey. */
+/**
+ * Filtering and sorting for the flight results page. Stops and times are filtered per
+ * direction; layovers look at the whole trip, in either direction.
+ */
 import type { PkfareNormalisedFare } from "@/lib/pkfare-types";
 
 export const AIRLINE_NAMES: Record<string, string> = {
@@ -36,10 +39,13 @@ export type SortKey = "cheapest" | "fastest" | "best";
 
 export type Filters = {
   stops: string[];
+  returnStops: string[];
   maxPrice: number | null;
   fareRules: string[];
   departBlocks: string[];
   arriveBlocks: string[];
+  returnDepartBlocks: string[];
+  returnArriveBlocks: string[];
   airlines: string[];
   maxLayover: number | null;
   layoverAirports: string[];
@@ -47,10 +53,13 @@ export type Filters = {
 
 export const emptyFilters: Filters = {
   stops: [],
+  returnStops: [],
   maxPrice: null,
   fareRules: [],
   departBlocks: [],
   arriveBlocks: [],
+  returnDepartBlocks: [],
+  returnArriveBlocks: [],
   airlines: [],
   maxLayover: null,
   layoverAirports: [],
@@ -59,9 +68,17 @@ export const emptyFilters: Filters = {
 export const hasFilters = (f: Filters) =>
   f.maxPrice !== null ||
   f.maxLayover !== null ||
-  [f.stops, f.fareRules, f.departBlocks, f.arriveBlocks, f.airlines, f.layoverAirports].some(
-    (list) => list.length > 0,
-  );
+  [
+    f.stops,
+    f.returnStops,
+    f.fareRules,
+    f.departBlocks,
+    f.arriveBlocks,
+    f.returnDepartBlocks,
+    f.returnArriveBlocks,
+    f.airlines,
+    f.layoverAirports,
+  ].some((list) => list.length > 0);
 
 export const toggleIn = (list: string[], value: string) =>
   list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
@@ -72,9 +89,16 @@ export const stopsBucket = (stops: number) =>
 export const fareRuleOf = (f: PkfareNormalisedFare) =>
   f.refundable ? "Refundable" : "Non-refundable";
 
-/** Airports the outbound journey changes planes at. */
+/** Airports the trip changes planes at, in either direction. */
 export const layoverAirportsOf = (f: PkfareNormalisedFare) =>
-  (f.segments ?? []).slice(1).map((s) => s.origin);
+  [...(f.segments ?? []).slice(1), ...(f.inbound?.segments ?? []).slice(1)].map((s) => s.origin);
+
+/** The trip's longest single layover, in either direction. */
+export const longestLayover = (f: PkfareNormalisedFare) =>
+  Math.max(f.maxLayoverMinutes || 0, f.inbound?.maxLayoverMinutes || 0);
+
+/** The layover slider moves in steps of this many minutes. */
+export const LAYOVER_STEP = 15;
 
 const inBlocks = (minutes: number, blocks: string[]) =>
   blocks.length === 0 ||
@@ -89,6 +113,8 @@ export type Bounds = {
   maxDuration: number;
   maxLayover: number;
   stops: Option[];
+  /** Empty unless the fares are round trips. */
+  returnStops: Option[];
   fareRules: Option[];
   airlines: Option[];
   layoverAirports: Option[];
@@ -123,19 +149,27 @@ export function computeBounds(
   airportLabel: (code: string) => string,
 ): Bounds {
   const prices = fares.map((f) => f.price);
-  const durations = fares.map((f) => f.durationMinutes || 0);
+  const durations = fares.map(tripMinutes);
   const stopOrder = ["Non Stop", "1 Stop", "2+ Stops"];
+  const byStops = (a: Option, b: Option) => stopOrder.indexOf(a.id) - stopOrder.indexOf(b.id);
+  const longest = fares.reduce((m, f) => Math.max(m, longestLayover(f)), 0);
   return {
     minPrice: prices.length ? Math.min(...prices) : 0,
     maxPrice: prices.length ? Math.max(...prices) : 0,
     minDuration: durations.length ? Math.min(...durations) : 0,
     maxDuration: durations.length ? Math.max(...durations) : 0,
-    maxLayover: fares.reduce((m, f) => Math.max(m, f.maxLayoverMinutes || 0), 0),
+    // Rounded up to a slider step, or the slider's far end would cut off the longest layover.
+    maxLayover: Math.ceil(longest / LAYOVER_STEP) * LAYOVER_STEP,
     stops: optionsBy(
       fares,
       (f) => [stopsBucket(f.stops)],
       (k) => k,
-    ).sort((a, b) => stopOrder.indexOf(a.id) - stopOrder.indexOf(b.id)),
+    ).sort(byStops),
+    returnStops: optionsBy(
+      fares,
+      (f) => (f.inbound ? [stopsBucket(f.inbound.stops)] : []),
+      (k) => k,
+    ).sort(byStops),
     fareRules: optionsBy(
       fares,
       (f) => [fareRuleOf(f)],
@@ -158,8 +192,14 @@ export function applyFilters(fares: PkfareNormalisedFare[], f: Filters): PkfareN
     if (f.fareRules.length && !f.fareRules.includes(fareRuleOf(fare))) return false;
     if (!inBlocks(fare.departMinutes ?? 0, f.departBlocks)) return false;
     if (!inBlocks(fare.arriveMinutes ?? 0, f.arriveBlocks)) return false;
+    if (fare.inbound) {
+      const back = fare.inbound;
+      if (f.returnStops.length && !f.returnStops.includes(stopsBucket(back.stops))) return false;
+      if (!inBlocks(back.departMinutes, f.returnDepartBlocks)) return false;
+      if (!inBlocks(back.arriveMinutes, f.returnArriveBlocks)) return false;
+    }
     if (f.airlines.length && !f.airlines.includes(carrierOf(fare))) return false;
-    if (f.maxLayover !== null && (fare.maxLayoverMinutes || 0) > f.maxLayover) return false;
+    if (f.maxLayover !== null && longestLayover(fare) > f.maxLayover) return false;
     if (
       f.layoverAirports.length &&
       !layoverAirportsOf(fare).some((a) => f.layoverAirports.includes(a))
@@ -169,18 +209,27 @@ export function applyFilters(fares: PkfareNormalisedFare[], f: Filters): PkfareN
   });
 }
 
-/** "Recommended" weighs price 60% and journey time 40%. */
+/** Time in the air and at layovers for the whole trip: outbound plus return on round trips. */
+export const tripMinutes = (f: PkfareNormalisedFare) =>
+  (f.durationMinutes || 0) + (f.inbound?.durationMinutes || 0);
+
+/**
+ * Cheapest: lowest price, quickest first among equal prices. Fastest: shortest whole trip,
+ * cheapest first among equal times. Best ("recommended") weighs price 60% and trip time 40%.
+ */
 export function sortFares(fares: PkfareNormalisedFare[], sort: SortKey, bounds: Bounds) {
   const list = [...fares];
-  if (sort === "cheapest") return list.sort((a, b) => a.price - b.price);
-  if (sort === "fastest")
-    return list.sort((a, b) => (a.durationMinutes || 0) - (b.durationMinutes || 0));
+  const byPrice = (a: PkfareNormalisedFare, b: PkfareNormalisedFare) => a.price - b.price;
+  const byTime = (a: PkfareNormalisedFare, b: PkfareNormalisedFare) =>
+    tripMinutes(a) - tripMinutes(b);
+  if (sort === "cheapest") return list.sort((a, b) => byPrice(a, b) || byTime(a, b));
+  if (sort === "fastest") return list.sort((a, b) => byTime(a, b) || byPrice(a, b));
   const priceSpan = Math.max(1, bounds.maxPrice - bounds.minPrice);
   const durSpan = Math.max(1, bounds.maxDuration - bounds.minDuration);
   const score = (f: PkfareNormalisedFare) =>
     0.6 * ((f.price - bounds.minPrice) / priceSpan) +
-    0.4 * (((f.durationMinutes || 0) - bounds.minDuration) / durSpan);
-  return list.sort((a, b) => score(a) - score(b));
+    0.4 * ((tripMinutes(f) - bounds.minDuration) / durSpan);
+  return list.sort((a, b) => score(a) - score(b) || byPrice(a, b) || byTime(a, b));
 }
 
 export const minutesLabel = (m: number) =>

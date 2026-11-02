@@ -1,6 +1,7 @@
 import { useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import { ChevronDown, Moon, Sun, Sunrise, Sunset, type LucideIcon } from "lucide-react";
 import {
+  LAYOVER_STEP,
   TIME_BLOCKS,
   emptyFilters,
   hasFilters,
@@ -17,6 +18,17 @@ const BLOCK_ICONS: Record<string, LucideIcon> = {
   afternoon: Sunset,
   evening: Moon,
 };
+
+type ListKey =
+  | "stops"
+  | "returnStops"
+  | "fareRules"
+  | "departBlocks"
+  | "arriveBlocks"
+  | "returnDepartBlocks"
+  | "returnArriveBlocks"
+  | "airlines"
+  | "layoverAirports";
 
 function Section({
   title,
@@ -105,9 +117,15 @@ function TimeTiles({ selected, onToggle }: { selected: string[]; onToggle: (id: 
   );
 }
 
+/** Small print inside a section: a caption, or the reason it has nothing to choose from. */
+function Note({ children }: { children: ReactNode }) {
+  return <p className="text-xs text-muted-foreground">{children}</p>;
+}
+
 /**
- * Thomas Cook-style filter column: navy header and collapsible sections. Sections with
- * nothing to choose between (e.g. every fare non-stop) are left out.
+ * Thomas Cook-style filter column: navy header and collapsible sections. Every section
+ * always shows, so the panel looks the same on every search; the Return ones are for
+ * round trips only.
  */
 export function FareFilters({
   bounds,
@@ -124,20 +142,29 @@ export function FareFilters({
   fromCity: string;
   toCity: string;
 }) {
-  const [open, setOpen] = useState<string[]>(["stops"]);
+  const [open, setOpen] = useState<string[]>(["stops", "returnStops", "price"]);
   const section = (id: string) => ({
     open: open.includes(id),
     onToggle: () => setOpen((o) => toggleIn(o, id)),
   });
-  const toggleList =
-    (
-      key: "stops" | "fareRules" | "departBlocks" | "arriveBlocks" | "airlines" | "layoverAirports",
-    ) =>
-    (id: string) =>
-      setFilters((p) => ({ ...p, [key]: toggleIn(p[key], id) }));
+  const toggleList = (key: ListKey) => (id: string) =>
+    setFilters((p) => ({ ...p, [key]: toggleIn(p[key], id) }));
+
+  const checkList = (key: ListKey, options: Option[]) =>
+    options.map((o) => (
+      <CheckRow
+        key={o.id}
+        option={o}
+        money={money}
+        checked={filters[key].includes(o.id)}
+        onChange={() => toggleList(key)(o.id)}
+      />
+    ));
 
   const priceValue = filters.maxPrice ?? bounds.maxPrice;
   const layoverValue = filters.maxLayover ?? bounds.maxLayover;
+  const roundTrip = bounds.returnStops.length > 0;
+  const noLayovers = "No layovers on these flights.";
 
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-card">
@@ -154,111 +181,124 @@ export function FareFilters({
         ) : null}
       </div>
 
-      {bounds.stops.length > 1 ? (
-        <Section title="Departure Stops" {...section("stops")}>
-          {bounds.stops.map((o) => (
-            <CheckRow
-              key={o.id}
-              option={o}
-              money={money}
-              checked={filters.stops.includes(o.id)}
-              onChange={() => toggleList("stops")(o.id)}
-            />
-          ))}
-        </Section>
-      ) : null}
+      {bounds.stops.length === 0 ? (
+        // Still searching, or the search found nothing.
+        <p className="px-4 py-4 text-sm text-muted-foreground">
+          Filters appear here once flights are found.
+        </p>
+      ) : (
+        <>
+          <Section title="Departure Stops" {...section("stops")}>
+            {checkList("stops", bounds.stops)}
+          </Section>
 
-      {bounds.maxPrice > bounds.minPrice ? (
-        <Section title="Price" {...section("price")}>
-          <input
-            type="range"
-            aria-label="Maximum price"
-            min={bounds.minPrice}
-            max={bounds.maxPrice}
-            step={1}
-            value={priceValue}
-            onChange={(e) => setFilters((p) => ({ ...p, maxPrice: Number(e.target.value) }))}
-            className="w-full accent-navy"
-          />
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>{money(bounds.minPrice)}</span>
-            <span className="font-semibold text-foreground">Up to {money(priceValue)}</span>
-          </div>
-        </Section>
-      ) : null}
+          {roundTrip ? (
+            <Section title="Return Stops" {...section("returnStops")}>
+              {checkList("returnStops", bounds.returnStops)}
+            </Section>
+          ) : null}
 
-      {bounds.fareRules.length > 1 ? (
-        <Section title="Fare Rules" {...section("fareRules")}>
-          {bounds.fareRules.map((o) => (
-            <CheckRow
-              key={o.id}
-              option={o}
-              money={money}
-              checked={filters.fareRules.includes(o.id)}
-              onChange={() => toggleList("fareRules")(o.id)}
-            />
-          ))}
-        </Section>
-      ) : null}
+          <Section title="Price" {...section("price")}>
+            {bounds.maxPrice > bounds.minPrice ? (
+              <>
+                <input
+                  type="range"
+                  aria-label="Maximum price"
+                  min={bounds.minPrice}
+                  max={bounds.maxPrice}
+                  step={1}
+                  value={priceValue}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    setFilters((p) => ({ ...p, maxPrice: v === bounds.maxPrice ? null : v }));
+                  }}
+                  className="w-full accent-navy"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>{money(bounds.minPrice)}</span>
+                  <span className="font-semibold text-foreground">Up to {money(priceValue)}</span>
+                </div>
+              </>
+            ) : (
+              <Note>Every flight on this search costs {money(bounds.minPrice)}.</Note>
+            )}
+          </Section>
 
-      <Section title="Departure" {...section("depart")}>
-        <p className="text-xs text-muted-foreground">Departure from {fromCity}</p>
-        <TimeTiles selected={filters.departBlocks} onToggle={toggleList("departBlocks")} />
-      </Section>
+          <Section title="Fare Rules" {...section("fareRules")}>
+            {checkList("fareRules", bounds.fareRules)}
+          </Section>
 
-      <Section title="Arrival" {...section("arrive")}>
-        <p className="text-xs text-muted-foreground">Arrival at {toCity}</p>
-        <TimeTiles selected={filters.arriveBlocks} onToggle={toggleList("arriveBlocks")} />
-      </Section>
+          <Section title="Departure" {...section("depart")}>
+            <Note>Departure from {fromCity}</Note>
+            <TimeTiles selected={filters.departBlocks} onToggle={toggleList("departBlocks")} />
+          </Section>
 
-      {bounds.airlines.length > 1 ? (
-        <Section title="Airlines" {...section("airlines")}>
-          {bounds.airlines.map((o) => (
-            <CheckRow
-              key={o.id}
-              option={o}
-              money={money}
-              checked={filters.airlines.includes(o.id)}
-              onChange={() => toggleList("airlines")(o.id)}
-            />
-          ))}
-        </Section>
-      ) : null}
+          <Section title="Arrival" {...section("arrive")}>
+            <Note>Arrival at {toCity}</Note>
+            <TimeTiles selected={filters.arriveBlocks} onToggle={toggleList("arriveBlocks")} />
+          </Section>
 
-      {bounds.maxLayover > 0 ? (
-        <Section title="Layover Duration" {...section("layover")}>
-          <input
-            type="range"
-            aria-label="Maximum layover"
-            min={0}
-            max={bounds.maxLayover}
-            step={15}
-            value={layoverValue}
-            onChange={(e) => setFilters((p) => ({ ...p, maxLayover: Number(e.target.value) }))}
-            className="w-full accent-navy"
-          />
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>0h 00m</span>
-            <span className="font-semibold text-foreground">
-              Up to {minutesLabel(layoverValue)}
-            </span>
-          </div>
-        </Section>
-      ) : null}
+          {roundTrip ? (
+            <>
+              <Section title="Return Departure" {...section("returnDepart")}>
+                <Note>Departure from {toCity}</Note>
+                <TimeTiles
+                  selected={filters.returnDepartBlocks}
+                  onToggle={toggleList("returnDepartBlocks")}
+                />
+              </Section>
 
-      {bounds.layoverAirports.length > 0 ? (
-        <Section title="Layover Airport" {...section("layoverAirports")}>
-          {bounds.layoverAirports.map((o) => (
-            <CheckRow
-              key={o.id}
-              option={o}
-              money={money}
-              checked={filters.layoverAirports.includes(o.id)}
-              onChange={() => toggleList("layoverAirports")(o.id)}
-            />
-          ))}
-        </Section>
-      ) : null}
+              <Section title="Return Arrival" {...section("returnArrive")}>
+                <Note>Arrival at {fromCity}</Note>
+                <TimeTiles
+                  selected={filters.returnArriveBlocks}
+                  onToggle={toggleList("returnArriveBlocks")}
+                />
+              </Section>
+            </>
+          ) : null}
+
+          <Section title="Airlines" {...section("airlines")}>
+            {checkList("airlines", bounds.airlines)}
+          </Section>
+
+          <Section title="Layover Duration" {...section("layover")}>
+            {bounds.maxLayover > 0 ? (
+              <>
+                <input
+                  type="range"
+                  aria-label="Maximum layover"
+                  min={0}
+                  max={bounds.maxLayover}
+                  step={LAYOVER_STEP}
+                  value={layoverValue}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    setFilters((p) => ({ ...p, maxLayover: v === bounds.maxLayover ? null : v }));
+                  }}
+                  className="w-full accent-navy"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>0h 00m</span>
+                  <span className="font-semibold text-foreground">
+                    Up to {minutesLabel(layoverValue)}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <Note>{noLayovers}</Note>
+            )}
+          </Section>
+
+          <Section title="Layover Airport" {...section("layoverAirports")}>
+            {bounds.layoverAirports.length > 0 ? (
+              checkList("layoverAirports", bounds.layoverAirports)
+            ) : (
+              <Note>{noLayovers}</Note>
+            )}
+          </Section>
+        </>
+      )}
     </div>
   );
 }

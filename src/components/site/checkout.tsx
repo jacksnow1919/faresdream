@@ -71,7 +71,7 @@ export function CheckoutShell({
   return (
     <div className="min-h-[100dvh] bg-secondary/40 pb-24">
       <div className="bg-linear-to-r from-primary to-sky-500 px-4 pb-5 pt-4 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-page">
           <CheckoutSteps current={step} />
           <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
             <div className="min-w-0">
@@ -82,7 +82,7 @@ export function CheckoutShell({
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6 lg:px-8">{children}</div>
+      <div className="mx-auto max-w-page-padded px-4 py-5 sm:px-6 lg:px-8">{children}</div>
     </div>
   );
 }

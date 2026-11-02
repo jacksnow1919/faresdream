@@ -58,6 +58,7 @@ export function VerificationSection() {
       setEmail("");
       setBookingId("");
       void queryClient.invalidateQueries({ queryKey: ["admin-verifications"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-activity"] });
     },
     onError: () => setError("Could not generate the link. Please try again."),
   });
@@ -65,7 +66,10 @@ export function VerificationSection() {
   const review = useMutation({
     mutationFn: (vars: { id: string; status: "verified" | "rejected" }) =>
       reviewFn({ data: vars }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-verifications"] }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["admin-verifications"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-activity"] });
+    },
   });
 
   const rows = data?.authorized ? data.rows : [];

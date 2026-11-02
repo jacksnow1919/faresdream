@@ -1,19 +1,12 @@
 import { Phone } from "lucide-react";
-import agentAsset from "@/assets/agent-avatar.jpg.asset.json";
+import { AgentAvatar } from "@/components/site/ui";
 import { PHONE_TEL, PROMO_CODE } from "@/lib/brand";
 
 export function StickyCallBar() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 px-3 pb-3 lg:hidden">
       <div className="mx-auto flex max-w-md items-center gap-3 rounded-full border border-border bg-card px-3 py-2 shadow-lux">
-        <img
-          src={agentAsset.url}
-          alt="FaresDream travel agent"
-          loading="lazy"
-          width={512}
-          height={512}
-          className="size-10 shrink-0 rounded-full object-cover"
-        />
+        <AgentAvatar />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-bold text-navy">Better Deals, Just a Call Away</p>
           <p className="truncate text-[11px] text-muted-foreground">

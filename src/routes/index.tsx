@@ -98,8 +98,8 @@ function Home() {
   return (
     <div className="bg-background pb-16">
       {/* HERO + SEARCH on a moving sky — kept above the fold on mobile and desktop */}
-      <section className="px-3 pt-4 sm:px-6 sm:pt-6">
-        <div className="relative mx-auto max-w-7xl rounded-3xl px-4 pb-8 pt-6 sm:px-8 sm:pb-12 lg:min-h-[375px] lg:pb-10">
+      <section className="px-4 pt-4 sm:px-6 sm:pt-6 lg:px-8">
+        <div className="relative mx-auto max-w-page rounded-3xl px-4 pb-8 pt-6 sm:px-8 sm:pb-12 lg:min-h-[375px] lg:pb-10">
           <MovingSky />
           <div className="relative">
             <h1 className="mx-auto mb-4 max-w-[1116px] font-display text-xl font-bold leading-tight text-white [text-shadow:0_2px_12px_rgb(0_0_0/0.25)] sm:text-2xl">
@@ -114,34 +114,34 @@ function Home() {
       <RecentSearches />
 
       {/* OFFERS & DISCOUNTS */}
-      <section className="px-4 pb-6 pt-8 sm:px-6 sm:pt-10 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+      <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+        <div className="mx-auto max-w-page">
           <SectionHeading
             title="Flight Booking Offers & Discounts"
             subtitle="Exclusive savings on domestic and international flights."
           />
-          <div className="mt-6">
+          <div className="mt-8">
             <OfferCards />
           </div>
         </div>
       </section>
 
       {/* WHY BOOK WITH FARESDREAM */}
-      <section className="px-4 pb-14 pt-8 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+      <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+        <div className="mx-auto max-w-page">
           <SectionHeading
             title="Why Book With FaresDream?"
             subtitle="Wholesale fares, secure booking and real people on call 24/7."
           />
-          <div className="mt-6">
+          <div className="mt-8">
             <WhyBookCards />
           </div>
         </div>
       </section>
 
       {/* TRENDING DESTINATIONS */}
-      <section className="px-4 pb-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+      <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+        <div className="mx-auto max-w-page">
           <TrendingDestinations
             heading={
               <SectionHeading
@@ -154,8 +154,8 @@ function Home() {
       </section>
 
       {/* FEATURED DEALS */}
-      <section className="px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+      <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+        <div className="mx-auto max-w-page">
           <SectionHeading
             title="Featured Flight Deals"
             subtitle="Tap a deal to start your search."
@@ -167,15 +167,15 @@ function Home() {
       </section>
 
       {/* NEWSLETTER */}
-      <section className="px-4 pb-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+      <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+        <div className="mx-auto max-w-page">
           <NewsletterCard />
         </div>
       </section>
 
       {/* POPULAR ROUND TRIPS */}
-      <section className="bg-secondary px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+      <section className="mt-12 bg-secondary px-4 py-12 sm:px-6 lg:mt-16 lg:px-8 lg:py-16">
+        <div className="mx-auto max-w-page">
           <SectionHeading
             title={
               <>
@@ -194,7 +194,7 @@ function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="px-4 py-14 sm:px-6 lg:px-8">
+      <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-center font-display text-2xl font-bold text-foreground sm:text-3xl">
             Frequently Asked Questions

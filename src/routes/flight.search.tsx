@@ -7,7 +7,6 @@ import {
   ChevronRight,
   History,
   Loader2,
-  Phone,
   SlidersHorizontal,
   ThumbsUp,
   X,
@@ -16,7 +15,7 @@ import { searchFlights, type PkfareNormalisedFare } from "@/services/pkfareApi";
 import { saveRecentSearch } from "@/lib/recent-searches";
 import { saveSelectedFare } from "@/lib/selected-fare";
 import { currencySymbol } from "@/lib/flight-search-params";
-import { PHONE_DISPLAY, PHONE_TEL, PROMO_CODE } from "@/lib/brand";
+import { PHONE_DISPLAY } from "@/lib/brand";
 import {
   AIRLINE_NAMES,
   airlineNameOf,
@@ -25,6 +24,7 @@ import {
   computeBounds,
   emptyFilters,
   sortFares,
+  tripMinutes,
   type Filters,
   type SortKey,
 } from "@/lib/fare-filters";
@@ -170,7 +170,11 @@ function SearchPage() {
   );
 
   const bounds = useMemo(
-    () => computeBounds(carrierFlights, (code) => `${cityOf(code)} (${code})`),
+    () =>
+      computeBounds(carrierFlights, (code) => {
+        const city = cityOf(code);
+        return city === code ? code : `${city} (${code})`;
+      }),
     [carrierFlights],
   );
 
@@ -199,12 +203,8 @@ function SearchPage() {
   const fareCurrency = carrierFlights[0]?.currency ?? currency ?? "USD";
   const fmt = (n: number) => money(n, fareCurrency);
 
-  const cheapest = flights.length
-    ? flights.reduce((a, b) => (a.price <= b.price ? a : b))
-    : undefined;
-  const fastest = flights.length
-    ? flights.reduce((a, b) => ((a.durationMinutes || 0) <= (b.durationMinutes || 0) ? a : b))
-    : undefined;
+  const cheapest = flights.length ? sortFares(flights, "cheapest", bounds)[0] : undefined;
+  const fastest = flights.length ? sortFares(flights, "fastest", bounds)[0] : undefined;
 
   const fromCity = cityOf(origin);
   const toCity = cityOf(destination);
@@ -260,7 +260,7 @@ function SearchPage() {
     <div className="min-h-[100dvh] bg-secondary/40 pb-20">
       {/* Search bar: pinned under the site header while the results scroll (like Thomas Cook) */}
       <section className="sticky top-16 z-30 bg-linear-to-r from-primary to-sky-500 px-4 py-3 shadow-[0_6px_16px_rgb(15_23_42/0.12)] sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-page">
           <ResultsSearchBar
             key={`${origin}-${destination}-${date}-${returnDate ?? ""}-${passengers}-${cabin}`}
             query={{ origin, destination, date, returnDate, passengers, cabin }}
@@ -269,7 +269,7 @@ function SearchPage() {
       </section>
 
       <section className="border-b border-border bg-card px-4 py-2.5 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-page">
           <DateStrip
             key={date}
             date={date}
@@ -287,7 +287,7 @@ function SearchPage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-page-padded px-4 py-4 sm:px-6 lg:px-8">
         <nav
           aria-label="Breadcrumb"
           className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground"
@@ -321,19 +321,6 @@ function SearchPage() {
           </aside>
 
           <main className="min-w-0 space-y-3">
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="flex items-center justify-between gap-4 rounded-xl bg-linear-to-r from-navy to-primary px-4 py-2.5 text-white shadow-card transition hover:brightness-110"
-            >
-              <span className="font-display text-sm font-bold sm:text-base">
-                Call {PHONE_DISPLAY} and use code <span className="text-gold">{PROMO_CODE}</span> to
-                save up to $50
-              </span>
-              <span className="hidden shrink-0 items-center gap-1.5 rounded-full bg-gold px-3.5 py-1.5 text-xs font-semibold text-gold-foreground sm:inline-flex">
-                <Phone className="size-4" /> Call now
-              </span>
-            </a>
-
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
               <h1 className="font-display text-base font-semibold text-foreground sm:text-lg">
                 {fromCity} ({origin}) to {toCity} ({destination}) flights
@@ -405,7 +392,8 @@ function SearchPage() {
                             {money(t.fare.price, t.fare.currency)}
                             <span className="hidden sm:inline"> | </span>
                             <span className="block sm:inline">
-                              {clockDuration(t.fare.durationMinutes)}
+                              {clockDuration(tripMinutes(t.fare))}
+                              {t.fare.inbound ? " total" : ""}
                             </span>
                           </span>
                         ) : null}

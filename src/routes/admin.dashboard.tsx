@@ -18,6 +18,13 @@ import { LeadsSection } from "@/components/admin/LeadsSection";
 import { VerificationSection } from "@/components/admin/VerificationSection";
 import { StaffSection } from "@/components/admin/StaffSection";
 import { CardRevealModal } from "@/components/admin/CardRevealModal";
+import { BookingsSection, SourceBadge, StatusBadge } from "@/components/admin/BookingsSection";
+import { PnrQueue } from "@/components/admin/PnrQueue";
+import { BookingOpsPanel } from "@/components/admin/BookingOpsPanel";
+import { DealsSection } from "@/components/admin/DealsSection";
+import { RefundsSection } from "@/components/admin/RefundsSection";
+import { ActivitySection } from "@/components/admin/ActivitySection";
+import { bookingSource, canViewActivity, formatMoney } from "@/lib/admin-logic";
 import {
   LayoutDashboard,
   ShieldCheck,
@@ -31,6 +38,9 @@ import {
   LogOut,
   Loader2,
   X,
+  Tag,
+  RotateCcw,
+  History,
 } from "lucide-react";
 
 
@@ -55,39 +65,29 @@ export const Route = createFileRoute("/admin/dashboard")({
   component: AdminDashboard,
 });
 
-const NAV = [
+const NAV: {
+  label: string;
+  hash: string;
+  icon: typeof LayoutDashboard;
+  show?: (role: StaffRole) => boolean;
+}[] = [
   { label: "Overview", hash: "overview", icon: LayoutDashboard },
   { label: "All Bookings", hash: "reconciliation", icon: Link2 },
   { label: "PNR Queue", hash: "pnr-queue", icon: Ticket },
+  { label: "Refunds", hash: "refunds", icon: RotateCcw },
+  { label: "Deals", hash: "deals", icon: Tag },
   { label: "Leads & Quotes", hash: "leads", icon: Inbox },
   { label: "Verification", hash: "verification", icon: ShieldCheck },
-  { label: "Staff & roles", hash: "staff", icon: Users, superadminOnly: true },
-] as const;
+  { label: "Activity log", hash: "activity", icon: History, show: canViewActivity },
+  { label: "Staff & roles", hash: "staff", icon: Users, show: (r) => r === "superadmin" },
+];
 
-
+/** Status buttons in the details drawer; "refunded" comes from marking a refund paid. */
 const STATUS_OPTIONS = [
-  { value: "pending", label: "Pending Ticketing" },
+  { value: "pending", label: "Pending ticketing" },
   { value: "issued", label: "Ticketed" },
   { value: "cancelled", label: "Cancelled" },
 ] as const;
-
-function bookingSource(b: AdminBookingRow) {
-  return (b.source || b.utm_source || "direct").toUpperCase();
-}
-
-function SourceBadge({ source }: { source: string }) {
-  const cls =
-    source === "EAZAIR"
-      ? "bg-emerald-100 text-emerald-700"
-      : source === "DIRECT"
-        ? "bg-gold/15 text-navy ring-1 ring-gold/40"
-        : "bg-secondary text-muted-foreground";
-  return (
-    <span className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-bold ${cls}`}>
-      {source}
-    </span>
-  );
-}
 
 function Sidebar({ role, onSignOut }: { role: StaffRole; onSignOut: () => void }) {
   return (
@@ -99,7 +99,7 @@ function Sidebar({ role, onSignOut }: { role: StaffRole; onSignOut: () => void }
         </p>
       </div>
       <nav className="flex gap-1 overflow-x-auto px-2 pb-4 lg:flex-col lg:overflow-visible">
-        {NAV.filter((n) => !("superadminOnly" in n) || role === "superadmin").map((n) => (
+        {NAV.filter((n) => !n.show || n.show(role)).map((n) => (
           <a
             key={n.label}
             href={`#${n.hash}`}
@@ -166,12 +166,16 @@ function DetailsPanel({
   onClose,
   onStatusChange,
   saving,
+  statusError,
+  onOpsChange,
 }: {
   booking: AdminBookingRow;
   role: StaffRole;
   onClose: () => void;
   onStatusChange: (status: string) => void;
   saving: boolean;
+  statusError: string;
+  onOpsChange: () => void;
 }) {
   const queryClient = useQueryClient();
   const verifyFn = useServerFn(setBookingVerification);
@@ -190,6 +194,7 @@ function DetailsPanel({
     onSuccess: (res) => {
       setNotice(res.ok ? "" : res.message);
       void queryClient.invalidateQueries({ queryKey: ["admin-bookings"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-activity"] });
     },
   });
 
@@ -198,6 +203,7 @@ function DetailsPanel({
     onSuccess: (res) => {
       setNotice(res.ok ? "Funds captured." : res.message);
       void queryClient.invalidateQueries({ queryKey: ["admin-bookings"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-activity"] });
     },
   });
 
@@ -265,48 +271,64 @@ function DetailsPanel({
           <div className="mt-1.5">
             <Row
               label="Total price"
-              value={`${booking.currency} ${total.toLocaleString()}`}
+              value={formatMoney(total, booking.currency)}
             />
             <Row label="Promo code" value={booking.promo_code ?? ""} />
             <Row
               label="Promo discount"
-              value={`${booking.currency} ${Number(booking.promo_discount).toLocaleString()}`}
+              value={formatMoney(Number(booking.promo_discount), booking.currency)}
             />
             <Row
               label="Commission (12% yield)"
-              value={`${booking.currency} ${Math.round(total * 0.12).toLocaleString()}`}
+              value={formatMoney(Math.round(total * 0.12), booking.currency)}
             />
             <Row label="Click ID" value={booking.click_id ?? ""} />
           </div>
         </section>
 
         <section className="mt-5">
-          <h3 className="font-display text-sm font-semibold text-navy">Status</h3>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {STATUS_OPTIONS.map((s) => {
-              const active = booking.status === s.value;
-              return (
-                <button
-                  key={s.value}
-                  disabled={saving || active}
-                  onClick={() => onStatusChange(s.value)}
-                  className={`rounded-xl px-3 py-2 text-xs font-bold transition disabled:opacity-70 ${
-                    active
-                      ? "bg-navy text-navy-foreground"
-                      : "border border-border bg-background text-navy hover:border-gold"
-                  }`}
-                >
-                  {s.label}
-                </button>
-              );
-            })}
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="font-display text-sm font-semibold text-navy">Status</h3>
+            <StatusBadge status={booking.status} />
           </div>
+          {booking.status === "refunded" ? (
+            <p className="mt-2 text-xs text-muted-foreground">
+              Refunded and closed. The status can't be changed any more.
+            </p>
+          ) : (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {STATUS_OPTIONS.map((s) => {
+                const active = booking.status === s.value;
+                return (
+                  <button
+                    key={s.value}
+                    disabled={saving || active}
+                    onClick={() => onStatusChange(s.value)}
+                    className={`rounded-xl px-3 py-2 text-xs font-bold transition disabled:opacity-70 ${
+                      active
+                        ? "bg-navy text-navy-foreground"
+                        : "border border-border bg-background text-navy hover:border-gold"
+                    }`}
+                  >
+                    {s.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
           {saving ? (
             <p className="mt-2 inline-flex items-center gap-2 text-xs text-muted-foreground">
               <Loader2 className="size-3.5 animate-spin" /> Saving…
             </p>
           ) : null}
+          {statusError ? (
+            <p role="alert" className="mt-2 text-xs font-semibold text-destructive">
+              {statusError}
+            </p>
+          ) : null}
         </section>
+
+        <BookingOpsPanel key={booking.id} booking={booking} role={role} onChange={onOpsChange} />
 
         <section className="mt-5">
           <h3 className="font-display text-sm font-semibold text-navy">Payment card</h3>
@@ -415,6 +437,11 @@ function AdminDashboard() {
   const sessionStatus = useServerFn(adminSessionStatus);
   const setStatus = useServerFn(updateBookingStatus);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [statusError, setStatusError] = useState("");
+  const openDetails = (id: string | null) => {
+    setStatusError("");
+    setOpenId(id);
+  };
 
   const session = useQuery({
     queryKey: ["admin-session"],
@@ -433,7 +460,13 @@ function AdminDashboard() {
   const statusMutation = useMutation({
     mutationFn: (vars: { id: string; status: string }) =>
       setStatus({ data: { id: vars.id, status: vars.status as "pending" } }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-bookings"] }),
+    onMutate: () => setStatusError(""),
+    onSuccess: (res) => {
+      if (!res.ok) setStatusError(res.message);
+      void queryClient.invalidateQueries({ queryKey: ["admin-bookings"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-activity"] });
+    },
+    onError: () => setStatusError("Couldn't change the status. Try again."),
   });
 
   const signedOut =
@@ -467,9 +500,11 @@ function AdminDashboard() {
   const all = data?.rows ?? [];
   const role = session.data?.admin ? session.data.role : "agent";
 
-  const gbv = all.reduce((sum, b) => sum + Number(b.total_price), 0);
-  const awaiting = all.filter((b) => (b.verification_status ?? "pending") === "pending").length;
-  const verified = all.filter((b) => b.verification_status === "verified").length;
+  // Cancelled and refunded bookings aren't sales and need no more checks.
+  const active = all.filter((b) => b.status === "pending" || b.status === "issued");
+  const gbv = active.reduce((sum, b) => sum + Number(b.total_price), 0);
+  const awaiting = active.filter((b) => (b.verification_status ?? "pending") === "pending").length;
+  const verified = active.filter((b) => b.verification_status === "verified").length;
   const ticketed = all.filter((b) => b.status === "issued").length;
   const openBooking = all.find((b) => b.id === openId) ?? null;
 
@@ -479,6 +514,8 @@ function AdminDashboard() {
         role={role}
         onSignOut={async () => {
           await logout();
+          // Nothing from this session (role, bookings, leads) may outlive it in memory.
+          queryClient.clear();
           navigate({ to: "/admin", replace: true });
         }}
       />
@@ -503,7 +540,7 @@ function AdminDashboard() {
           <Kpi
             label="Gross Booking Value"
             value={`$${Math.round(gbv).toLocaleString()}`}
-            sub={`${all.length} bookings tracked`}
+            sub={`${active.length} active of ${all.length} bookings`}
             icon={DollarSign}
           />
           <Kpi
@@ -527,93 +564,13 @@ function AdminDashboard() {
         </div>
 
 
-        <section
-          id="reconciliation"
-          className="mt-6 rounded-2xl border border-border bg-card shadow-card"
-        >
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
-            <h2 className="font-display text-base font-semibold text-navy">
-              All Bookings &amp; PNR Queue
-            </h2>
-            <span className="text-xs text-muted-foreground">{all.length} records</span>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[820px] text-left text-sm">
-              <thead className="bg-secondary text-[11px] uppercase tracking-widest text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-2.5 font-semibold">PNR</th>
-                  <th className="px-4 py-2.5 font-semibold">Date</th>
-                  <th className="px-4 py-2.5 font-semibold">Route</th>
-                  <th className="px-4 py-2.5 font-semibold">Passenger</th>
-                  <th className="px-4 py-2.5 font-semibold">Total Price</th>
-                  <th className="px-4 py-2.5 font-semibold">Source</th>
-                  <th className="px-4 py-2.5 font-semibold">Status</th>
-                  <th className="px-4 py-2.5 font-semibold">Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                {all.length === 0 ? (
-                  <tr>
-                    <td colSpan={8} className="px-4 py-6 text-center text-xs text-muted-foreground">
-                      No bookings recorded yet. Direct checkouts and referred checkouts (with
-                      <code className="mx-1 rounded bg-secondary px-1">
-                        ?utm_source=EAZAIR&amp;click_id=…
-                      </code>
-                      ) both land here.
-                    </td>
-                  </tr>
-                ) : (
-                  all.map((b) => (
-                    <tr key={b.id} className="border-t border-border">
-                      <td className="px-4 py-3 font-semibold text-navy">{b.pnr ?? "—"}</td>
-                      <td className="px-4 py-3 text-muted-foreground">
-                        {new Date(b.created_at).toLocaleDateString()}
-                      </td>
-                      <td className="px-4 py-3 font-semibold">
-                        {b.origin} → {b.destination}
-                      </td>
-                      <td className="px-4 py-3 text-xs text-muted-foreground">
-                        {b.lead_name ?? b.guest_email ?? "—"}
-                      </td>
-                      <td className="px-4 py-3 font-semibold text-navy">
-                        {b.currency} {Number(b.total_price).toLocaleString()}
-                      </td>
-                      <td className="px-4 py-3">
-                        <SourceBadge source={bookingSource(b)} />
-                      </td>
-                      <td className="px-4 py-3 text-xs font-semibold capitalize text-navy">
-                        {b.status}
-                      </td>
-                      <td className="px-4 py-3">
-                        <button
-                          onClick={() => setOpenId(b.id)}
-                          className="rounded-lg border border-border px-3 py-1.5 text-xs font-bold text-navy transition hover:border-gold"
-                        >
-                          View Details
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section
-          id="pnr-queue"
-          className="mt-6 rounded-2xl border border-border bg-card p-4 shadow-card"
-        >
-          <h2 className="font-display text-base font-semibold text-navy">PNR Queue</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {all.length
-              ? `${all.filter((b) => b.status === "pending").length} bookings awaiting ticketing.`
-              : "No bookings in the ticketing queue."}
-          </p>
-        </section>
-
+        <BookingsSection rows={all} onOpen={openDetails} />
+        <PnrQueue rows={all} onOpen={openDetails} />
+        <RefundsSection onOpen={openDetails} />
+        <DealsSection role={role} />
         <LeadsSection />
         <VerificationSection />
+        {canViewActivity(role) ? <ActivitySection /> : null}
         {role === "superadmin" ? <StaffSection /> : null}
       </main>
 
@@ -622,7 +579,9 @@ function AdminDashboard() {
           booking={openBooking}
           role={role}
           saving={statusMutation.isPending}
-          onClose={() => setOpenId(null)}
+          statusError={statusError}
+          onOpsChange={() => setStatusError("")}
+          onClose={() => openDetails(null)}
           onStatusChange={(status) => statusMutation.mutate({ id: openBooking.id, status })}
         />
       ) : null}

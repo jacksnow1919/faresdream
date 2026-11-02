@@ -2,7 +2,7 @@ import { addDays, startOfToday } from "date-fns";
 
 export const FLIGHT_SEARCH_ID = "flight-search";
 
-/** Dates for shortcut searches with none picked: leave in a week, come back a week later. */
+/** Default trip dates (the search bar's, and the footer's): leave in a week, back a week later. */
 export function shortcutDates(depart = addDays(startOfToday(), 7)) {
   return { depart, back: addDays(depart, 7) };
 }
@@ -51,8 +51,8 @@ export function searchFlightsTo(to: string, from?: string, trip?: "one" | "round
 }
 
 /**
- * Like searchFlightsTo, but opens the results page at once, keeping the visitor's
- * travellers, cabin and currency (and dates, if they picked any) from the widget.
+ * Like searchFlightsTo, but opens the results page at once, keeping the visitor's dates,
+ * travellers, cabin and currency from the widget.
  */
 export function showFlightsTo(to: string, from?: string, trip?: "one" | "round"): boolean {
   return sendToSearchBar({ to, ...(from ? { from } : {}), ...(trip ? { trip } : {}), go: true });

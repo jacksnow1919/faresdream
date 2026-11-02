@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { ShieldCheck } from "lucide-react";
 import { adminLogin } from "@/lib/bookings.functions";
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/admin/")({
 function AdminLogin() {
   const navigate = useNavigate();
   const login = useServerFn(adminLogin);
+  const queryClient = useQueryClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -37,6 +39,8 @@ function AdminLogin() {
     try {
       const res = await login({ data: { email, password } });
       if (res.ok) {
+        // Drop whatever an earlier session left behind, so the console loads this role.
+        queryClient.clear();
         navigate({ to: "/admin/dashboard" });
         return;
       }

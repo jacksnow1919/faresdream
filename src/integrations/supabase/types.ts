@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_activity: {
+        Row: {
+          action: string
+          created_at: string
+          entity: string
+          entity_id: string | null
+          id: string
+          staff_email: string
+          staff_id: string | null
+          staff_role: string
+          summary: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          entity: string
+          entity_id?: string | null
+          id?: string
+          staff_email: string
+          staff_id?: string | null
+          staff_role: string
+          summary: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          entity?: string
+          entity_id?: string | null
+          id?: string
+          staff_email?: string
+          staff_id?: string | null
+          staff_role?: string
+          summary?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_activity_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agent_profiles: {
         Row: {
           agency_name: string
@@ -527,6 +571,77 @@ export type Database = {
           wallet_credits?: number
         }
         Relationships: []
+      }
+      refunds: {
+        Row: {
+          airline_penalty: number
+          airline_reference: string | null
+          booking_id: string
+          closed_by: string | null
+          created_at: string
+          currency: string
+          fare_paid: number
+          filed_at: string | null
+          id: string
+          non_refundable_taxes: number
+          notes: string | null
+          paid_at: string | null
+          reason: string | null
+          refund_amount: number
+          requested_by: string
+          service_fee: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          airline_penalty?: number
+          airline_reference?: string | null
+          booking_id: string
+          closed_by?: string | null
+          created_at?: string
+          currency?: string
+          fare_paid: number
+          filed_at?: string | null
+          id?: string
+          non_refundable_taxes?: number
+          notes?: string | null
+          paid_at?: string | null
+          reason?: string | null
+          refund_amount: number
+          requested_by: string
+          service_fee?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          airline_penalty?: number
+          airline_reference?: string | null
+          booking_id?: string
+          closed_by?: string | null
+          created_at?: string
+          currency?: string
+          fare_paid?: number
+          filed_at?: string | null
+          id?: string
+          non_refundable_taxes?: number
+          notes?: string | null
+          paid_at?: string | null
+          reason?: string | null
+          refund_amount?: number
+          requested_by?: string
+          service_fee?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "refunds_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       route_fare_cache: {
         Row: {

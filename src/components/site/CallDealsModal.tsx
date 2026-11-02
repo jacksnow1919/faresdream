@@ -1,16 +1,35 @@
 import { useEffect, useState } from "react";
-import { Phone, Star, Award } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import agentAsset from "@/assets/agent-avatar.jpg.asset.json";
+import { useRouterState } from "@tanstack/react-router";
+import { BadgePercent, Check, Phone, X } from "lucide-react";
+import { AgentAvatar } from "@/components/site/ui";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { PHONE_DISPLAY, PHONE_TEL, PROMO_CODE } from "@/lib/brand";
 
 const SEEN_KEY = "fd-call-modal-seen";
 
+const PERKS = [
+  "Phone-only fares you won't see online",
+  "Help with seats, bags and changes",
+  "Real travel experts, day or night",
+];
+
+/**
+ * Phone-deals popup: once per visit, 25 seconds in or when the pointer heads for the
+ * browser's tabs (leaving). Never in the admin console.
+ */
 export function CallDealsModal() {
   const [open, setOpen] = useState(false);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const inAdmin = pathname.startsWith("/admin");
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || inAdmin) return;
     if (window.sessionStorage.getItem(SEEN_KEY)) return;
 
     const show = () => {
@@ -28,51 +47,68 @@ export function CallDealsModal() {
       window.clearTimeout(timer);
       document.removeEventListener("mouseleave", onLeave);
     };
-  }, []);
+  }, [inAdmin]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-sm gap-0 p-6 text-center">
-        <img
-          src={agentAsset.url}
-          alt="FaresDream phone booking agent"
-          loading="lazy"
-          width={512}
-          height={512}
-          className="mx-auto size-24 rounded-full object-cover"
-        />
-        <h2 className="mt-4 font-display text-xl font-bold text-navy">
-          Better deals are one call away
-        </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Say <span className="rounded-md bg-gold-soft px-1.5 py-0.5 font-bold text-gold">{PROMO_CODE}</span>{" "}
-          and save up to $50 on phone bookings.
-        </p>
-        <a
-          href={`tel:${PHONE_TEL}`}
-          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground transition hover:brightness-110"
-        >
-          <Phone className="size-4" /> Call Us: {PHONE_DISPLAY}
-        </a>
-        <div className="mt-5 flex items-center justify-center gap-4 text-left">
-          <div className="flex items-center gap-1.5">
-            <span className="flex text-gold">
-              {[0, 1, 2, 3].map((i) => (
-                <Star key={i} className="size-3.5 fill-current" />
-              ))}
+      {/* The dialog's built-in close button is hidden; ours sits on the blue header. */}
+      <DialogContent className="w-[calc(100%-2rem)] max-w-[400px] gap-0 overflow-hidden rounded-3xl border-0 p-0 sm:rounded-3xl [&>button:last-child]:hidden">
+        <div className="relative bg-linear-to-br from-primary to-sky-500 px-6 pb-9 pt-7 text-center text-white">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgb(255_255_255/0.16)_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]"
+          />
+          <DialogClose
+            aria-label="Close"
+            className="absolute right-3 top-3 grid size-8 place-items-center rounded-full bg-white/15 text-white transition hover:bg-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            <X className="size-4" />
+          </DialogClose>
+
+          <AgentAvatar
+            className="mx-auto size-16 bg-white text-primary shadow-lux"
+            iconClassName="size-8"
+          />
+          <p className="relative mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+            <span className="size-1.5 rounded-full bg-emerald-300" /> Travel experts available 24/7
+          </p>
+          <DialogTitle className="relative mt-3 text-balance font-display text-2xl font-bold leading-tight tracking-normal">
+            Better fares are one call away
+          </DialogTitle>
+        </div>
+
+        <div className="relative -mt-5 px-6 pb-6">
+          {/* Coupon: the code to mention on the call. */}
+          <div className="flex items-center gap-3 rounded-2xl border-2 border-dashed border-gold/50 bg-gold-soft px-4 py-3 text-left shadow-card">
+            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-gold text-gold-foreground">
+              <BadgePercent className="size-5" />
             </span>
-            <span className="text-[11px] font-semibold text-navy">
-              Great 4.2 Stars
-              <span className="block text-muted-foreground">Trustpilot</span>
-            </span>
+            <DialogDescription className="text-sm leading-snug text-navy">
+              Say <span className="font-display text-base font-bold text-gold">{PROMO_CODE}</span>{" "}
+              when you call and save up to <span className="font-bold">$50</span> on your booking.
+            </DialogDescription>
           </div>
-          <div className="flex items-center gap-1.5 rounded-lg border border-border px-2 py-1">
-            <Award className="size-4 text-primary" />
-            <span className="text-[11px] font-semibold text-navy">
-              20+ Years
-              <span className="block text-muted-foreground">in Business</span>
-            </span>
-          </div>
+
+          <ul className="mt-4 space-y-2 text-left text-sm text-foreground">
+            {PERKS.map((p) => (
+              <li key={p} className="flex items-center gap-2.5">
+                <span className="grid size-5 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">
+                  <Check className="size-3.5" strokeWidth={3} />
+                </span>
+                {p}
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href={`tel:${PHONE_TEL}`}
+            className="mt-5 flex w-full items-center justify-center gap-2.5 rounded-full bg-gold px-6 py-3.5 font-display text-base font-bold text-gold-foreground shadow-card transition hover:brightness-110"
+          >
+            <Phone className="size-5" /> Call {PHONE_DISPLAY}
+          </a>
+          <DialogClose className="mt-3 w-full text-sm font-semibold text-muted-foreground transition hover:text-navy">
+            No thanks, keep browsing
+          </DialogClose>
         </div>
       </DialogContent>
     </Dialog>

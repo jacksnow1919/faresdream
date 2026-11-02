@@ -1,12 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { ArrowRight, Info, Plane } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/site/ui";
 import { cityOf } from "@/lib/airports";
 import { shortcutDates } from "@/lib/focus-search";
+import { newYorkYmd } from "@/lib/admin-logic";
 import { FALLBACK_DEALS, type FallbackDeal } from "@/lib/fallback-deals";
 
 export const Route = createFileRoute("/deals")({
@@ -175,7 +176,7 @@ function DealCard({ d }: { d: FallbackDeal }) {
           </p>
           {d.expires_at ? (
             <p className="text-[11px] text-muted-foreground">
-              Ends {format(new Date(d.expires_at), "d MMM yyyy")}
+              Ends {format(parseISO(newYorkYmd(d.expires_at)), "d MMM yyyy")}
             </p>
           ) : null}
         </div>

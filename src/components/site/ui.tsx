@@ -1,6 +1,25 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Headphones } from "lucide-react";
+
+/** A headset with a green "online" dot, standing in for a photo of a travel agent. */
+export function AgentAvatar({
+  className = "size-10 bg-primary/10 text-primary",
+  iconClassName = "size-5",
+}: {
+  className?: string;
+  iconClassName?: string;
+}) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`relative grid shrink-0 place-items-center rounded-full ${className}`}
+    >
+      <Headphones className={iconClassName} strokeWidth={1.75} />
+      <span className="absolute bottom-[4%] right-[4%] size-1/4 rounded-full border-2 border-white bg-emerald-500" />
+    </span>
+  );
+}
 
 /**
  * Standard page: blue header (breadcrumb, optional eyebrow tag, title, subtitle, action)
@@ -29,7 +48,7 @@ export function PageShell({
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgb(255_255_255/0.14)_1px,transparent_1px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_60%)]"
         />
-        <div className="relative mx-auto max-w-7xl">
+        <div className="relative mx-auto max-w-page">
           <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1 text-xs">
             <Link to="/" className="shrink-0 text-white/80 hover:text-white hover:underline">
               Home
@@ -55,7 +74,7 @@ export function PageShell({
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">{children}</div>
+      <div className="mx-auto max-w-page-padded px-4 py-6 sm:px-6 sm:py-8 lg:px-8">{children}</div>
     </div>
   );
 }

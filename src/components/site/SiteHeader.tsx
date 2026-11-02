@@ -13,8 +13,8 @@ import {
   MessageSquare,
   DollarSign,
 } from "lucide-react";
-import agentAsset from "@/assets/agent-avatar.jpg.asset.json";
 import { CurrencySelect } from "@/components/site/CurrencyContext";
+import { AgentAvatar } from "@/components/site/ui";
 import { LOGO, PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
 
 const drawerLinks = [
@@ -30,7 +30,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-border bg-background shadow-card">
-        <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 lg:gap-6">
+        <div className="mx-auto flex h-16 max-w-page-padded items-center gap-4 px-4 sm:px-6 lg:gap-6 lg:px-8">
           <Link to="/" className="flex min-w-0 shrink-0 items-center">
             <img
               src={LOGO.src}
@@ -176,14 +176,7 @@ export function SiteHeader() {
             {/* Sticky agent card */}
             <div className="border-t border-border bg-secondary p-4">
               <div className="flex items-start gap-3">
-                <img
-                  src={agentAsset.url}
-                  alt="FaresDream travel agent"
-                  loading="lazy"
-                  width={512}
-                  height={512}
-                  className="size-12 shrink-0 rounded-full object-cover"
-                />
+                <AgentAvatar className="size-12 bg-card text-primary" iconClassName="size-6" />
                 <p className="min-w-0 text-xs leading-relaxed text-muted-foreground">
                   <span className="block text-sm font-bold text-navy">
                     Access phone-only deals!

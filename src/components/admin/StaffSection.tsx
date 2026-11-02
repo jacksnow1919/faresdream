@@ -41,13 +41,17 @@ export function StaffSection() {
       setFullName("");
       setPassword("");
       void queryClient.invalidateQueries({ queryKey: ["admin-staff"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-activity"] });
     },
   });
 
   const patch = useMutation({
     mutationFn: (vars: { id: string; role?: StaffRole; active?: boolean }) =>
       patchStaff({ data: vars }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-staff"] }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["admin-staff"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-activity"] });
+    },
   });
 
   if (data && data.authorized === false) return null;

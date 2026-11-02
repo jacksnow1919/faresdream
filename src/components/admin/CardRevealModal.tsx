@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Eye, Loader2, ShieldAlert, X } from "lucide-react";
 import { revealBookingCard } from "@/lib/staff.functions";
@@ -27,6 +27,7 @@ export function CardRevealModal({
   const [message, setMessage] = useState("");
   const [secondsLeft, setSecondsLeft] = useState(60);
 
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () => reveal({ data: { bookingId, remarks: remarks.trim() } }),
     onSuccess: (res) => {
@@ -37,6 +38,7 @@ export function CardRevealModal({
       setMessage("");
       setCard(res.card as RevealedCard);
       setSecondsLeft(60);
+      void queryClient.invalidateQueries({ queryKey: ["admin-activity"] });
     },
     onError: () => setMessage("The reveal failed. Please try again."),
   });

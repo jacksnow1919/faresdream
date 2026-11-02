@@ -1,16 +1,33 @@
 import { Fragment, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2 } from "lucide-react";
+import { Download, Loader2, Search } from "lucide-react";
 import { getAdminLeads, updateLead, type CrmLeadRow } from "@/lib/admin-crm.functions";
+import { toCsv } from "@/lib/admin-logic";
+import { downloadCsv, fileDate } from "@/components/admin/csv-download";
 
 const STATUSES = ["new", "contacted", "converted", "closed"] as const;
+
+const LEAD_CSV_COLUMNS: { header: string; value: (l: CrmLeadRow) => unknown }[] = [
+  { header: "Received", value: (l) => l.created_at },
+  { header: "Type", value: (l) => l.kind },
+  { header: "Name", value: (l) => l.name },
+  { header: "Company", value: (l) => l.company },
+  { header: "Email", value: (l) => l.email },
+  { header: "Phone", value: (l) => l.phone },
+  { header: "Route", value: (l) => l.route },
+  { header: "Cabin", value: (l) => l.cabin },
+  { header: "Customer note", value: (l) => l.notes },
+  { header: "Status", value: (l) => l.crm_status },
+  { header: "Internal notes", value: (l) => l.admin_notes },
+];
 
 export function LeadsSection() {
   const fetchLeads = useServerFn(getAdminLeads);
   const saveLead = useServerFn(updateLead);
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState<"all" | (typeof STATUSES)[number]>("all");
+  const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
   const [notes, setNotes] = useState("");
 
@@ -27,11 +44,22 @@ export function LeadsSection() {
       crm_status: (typeof STATUSES)[number];
       admin_notes?: string;
     }) => saveLead({ data: vars }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-leads"] }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["admin-leads"] });
+      void queryClient.invalidateQueries({ queryKey: ["admin-activity"] });
+    },
   });
 
+  const needle = query.trim().toLowerCase();
   const rows = (data?.authorized ? data.rows : []).filter(
-    (l) => filter === "all" || l.crm_status === filter,
+    (l) =>
+      (filter === "all" || l.crm_status === filter) &&
+      (!needle ||
+        [l.name, l.email, l.phone, l.company, l.route, l.notes]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase()
+          .includes(needle)),
   );
 
   return (
@@ -40,7 +68,29 @@ export function LeadsSection() {
         <h2 className="font-display text-base font-semibold text-navy">
           Leads &amp; Quote Requests
         </h2>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap items-center gap-2">
+          <label className="relative">
+            <span className="sr-only">Search leads</span>
+            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Name, email, phone or route"
+              className="h-9 w-56 rounded-xl border border-input bg-background pl-9 pr-3 text-sm text-navy outline-none focus:border-gold"
+            />
+          </label>
+          <button
+            onClick={() =>
+              downloadCsv(`faresdream-leads-${fileDate()}.csv`, toCsv(rows, LEAD_CSV_COLUMNS))
+            }
+            disabled={rows.length === 0}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border px-3 py-1.5 text-xs font-bold text-navy transition hover:border-gold disabled:opacity-50"
+          >
+            <Download className="size-3.5" /> Export CSV
+          </button>
+        </div>
+        <div className="flex w-full flex-wrap gap-1.5">
           {(["all", ...STATUSES] as const).map((s) => (
             <button
               key={s}
@@ -80,7 +130,7 @@ export function LeadsSection() {
             ) : rows.length === 0 ? (
               <tr>
                 <td colSpan={7} className="px-4 py-6 text-center text-xs text-muted-foreground">
-                  No leads captured yet.
+                  {needle || filter !== "all" ? "No leads match." : "No leads captured yet."}
                 </td>
               </tr>
             ) : (

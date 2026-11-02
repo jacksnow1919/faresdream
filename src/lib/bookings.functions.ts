@@ -361,7 +361,10 @@ export const getAdminBookings = createServerFn({ method: "GET" }).handler(
   },
 );
 
-/** Admin-session guarded status change for the PNR queue. */
+/**
+ * Admin-session guarded status change for the PNR queue. The rules live in
+ * statusChangeError: ticketed needs an e-ticket on record, refunded comes from a paid refund.
+ */
 export const updateBookingStatus = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
     z
@@ -372,18 +375,65 @@ export const updateBookingStatus = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    const session = await useSession<AdminSession>(sessionConfig());
-    if (session.data.admin !== true) return { ok: false as const };
+    const { getAdminActor } = await import("./admin-session.server");
+    const actor = await getAdminActor();
+    if (!actor) return { ok: false as const, message: "Your session has expired. Sign in again." };
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin
+    const { data: booking } = await supabaseAdmin
+      .from("bookings")
+      .select("pnr, status")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (!booking) return { ok: false as const, message: "Booking not found." };
+
+    const [{ count: ticketCount }, paidRefund] = await Promise.all([
+      supabaseAdmin
+        .from("tickets")
+        .select("id", { count: "exact", head: true })
+        .eq("booking_id", data.id),
+      supabaseAdmin
+        .from("refunds")
+        .select("id")
+        .eq("booking_id", data.id)
+        .eq("status", "paid")
+        .limit(1)
+        .maybeSingle(),
+    ]);
+    const { statusChangeError } = await import("./admin-logic");
+    const blocked = statusChangeError(booking.status, data.status, {
+      ticketCount: ticketCount ?? 0,
+      hasPaidRefund: Boolean(paidRefund.data),
+    });
+    if (blocked) return { ok: false as const, message: blocked };
+    if (booking.status === data.status) return { ok: true as const, message: "" };
+
+    // Only update from the status we checked, so two people can't both move it on.
+    const { data: updated, error } = await supabaseAdmin
       .from("bookings")
       .update({ status: data.status })
-      .eq("id", data.id);
+      .eq("id", data.id)
+      .eq("status", booking.status)
+      .select("id")
+      .maybeSingle();
 
     if (error) {
       console.error("[updateBookingStatus] update failed", error);
       throw new Error("Could not update the booking status.");
     }
-    return { ok: true as const };
+    if (!updated) {
+      return {
+        ok: false as const,
+        message: "Someone else just changed this booking. Reload and try again.",
+      };
+    }
+
+    const { logActivity } = await import("./admin-activity.server");
+    await logActivity(actor, {
+      action: "booking.status",
+      entity: "booking",
+      entityId: data.id,
+      summary: `Changed ${booking.pnr ?? "a booking"} from ${booking.status} to ${data.status}`,
+    });
+    return { ok: true as const, message: "" };
   });

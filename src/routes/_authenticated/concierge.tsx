@@ -233,7 +233,7 @@ function ConciergePage() {
 
   return (
     <div className="min-h-[100dvh] bg-navy text-navy-foreground">
-      <div className="mx-auto flex max-w-7xl gap-6 px-4 py-6">
+      <div className="mx-auto flex max-w-page-padded gap-6 px-4 py-6 sm:px-6 lg:px-8">
         <aside className="hidden w-64 shrink-0 lg:block">{sidebar}</aside>
 
         <section className="flex min-h-[70dvh] min-w-0 flex-1 flex-col rounded-2xl border border-white/10 bg-navy-soft/50">

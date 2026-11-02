@@ -83,6 +83,12 @@ export const createStaff = createServerFn({ method: "POST" })
         message: error.code === "23505" ? "That email already has an account." : "Could not create the account.",
       };
     }
+    const { logActivity } = await import("./admin-activity.server");
+    await logActivity(actor, {
+      action: "staff.created",
+      entity: "staff",
+      summary: `Created ${data.role} account for ${data.email.toLowerCase()}`,
+    });
     return { ok: true as const, message: "" };
   });
 
@@ -120,11 +126,28 @@ export const updateStaff = createServerFn({ method: "POST" })
     if (Object.keys(patch).length === 0) return { ok: true as const };
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("staff_users").update(patch).eq("id", data.id);
+    const { data: updated, error } = await supabaseAdmin
+      .from("staff_users")
+      .update(patch)
+      .eq("id", data.id)
+      .select("email")
+      .maybeSingle();
     if (error) {
       console.error("[updateStaff] failed", error);
       throw new Error("Could not update the staff account.");
     }
+    const changes = [
+      data.role ? `role to ${data.role}` : "",
+      typeof data.active === "boolean" ? (data.active ? "reactivated" : "deactivated") : "",
+      data.password ? "password reset" : "",
+    ].filter(Boolean);
+    const { logActivity } = await import("./admin-activity.server");
+    await logActivity(actor, {
+      action: "staff.updated",
+      entity: "staff",
+      entityId: data.id,
+      summary: `Updated ${updated?.email ?? "a staff account"}: ${changes.join(", ")}`,
+    });
     return { ok: true as const };
   });
 
@@ -149,7 +172,7 @@ export const setBookingVerification = createServerFn({ method: "POST" })
     }
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin
+    const { data: booking, error } = await supabaseAdmin
       .from("bookings")
       .update({
         verification_status: data.status,
@@ -157,12 +180,21 @@ export const setBookingVerification = createServerFn({ method: "POST" })
         verified_by: actor.email,
         verified_at: new Date().toISOString(),
       })
-      .eq("id", data.id);
+      .eq("id", data.id)
+      .select("pnr")
+      .maybeSingle();
 
     if (error) {
       console.error("[setBookingVerification] failed", error);
       throw new Error("Could not update the verification state.");
     }
+    const { logActivity } = await import("./admin-activity.server");
+    await logActivity(actor, {
+      action: "booking.verification",
+      entity: "booking",
+      entityId: data.id,
+      summary: `Marked ${booking?.pnr ?? "a booking"} ${data.status}: ${data.remarks}`,
+    });
     return { ok: true as const, message: "" };
   });
 
@@ -204,6 +236,18 @@ export const captureFunds = createServerFn({ method: "POST" })
       .update({ status: "captured" })
       .eq("booking_id", data.id);
 
+    const { data: captured } = await supabaseAdmin
+      .from("bookings")
+      .select("pnr")
+      .eq("id", data.id)
+      .maybeSingle();
+    const { logActivity } = await import("./admin-activity.server");
+    await logActivity(actor, {
+      action: "booking.captured",
+      entity: "booking",
+      entityId: data.id,
+      summary: `Captured funds for ${captured?.pnr ?? "a booking"}`,
+    });
     return { ok: true as const, message: "" };
   });
 
@@ -247,6 +291,13 @@ export const revealBookingCard = createServerFn({ method: "POST" })
       booking_id: data.bookingId,
       vaulted_card_id: row.id,
       remarks: data.remarks,
+    });
+    const { logActivity } = await import("./admin-activity.server");
+    await logActivity(actor, {
+      action: "card.revealed",
+      entity: "booking",
+      entityId: data.bookingId,
+      summary: `Revealed the full card number for a booking: ${data.remarks}`,
     });
 
     return {

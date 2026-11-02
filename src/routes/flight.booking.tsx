@@ -830,7 +830,7 @@ function BookingPage() {
 
       {step === 3 ? (
         <div className="fixed inset-x-0 bottom-14 z-30 border-t border-border bg-card/95 px-4 py-3 shadow-[0_-4px_16px_rgb(15_23_42/0.08)] backdrop-blur md:bottom-0">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 sm:px-2 lg:px-4">
+          <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-3 sm:px-2 lg:px-4">
             <p className="text-sm text-muted-foreground">
               You pay{" "}
               <span className="font-display text-xl font-bold text-foreground">

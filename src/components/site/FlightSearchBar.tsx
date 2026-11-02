@@ -67,6 +67,16 @@ const valueCls = "block truncate font-display text-base font-semibold text-navy"
 const compactValueCls =
   "block truncate font-display text-sm font-semibold text-navy xl:text-[15px]";
 
+/** "Mon, 16 Nov", with the year only on wide screens: it gets cut off in narrower fields. */
+function DateValue({ date, className }: { date: Date; className: string }) {
+  return (
+    <span className={className}>
+      {format(date, "EEE, d MMM")}
+      <span className="hidden xl:inline"> {format(date, "yy")}</span>
+    </span>
+  );
+}
+
 /** One flight of a multi-city trip; `date` is null until picked. */
 type Leg = { id: number; from: string; to: string; date: Date | null };
 
@@ -124,9 +134,12 @@ export function FlightSearchBar({
     initial?.origin ?? prefill?.from ?? (prefill?.to === "JFK" ? "MIA" : "JFK"),
   );
   const [destination, setDestination] = useState(initial?.destination ?? prefill?.to ?? "MIA");
-  const [date, setDate] = useState<Date>(() => (initial ? parseISO(initial.date) : new Date()));
+  // A new search starts a week out with a week's stay, not "leave today, back today".
+  const [date, setDate] = useState<Date>(() =>
+    initial ? parseISO(initial.date) : shortcutDates().depart,
+  );
   const [returnDate, setReturnDate] = useState<Date>(() =>
-    initial ? parseISO(initial.returnDate ?? initial.date) : new Date(),
+    initial ? parseISO(initial.returnDate ?? initial.date) : shortcutDates().back,
   );
   const [travelers, setTravelers] = useState<Travelers>({
     adults: initial?.passengers ?? 1,
@@ -140,8 +153,6 @@ export function FlightSearchBar({
   const [legDateOpen, setLegDateOpen] = useState<number | null>(null);
   const [legError, setLegError] = useState<string | null>(null);
   const [quoteLegs, setQuoteLegs] = useState<MultiCityLeg[] | null>(null);
-  // Until the visitor picks dates, both default to today; shortcuts then use later ones.
-  const [datesPicked, setDatesPicked] = useState(Boolean(initial));
   const legId = useRef(0);
 
   const round = trip === "round";
@@ -238,9 +249,9 @@ export function FlightSearchBar({
     const nextTrip = pickedTrip ?? (trip === "multi" ? "round" : trip);
     const nextOrigin = from ?? (to === origin ? destination : origin);
     if (go) {
-      const { depart, back } = shortcutDates(datesPicked ? date : undefined);
-      const backPicked = datesPicked && !isBefore(returnDate, depart);
-      void runSearch(nextOrigin, to, nextTrip === "round", depart, backPicked ? returnDate : back);
+      // One-way searches leave the return date alone, so it can sit before the new departure.
+      const back = isBefore(returnDate, date) ? shortcutDates(date).back : returnDate;
+      void runSearch(nextOrigin, to, nextTrip === "round", date, back);
       return;
     }
     setTrip(nextTrip);
@@ -278,7 +289,6 @@ export function FlightSearchBar({
   };
 
   const selectDate = (d: Date) => {
-    setDatesPicked(true);
     if (dateField === "depart") {
       setDate(d);
       if (round) {
@@ -424,7 +434,7 @@ export function FlightSearchBar({
                   >
                     <SegLabel icon={CalendarDays}>Departure</SegLabel>
                     {leg.date ? (
-                      <span className={value}>{format(leg.date, "EEE, d MMM yy")}</span>
+                      <DateValue date={leg.date} className={value} />
                     ) : (
                       <span className={`${value} !text-muted-foreground`}>Select date</span>
                     )}
@@ -520,7 +530,7 @@ export function FlightSearchBar({
               className={seg(dateField === "depart")}
             >
               <SegLabel icon={CalendarDays}>Departure</SegLabel>
-              <span className={value}>{format(date, "EEE, d MMM yy")}</span>
+              <DateValue date={date} className={value} />
             </button>
 
             <div className="relative min-w-0 border-l border-border">
@@ -534,7 +544,7 @@ export function FlightSearchBar({
               >
                 <SegLabel icon={CalendarDays}>Return</SegLabel>
                 {round ? (
-                  <span className={value}>{format(returnDate, "EEE, d MMM yy")}</span>
+                  <DateValue date={returnDate} className={value} />
                 ) : (
                   <span className={`${value} !text-muted-foreground`}>Select Date</span>
                 )}

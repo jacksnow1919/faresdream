@@ -118,20 +118,30 @@ export const updateLead = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    const { isAdminRequest } = await import("./admin-session.server");
-    if (!(await isAdminRequest())) return { ok: false as const };
+    const { getAdminActor } = await import("./admin-session.server");
+    const actor = await getAdminActor();
+    if (!actor) return { ok: false as const };
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const table = data.kind === "quote" ? "fare_leads" : "corporate_leads";
-    const { error } = await supabaseAdmin
+    const { data: lead, error } = await supabaseAdmin
       .from(table)
       .update({ crm_status: data.crm_status, admin_notes: data.admin_notes ?? null })
-      .eq("id", data.id);
+      .eq("id", data.id)
+      .select("email")
+      .maybeSingle();
 
     if (error) {
       console.error("[updateLead] failed", error);
       throw new Error("Could not update the lead.");
     }
+    const { logActivity } = await import("./admin-activity.server");
+    await logActivity(actor, {
+      action: "lead.updated",
+      entity: "lead",
+      entityId: data.id,
+      summary: `Set lead ${lead?.email ?? ""} to ${data.crm_status}`,
+    });
     return { ok: true as const };
   });
 
@@ -154,8 +164,9 @@ export const createVerificationRequest = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    const { isAdminRequest } = await import("./admin-session.server");
-    if (!(await isAdminRequest())) return { ok: false as const, token: "" };
+    const { getAdminActor } = await import("./admin-session.server");
+    const actor = await getAdminActor();
+    if (!actor) return { ok: false as const, token: "" };
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const token = makeToken();
@@ -174,6 +185,13 @@ export const createVerificationRequest = createServerFn({ method: "POST" })
       console.error("[createVerificationRequest] failed", error);
       throw new Error("Could not create the verification link.");
     }
+    const { logActivity } = await import("./admin-activity.server");
+    await logActivity(actor, {
+      action: "verification.created",
+      entity: "verification",
+      entityId: data.bookingId ?? null,
+      summary: `Sent an ID verification link to ${data.customerEmail || data.customerName || "a customer"}`,
+    });
     return { ok: true as const, token };
   });
 
@@ -224,23 +242,33 @@ export const reviewVerification = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    const { isAdminRequest } = await import("./admin-session.server");
-    if (!(await isAdminRequest())) return { ok: false as const };
+    const { getAdminActor } = await import("./admin-session.server");
+    const actor = await getAdminActor();
+    if (!actor) return { ok: false as const };
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin
+    const { data: request, error } = await supabaseAdmin
       .from("verification_requests")
       .update({
         status: data.status,
         admin_notes: data.adminNotes ?? null,
         reviewed_at: new Date().toISOString(),
       })
-      .eq("id", data.id);
+      .eq("id", data.id)
+      .select("customer_email, customer_name")
+      .maybeSingle();
 
     if (error) {
       console.error("[reviewVerification] failed", error);
       throw new Error("Could not update the verification request.");
     }
+    const { logActivity } = await import("./admin-activity.server");
+    await logActivity(actor, {
+      action: "verification.reviewed",
+      entity: "verification",
+      entityId: data.id,
+      summary: `Marked ID verification for ${request?.customer_email || request?.customer_name || "a customer"} ${data.status}`,
+    });
     return { ok: true as const };
   });
 
@@ -283,8 +311,9 @@ export const revealVaultedCard = createServerFn({ method: "POST" })
     z.object({ verificationRequestId: z.string().uuid() }).parse(data),
   )
   .handler(async ({ data }) => {
-    const { isAdminRequest } = await import("./admin-session.server");
-    if (!(await isAdminRequest())) return { ok: false as const };
+    const { getAdminActor } = await import("./admin-session.server");
+    const actor = await getAdminActor();
+    if (!actor) return { ok: false as const };
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row } = await supabaseAdmin
@@ -300,6 +329,13 @@ export const revealVaultedCard = createServerFn({ method: "POST" })
     const { decryptSecret } = await import("./card-vault.server");
     const number = await decryptSecret(row.ciphertext, row.iv);
     console.warn("[revealVaultedCard] admin decrypted vaulted card", row.id);
+    const { logActivity } = await import("./admin-activity.server");
+    await logActivity(actor, {
+      action: "card.revealed",
+      entity: "verification",
+      entityId: data.verificationRequestId,
+      summary: "Revealed the full card number on an ID verification",
+    });
 
     return {
       ok: true as const,

@@ -19,6 +19,11 @@
  */
 
 @theme inline {
+  /* Page width. Use max-w-page when the side padding is on a parent, and max-w-page-padded
+     when it's on the same element (px-4 sm:px-6 lg:px-8). Both leave 1200px of content. */
+  --container-page: 75rem;
+  --container-page-padded: 79rem;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

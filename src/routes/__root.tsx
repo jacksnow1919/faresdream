@@ -85,6 +85,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      // Proves ownership of the site to Google Search Console. Keep it: removing it unverifies.
+      {
+        name: "google-site-verification",
+        content: "AJFYMz8-yEzMKEtdZrWLE_V3mbREZBZoqRpXnGvxAT8",
+      },
       { title: "FaresDream — Compare Cheap Flights & Wholesale Airfare" },
       {
         name: "description",

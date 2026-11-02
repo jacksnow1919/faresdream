@@ -82,8 +82,8 @@ export function RecentSearches() {
   if (items.length === 0) return null;
 
   return (
-    <section className="px-4 pt-8 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+      <div className="mx-auto max-w-page">
         <div className="flex items-end justify-between gap-4">
           <h2 className="font-display text-xl font-bold text-navy sm:text-2xl">Recent Searches</h2>
           <button
