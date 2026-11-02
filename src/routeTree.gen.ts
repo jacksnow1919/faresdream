@@ -22,13 +22,11 @@ import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAgentRouteImport } from './routes/_authenticated/agent'
-import { Route as AuthenticatedConciergeRouteImport } from './routes/_authenticated/concierge'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AirlinesIndexRouteImport } from './routes/airlines.index'
 import { Route as AirlinesSlugRouteImport } from './routes/airlines.$slug'
-import { Route as ApiConciergeRouteImport } from './routes/api/concierge'
 import { Route as DestinationsIndexRouteImport } from './routes/destinations.index'
 import { Route as DestinationsSlugRouteImport } from './routes/destinations.$slug'
 import { Route as FlightConfirmRouteImport } from './routes/flight.Confirm'
@@ -107,11 +105,6 @@ const AuthenticatedAgentRoute = AuthenticatedAgentRouteImport.update({
   path: '/agent',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedConciergeRoute = AuthenticatedConciergeRouteImport.update({
-  id: '/concierge',
-  path: '/concierge',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -135,11 +128,6 @@ const AirlinesIndexRoute = AirlinesIndexRouteImport.update({
 const AirlinesSlugRoute = AirlinesSlugRouteImport.update({
   id: '/airlines/$slug',
   path: '/airlines/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiConciergeRoute = ApiConciergeRouteImport.update({
-  id: '/api/concierge',
-  path: '/api/concierge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DestinationsIndexRoute = DestinationsIndexRouteImport.update({
@@ -221,11 +209,9 @@ export interface FileRoutesByFullPath {
   '/sitemap': typeof SitemapRoute
   '/terms': typeof TermsRoute
   '/agent': typeof AuthenticatedAgentRoute
-  '/concierge': typeof AuthenticatedConciergeRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/airlines/$slug': typeof AirlinesSlugRoute
-  '/api/concierge': typeof ApiConciergeRoute
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/flight/Confirm': typeof FlightConfirmRoute
   '/flight/booking': typeof FlightBookingRoute
@@ -255,11 +241,9 @@ export interface FileRoutesByTo {
   '/sitemap': typeof SitemapRoute
   '/terms': typeof TermsRoute
   '/agent': typeof AuthenticatedAgentRoute
-  '/concierge': typeof AuthenticatedConciergeRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/airlines/$slug': typeof AirlinesSlugRoute
-  '/api/concierge': typeof ApiConciergeRoute
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/flight/Confirm': typeof FlightConfirmRoute
   '/flight/booking': typeof FlightBookingRoute
@@ -291,11 +275,9 @@ export interface FileRoutesById {
   '/sitemap': typeof SitemapRoute
   '/terms': typeof TermsRoute
   '/_authenticated/agent': typeof AuthenticatedAgentRoute
-  '/_authenticated/concierge': typeof AuthenticatedConciergeRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/airlines/$slug': typeof AirlinesSlugRoute
-  '/api/concierge': typeof ApiConciergeRoute
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/flight/Confirm': typeof FlightConfirmRoute
   '/flight/booking': typeof FlightBookingRoute
@@ -327,11 +309,9 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/terms'
     | '/agent'
-    | '/concierge'
     | '/dashboard'
     | '/admin/dashboard'
     | '/airlines/$slug'
-    | '/api/concierge'
     | '/destinations/$slug'
     | '/flight/Confirm'
     | '/flight/booking'
@@ -361,11 +341,9 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/terms'
     | '/agent'
-    | '/concierge'
     | '/dashboard'
     | '/admin/dashboard'
     | '/airlines/$slug'
-    | '/api/concierge'
     | '/destinations/$slug'
     | '/flight/Confirm'
     | '/flight/booking'
@@ -396,11 +374,9 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/terms'
     | '/_authenticated/agent'
-    | '/_authenticated/concierge'
     | '/_authenticated/dashboard'
     | '/admin/dashboard'
     | '/airlines/$slug'
-    | '/api/concierge'
     | '/destinations/$slug'
     | '/flight/Confirm'
     | '/flight/booking'
@@ -433,7 +409,6 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AirlinesSlugRoute: typeof AirlinesSlugRoute
-  ApiConciergeRoute: typeof ApiConciergeRoute
   DestinationsSlugRoute: typeof DestinationsSlugRoute
   FlightConfirmRoute: typeof FlightConfirmRoute
   FlightBookingRoute: typeof FlightBookingRoute
@@ -544,13 +519,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAgentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/concierge': {
-      id: '/_authenticated/concierge'
-      path: '/concierge'
-      fullPath: '/concierge'
-      preLoaderRoute: typeof AuthenticatedConciergeRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -584,13 +552,6 @@ declare module '@tanstack/react-router' {
       path: '/airlines/$slug'
       fullPath: '/airlines/$slug'
       preLoaderRoute: typeof AirlinesSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/concierge': {
-      id: '/api/concierge'
-      path: '/api/concierge'
-      fullPath: '/api/concierge'
-      preLoaderRoute: typeof ApiConciergeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/destinations/': {
@@ -689,13 +650,11 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgentRoute: typeof AuthenticatedAgentRoute
-  AuthenticatedConciergeRoute: typeof AuthenticatedConciergeRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgentRoute: AuthenticatedAgentRoute,
-  AuthenticatedConciergeRoute: AuthenticatedConciergeRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
 }
 
@@ -717,7 +676,6 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AirlinesSlugRoute: AirlinesSlugRoute,
-  ApiConciergeRoute: ApiConciergeRoute,
   DestinationsSlugRoute: DestinationsSlugRoute,
   FlightConfirmRoute: FlightConfirmRoute,
   FlightBookingRoute: FlightBookingRoute,

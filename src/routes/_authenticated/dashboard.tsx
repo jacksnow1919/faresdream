@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell, Card, SectionTitle, Stat } from "@/components/site/ui";
-import { Bell, Bookmark, Crown, LogOut, Sparkles, Wallet } from "lucide-react";
+import { Bell, Bookmark, Crown, LogOut, Wallet } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
           "Manage active, past and cancelled trips, wallet credits, elite loyalty status, saved searches and price-drop alerts.",
       },
       { property: "og:title", content: "Your Business Class Dashboard" },
-      { property: "og:description", content: "Trips, wallet, loyalty tier and AI concierge in one place." },
+      { property: "og:description", content: "Trips, wallet and loyalty tier in one place." },
     ],
   }),
   component: Dashboard,
@@ -27,7 +27,6 @@ function Dashboard() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [tab, setTab] = useState<"active" | "past" | "cancelled">("active");
-  const [concierge, setConcierge] = useState(false);
 
   const { data: profile } = useQuery({
     queryKey: ["profile"],
@@ -73,7 +72,7 @@ function Dashboard() {
     <PageShell
       eyebrow="Customer Dashboard"
       title={profile?.full_name ? `Welcome, ${profile.full_name}` : "My account"}
-      subtitle="Trips, wallet credits, loyalty status and your AI concierge."
+      subtitle="Trips, wallet credits and loyalty status."
     >
       <div className="grid gap-4 sm:grid-cols-3">
         <Stat label="Wallet & credits" value={`$${Number(profile?.wallet_credits ?? 0).toLocaleString()}`} />
@@ -189,21 +188,6 @@ function Dashboard() {
             </button>
           </Card>
 
-          <Card>
-            <button
-              onClick={() => setConcierge((v) => !v)}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy px-5 py-3 text-sm font-bold text-navy-foreground"
-            >
-              <Sparkles className="size-4 text-gold" /> AI Concierge
-            </button>
-            {concierge ? (
-              <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-                <li>✈️ Check-in for your next flight opens in 3 days — I'll remind you.</li>
-                <li>🛂 Your destination requires a visa on arrival; passport validity 6 months.</li>
-                <li>🗺️ Lounge map: Concourse B, level 2, past duty free — 8 min walk from gate.</li>
-              </ul>
-            ) : null}
-          </Card>
         </div>
       </div>
     </PageShell>
