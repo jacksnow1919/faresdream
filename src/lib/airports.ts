@@ -1,3 +1,5 @@
+import { useEffect, useSyncExternalStore } from "react";
+
 export type Airport = {
   code: string;
   name: string;
@@ -7,6 +9,7 @@ export type Airport = {
   cityCode?: string;
 };
 
+/** Hub airports, always available. The rest of the world loads on demand: see loadAllAirports. */
 export const airports: Airport[] = [
   { code: "GOI", name: "Dabolim Goa Intl", city: "Goa", country: "India", cityCode: "GOI" },
   { code: "GOX", name: "Manohar Intl (Mopa)", city: "Goa", country: "India", cityCode: "GOI" },
@@ -172,7 +175,7 @@ export const airports: Airport[] = [
     country: "United States",
     cityCode: "MIA",
   },
-  { code: "MCO", name: "Orlando Intl", city: "Orlando", country: "United States", cityCode: "MCO" },
+  { code: "MCO", name: "Orlando Intl", city: "Orlando", country: "United States", cityCode: "ORL" },
   { code: "TPA", name: "Tampa Intl", city: "Tampa", country: "United States", cityCode: "TPA" },
   {
     code: "ATL",
@@ -332,7 +335,7 @@ export const airports: Airport[] = [
   },
   { code: "YVR", name: "Vancouver Intl", city: "Vancouver", country: "Canada", cityCode: "YVR" },
   { code: "YYC", name: "Calgary Intl", city: "Calgary", country: "Canada", cityCode: "YYC" },
-  { code: "YEG", name: "Edmonton Intl", city: "Edmonton", country: "Canada", cityCode: "YEG" },
+  { code: "YEG", name: "Edmonton Intl", city: "Edmonton", country: "Canada", cityCode: "YEA" },
   {
     code: "YOW",
     name: "Ottawa Macdonald-Cartier Intl",
@@ -430,7 +433,7 @@ export const airports: Airport[] = [
     country: "Hungary",
     cityCode: "BUD",
   },
-  { code: "OTP", name: "Henri Coanda", city: "Bucharest", country: "Romania", cityCode: "OTP" },
+  { code: "OTP", name: "Henri Coanda", city: "Bucharest", country: "Romania", cityCode: "BUH" },
   { code: "KBP", name: "Boryspil", city: "Kyiv", country: "Ukraine", cityCode: "IEV" },
   { code: "SVO", name: "Sheremetyevo", city: "Moscow", country: "Russia", cityCode: "MOW" },
   { code: "DME", name: "Domodedovo", city: "Moscow", country: "Russia", cityCode: "MOW" },
@@ -487,7 +490,7 @@ export const airports: Airport[] = [
   { code: "TLV", name: "Ben Gurion", city: "Tel Aviv", country: "Israel", cityCode: "TLV" },
   { code: "CAI", name: "Cairo Intl", city: "Cairo", country: "Egypt", cityCode: "CAI" },
   { code: "HRG", name: "Hurghada Intl", city: "Hurghada", country: "Egypt", cityCode: "HRG" },
-  { code: "CMN", name: "Mohammed V Intl", city: "Casablanca", country: "Morocco", cityCode: "CMN" },
+  { code: "CMN", name: "Mohammed V Intl", city: "Casablanca", country: "Morocco", cityCode: "CAS" },
   { code: "RAK", name: "Marrakesh Menara", city: "Marrakesh", country: "Morocco", cityCode: "RAK" },
   { code: "TUN", name: "Tunis-Carthage", city: "Tunis", country: "Tunisia", cityCode: "TUN" },
   { code: "ALG", name: "Houari Boumediene", city: "Algiers", country: "Algeria", cityCode: "ALG" },
@@ -628,15 +631,15 @@ export const airports: Airport[] = [
   { code: "HAN", name: "Noi Bai Intl", city: "Hanoi", country: "Vietnam", cityCode: "HAN" },
   { code: "DAD", name: "Da Nang Intl", city: "Da Nang", country: "Vietnam", cityCode: "DAD" },
   {
-    code: "PNH",
-    name: "Phnom Penh Intl",
+    code: "KTI",
+    name: "Techo Intl",
     city: "Phnom Penh",
     country: "Cambodia",
     cityCode: "PNH",
   },
   {
-    code: "REP",
-    name: "Siem Reap Angkor Intl",
+    code: "SAI",
+    name: "Siem Reap-Angkor Intl",
     city: "Siem Reap",
     country: "Cambodia",
     cityCode: "REP",
@@ -676,7 +679,7 @@ export const airports: Airport[] = [
     cityCode: "SZX",
   },
   { code: "CTU", name: "Chengdu Tianfu Intl", city: "Chengdu", country: "China", cityCode: "CTU" },
-  { code: "XIY", name: "Xi'an Xianyang Intl", city: "Xi'an", country: "China", cityCode: "XIY" },
+  { code: "XIY", name: "Xi'an Xianyang Intl", city: "Xi'an", country: "China", cityCode: "SIA" },
   {
     code: "HGH",
     name: "Hangzhou Xiaoshan Intl",
@@ -801,7 +804,7 @@ const countryAliases: Record<string, string[]> = {
   "united arab emirates": ["uae", "emirates", "dubai emirates"],
   "south korea": ["korea"],
   netherlands: ["holland"],
-  "czech republic": ["czechia"],
+  czechia: ["czech republic"],
   "hong kong": ["hongkong"],
   turkey: ["turkiye"],
 };
@@ -878,28 +881,136 @@ const HUB_RANK: Record<string, number> = Object.fromEntries(
 );
 
 const hubRank = (code: string) => HUB_RANK[code] ?? 500;
+/** Airports outside the hub list rank after it, international and main city airports first. */
+const otherRank = (a: Airport) =>
+  600 - (/\b(intl|international)\b/i.test(a.name) ? 20 : 0) - (a.code === a.cityCode ? 10 : 0);
+
+const LETTERS: Record<string, string> = {
+  ı: "i",
+  ł: "l",
+  ø: "o",
+  ð: "d",
+  đ: "d",
+  æ: "ae",
+  þ: "th",
+};
+
+/** Lowercase with no accents or punctuation, so "sao paulo" finds "São Paulo". */
+const normalize = (text: string) =>
+  text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .replace(/[ıłøðđæþ]/g, (c) => LETTERS[c] ?? c)
+    .replace(/['’ʻ"]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
+type SearchEntry = {
+  airport: Airport;
+  code: string;
+  cityCode: string;
+  city: string;
+  name: string;
+  aliases: string[];
+  countryTerms: string[];
+  rank: number;
+};
+
+const toSearchEntry = (a: Airport, rank: number): SearchEntry => {
+  const country = normalize(a.country);
+  return {
+    airport: a,
+    code: a.code.toLowerCase(),
+    cityCode: (a.cityCode ?? a.code).toLowerCase(),
+    city: normalize(a.city),
+    name: normalize(a.name),
+    aliases: [...(cityAliases[a.code] ?? []), ...(cityAliases[a.cityCode ?? ""] ?? [])],
+    countryTerms: [country, ...(countryAliases[country] ?? [])],
+    rank,
+  };
+};
+
+const byCode = new Map(airports.map((a) => [a.code, a]));
+const searchEntries = airports.map((a) => toSearchEntry(a, hubRank(a.code)));
+
+export type AirportsStatus = "hubs" | "loading" | "ready";
+
+let status: AirportsStatus = "hubs";
+let loading: Promise<void> | null = null;
+const listeners = new Set<() => void>();
+
+const setStatus = (next: AirportsStatus) => {
+  status = next;
+  listeners.forEach((listener) => listener());
+};
+
+/** Fetches every other airport, once. It's a large list, so pages only ask for it when needed. */
+export const loadAllAirports = () => {
+  if (loading) return loading;
+  setStatus("loading");
+  loading = import("./airports-all.gen.ts")
+    .then(({ AIRPORT_ROWS, COUNTRY_NAMES }) => {
+      for (const row of AIRPORT_ROWS.split("\n")) {
+        const [code = "", name = "", city = "", country = "", cityCode] = row.split("|");
+        if (byCode.has(code)) continue;
+        const airport: Airport = {
+          code,
+          name,
+          city,
+          country: COUNTRY_NAMES[country] ?? country,
+          cityCode: cityCode || code,
+        };
+        byCode.set(code, airport);
+        searchEntries.push(toSearchEntry(airport, otherRank(airport)));
+      }
+      setStatus("ready");
+    })
+    .catch(() => {
+      // The hub list keeps working; the next time a box opens tries again.
+      loading = null;
+      setStatus("hubs");
+    });
+  return loading;
+};
+
+/**
+ * Re-renders the caller when the full airport list arrives, so city names and search
+ * results update. Starts loading it unless `load` is false.
+ */
+export function useAirports(load = true): AirportsStatus {
+  const current = useSyncExternalStore<AirportsStatus>(
+    (listener) => {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+    () => status,
+    () => "hubs",
+  );
+  useEffect(() => {
+    if (load) void loadAllAirports();
+  }, [load]);
+  return current;
+}
 
 export const searchAirports = (query: string, limit = 10): Airport[] => {
-  const q = query.trim().toLowerCase();
+  const q = normalize(query);
   if (!q) return [...airports].sort((a, b) => hubRank(a.code) - hubRank(b.code)).slice(0, limit);
+  const words = q.split(" ");
 
-  const scored = airports
-    .map((a) => {
-      const code = a.code.toLowerCase();
-      const cityCode = (a.cityCode ?? a.code).toLowerCase();
-      const city = a.city.toLowerCase();
-      const name = a.name.toLowerCase();
-      const country = a.country.toLowerCase();
-      const aliases = [...(cityAliases[a.code] ?? []), ...(cityAliases[a.cityCode ?? ""] ?? [])];
-      const countryTerms = [country, ...(countryAliases[country] ?? [])];
-
+  const scored = searchEntries
+    .map((e) => {
+      const { code, cityCode, city, name, aliases, countryTerms } = e;
       let score = -1;
-      if (code === q || cityCode === q || city === q) score = 0;
-      else if (code.startsWith(q) || cityCode.startsWith(q)) score = 1;
-      else if (city.startsWith(q) || aliases.some((al) => al.startsWith(q))) score = 2;
-      // Country matches rank right after city matches so "India" lists Indian hubs.
-      else if (countryTerms.some((c) => c === q || c.startsWith(q))) score = 3;
-      else if (name.startsWith(q)) score = 4;
+      // An exact airport code always wins, even over airports grouped under that city code.
+      if (code === q) score = 0;
+      else if (cityCode === q || city === q) score = 1;
+      // A full country name lists its hubs ahead of places like Indian Springs for "India".
+      else if (countryTerms.includes(q)) score = 2;
+      else if (code.startsWith(q) || cityCode.startsWith(q)) score = 3;
+      else if (city.startsWith(q) || aliases.some((al) => al.startsWith(q))) score = 4;
+      else if (countryTerms.some((c) => c.startsWith(q))) score = 5;
+      else if (name.startsWith(q)) score = 6;
       else if (
         code.includes(q) ||
         cityCode.includes(q) ||
@@ -907,21 +1018,31 @@ export const searchAirports = (query: string, limit = 10): Airport[] => {
         name.includes(q) ||
         aliases.some((al) => al.includes(q))
       )
-        score = 5;
-      else if (countryTerms.some((c) => c.includes(q))) score = 6;
-      return { a, score };
+        score = 7;
+      else if (countryTerms.some((c) => c.includes(q))) score = 8;
+      // Several words can match across fields, like "heathrow london".
+      else if (
+        words.length > 1 &&
+        words.every((w) =>
+          [code, cityCode, city, name, ...aliases, ...countryTerms].some((f) => f.includes(w)),
+        )
+      )
+        score = 9;
+      return { e, score };
     })
     .filter((s) => s.score >= 0)
     .sort(
       (x, y) =>
         x.score - y.score ||
-        hubRank(x.a.code) - hubRank(y.a.code) ||
-        x.a.city.localeCompare(y.a.city) ||
-        x.a.code.localeCompare(y.a.code),
+        x.e.rank - y.e.rank ||
+        x.e.airport.city.localeCompare(y.e.airport.city) ||
+        x.e.airport.code.localeCompare(y.e.airport.code),
     );
 
-  return scored.slice(0, limit).map((s) => s.a);
+  return scored.slice(0, limit).map((s) => s.e.airport);
 };
 
+export const airportByCode = (code: string) => byCode.get(code);
+
 /** City name for an airport code, or the code itself when it isn't in the list. */
-export const cityOf = (code: string) => airports.find((a) => a.code === code)?.city ?? code;
+export const cityOf = (code: string) => byCode.get(code)?.city ?? code;

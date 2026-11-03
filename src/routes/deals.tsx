@@ -5,7 +5,7 @@ import { format, parseISO } from "date-fns";
 import { ArrowRight, Info, Plane } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/site/ui";
-import { cityOf } from "@/lib/airports";
+import { cityOf, useAirports } from "@/lib/airports";
 import { shortcutDates } from "@/lib/focus-search";
 import { newYorkYmd } from "@/lib/admin-logic";
 import { FALLBACK_DEALS, type FallbackDeal } from "@/lib/fallback-deals";
@@ -61,6 +61,7 @@ const money = (amount: number, currency: string) =>
   }).format(amount);
 
 function DealsPage() {
+  useAirports();
   const [airline, setAirline] = useState("All");
   const { data, isLoading } = useQuery({
     queryKey: ["deals"],

@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapPin } from "lucide-react";
-import { searchAirports } from "@/lib/airports";
+import { searchAirports, useAirports } from "@/lib/airports";
 
 export function AirportAutocomplete({
   label,
@@ -33,7 +33,8 @@ export function AirportAutocomplete({
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
-  const results = useMemo(() => searchAirports(query), [query]);
+  const airportsStatus = useAirports(open);
+  const results = open ? searchAirports(query) : [];
 
   const pick = (code: string) => {
     onChange(code);
@@ -81,7 +82,8 @@ export function AirportAutocomplete({
                 setActive((i) => Math.max(i - 1, 0));
               } else if (e.key === "Enter" && results[active]) {
                 e.preventDefault();
-                pick(results[active].code);
+                // Wait for the full list, or this could pick a hub instead of the airport typed.
+                if (airportsStatus !== "loading") pick(results[active].code);
               } else if (e.key === "Escape") {
                 setOpen(false);
               }
@@ -100,34 +102,36 @@ export function AirportAutocomplete({
 
       {open ? (
         <ul className="absolute left-0 right-0 top-[calc(100%+0.35rem)] z-50 max-h-64 w-full max-w-full overflow-y-auto overflow-x-hidden rounded-xl border border-border bg-card p-1 text-left shadow-lux">
-          {results.length === 0 ? (
+          {results.length === 0 && airportsStatus !== "loading" ? (
             <li className="px-3 py-2 text-xs text-muted-foreground">No airports found</li>
-          ) : (
-            results.map((a, i) => (
-              <li key={a.code}>
-                <button
-                  type="button"
-                  onMouseEnter={() => setActive(i)}
-                  onClick={() => pick(a.code)}
-                  className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left ${
-                    i === active ? "bg-secondary" : ""
-                  }`}
-                >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-navy text-[10px] font-bold text-navy-foreground">
-                    {a.code}
+          ) : null}
+          {airportsStatus === "loading" && query ? (
+            <li className="px-3 py-2 text-xs text-muted-foreground">Searching all airports…</li>
+          ) : null}
+          {results.map((a, i) => (
+            <li key={a.code}>
+              <button
+                type="button"
+                onMouseEnter={() => setActive(i)}
+                onClick={() => pick(a.code)}
+                className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left ${
+                  i === active ? "bg-secondary" : ""
+                }`}
+              >
+                <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-navy text-[10px] font-bold text-navy-foreground">
+                  {a.code}
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate text-xs font-semibold text-navy">
+                    {a.city} ({a.code}) — {a.name}
                   </span>
-                  <span className="min-w-0">
-                    <span className="block truncate text-xs font-semibold text-navy">
-                      {a.city} ({a.code}) — {a.name}
-                    </span>
-                    <span className="block truncate text-[11px] text-muted-foreground">
-                      {a.country}
-                    </span>
+                  <span className="block truncate text-[11px] text-muted-foreground">
+                    {a.country}
                   </span>
-                </button>
-              </li>
-            ))
-          )}
+                </span>
+              </button>
+            </li>
+          ))}
         </ul>
       ) : null}
     </div>

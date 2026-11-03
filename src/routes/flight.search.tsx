@@ -32,7 +32,7 @@ import { DateStrip, ResultsSearchBar } from "@/components/site/ResultsSearchBar"
 import { FareFilters } from "@/components/site/FareFilters";
 import { FareCard } from "@/components/site/FareCard";
 import { FlightSelectModal } from "@/components/site/FlightSelectModal";
-import { cityOf } from "@/lib/airports";
+import { cityOf, useAirports } from "@/lib/airports";
 
 type SearchParams = {
   origin: string;
@@ -110,6 +110,7 @@ const clockDuration = (minutes: number) =>
   `${String(Math.floor(minutes / 60)).padStart(2, "0")}h ${String(minutes % 60).padStart(2, "0")}m`;
 
 function SearchPage() {
+  const airportsStatus = useAirports();
   const search = Route.useSearch();
   const { origin, destination, date, returnDate, passengers, cabin, currency } = search;
   const airline = search.airline ?? "";
@@ -175,7 +176,9 @@ function SearchPage() {
         const city = cityOf(code);
         return city === code ? code : `${city} (${code})`;
       }),
-    [carrierFlights],
+    // The status is here so layover names update once the full airport list arrives.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [carrierFlights, airportsStatus],
   );
 
   // Remember this search (and its cheapest per-person fare) for the homepage "Recent Searches".

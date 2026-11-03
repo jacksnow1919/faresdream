@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { format, parseISO } from "date-fns";
 import { ArrowUpRight, Plane } from "lucide-react";
-import { airports } from "@/lib/airports";
+import { airportByCode, cityOf, useAirports } from "@/lib/airports";
 import { currencySymbol } from "@/lib/flight-search-params";
 import { clearRecentSearches, loadRecentSearches, type RecentSearch } from "@/lib/recent-searches";
-
-const cityOf = (code: string) => airports.find((a) => a.code === code)?.city ?? code;
 
 /** Saved cabins come from the results page ("PremiumEconomy") or checkout ("Premium Economy"). */
 const toSearchCabin = (cabin: string) => {
@@ -78,6 +76,9 @@ export function RecentSearches() {
 
   // localStorage is only available after mount, which also keeps SSR markup stable.
   useEffect(() => setItems(loadRecentSearches()), []);
+
+  // Only a search involving a smaller airport needs the full airport list.
+  useAirports(items.some((s) => !airportByCode(s.origin) || !airportByCode(s.destination)));
 
   if (items.length === 0) return null;
 

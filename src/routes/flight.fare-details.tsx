@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
 import { ArrowRight, Info } from "lucide-react";
-import { cityOf } from "@/lib/airports";
+import { cityOf, useAirports } from "@/lib/airports";
 import { parseFlightSearch, currencySymbol, travellerText } from "@/lib/flight-search-params";
 import { loadSelectedFare, type SelectedFare } from "@/lib/selected-fare";
 import {
@@ -44,6 +44,7 @@ const dayText = (ymd: string) => {
 };
 
 function FareDetails() {
+  useAirports();
   const s = Route.useSearch();
   const sym = currencySymbol(s.currency);
   const total = Number(s.price) || 0;

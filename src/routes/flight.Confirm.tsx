@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
 import { Check, Clock, Mail, Phone, Printer } from "lucide-react";
-import { cityOf } from "@/lib/airports";
+import { cityOf, useAirports } from "@/lib/airports";
 import { parseFlightSearch, currencySymbol, travellerText } from "@/lib/flight-search-params";
 import { PHONE_DISPLAY, PHONE_TEL, SUPPORT_EMAIL } from "@/lib/brand";
 import {
@@ -44,6 +44,7 @@ const dayText = (ymd: string) => {
 };
 
 function ConfirmPage() {
+  useAirports();
   const s = Route.useSearch();
   const sym = currencySymbol(s.currency);
   // The booking record and picked fare live in this tab's storage; read them after mount.

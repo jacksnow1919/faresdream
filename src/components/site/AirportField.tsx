@@ -1,6 +1,6 @@
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { PlaneTakeoff } from "lucide-react";
-import { airports, searchAirports } from "@/lib/airports";
+import { airportByCode, searchAirports, useAirports } from "@/lib/airports";
 
 /**
  * From/To segment of the search bar: shows "City CODE", becomes a search box on focus.
@@ -22,8 +22,9 @@ export function AirportField({
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const results = useMemo(() => searchAirports(query), [query]);
-  const selected = airports.find((a) => a.code === value);
+  const selected = airportByCode(value);
+  const airportsStatus = useAirports(open || (Boolean(value) && !selected));
+  const results = open ? searchAirports(query) : [];
 
   const pick = (code: string) => {
     onChange(code);
@@ -65,7 +66,8 @@ export function AirportField({
                 setActive((i) => Math.max(i - 1, 0));
               } else if (e.key === "Enter" && results[active]) {
                 e.preventDefault();
-                pick(results[active].code);
+                // Wait for the full list, or this could pick a hub instead of the airport typed.
+                if (airportsStatus !== "loading") pick(results[active].code);
               } else if (e.key === "Escape") {
                 inputRef.current?.blur();
               }
@@ -101,33 +103,35 @@ export function AirportField({
 
       {open ? (
         <ul className="absolute left-0 right-0 top-[calc(100%+0.35rem)] z-50 max-h-72 overflow-y-auto overflow-x-hidden rounded-xl border border-border bg-card p-1 text-left shadow-lux">
-          {results.length === 0 ? (
+          {results.length === 0 && airportsStatus !== "loading" ? (
             <li className="px-3 py-2 text-xs text-muted-foreground">No airports found</li>
-          ) : (
-            results.map((a, i) => (
-              <li key={a.code}>
-                <button
-                  type="button"
-                  // Keep focus in the input so blur doesn't close the list before the click lands.
-                  onMouseDown={(e) => e.preventDefault()}
-                  onMouseEnter={() => setActive(i)}
-                  onClick={() => pick(a.code)}
-                  className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left ${
-                    i === active ? "bg-gold-soft" : ""
-                  }`}
-                >
-                  <PlaneTakeoff className="size-4 shrink-0 text-muted-foreground" />
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-semibold text-navy">
-                      {a.city}, {a.country}
-                    </span>
-                    <span className="block truncate text-xs text-muted-foreground">{a.name}</span>
+          ) : null}
+          {airportsStatus === "loading" && query ? (
+            <li className="px-3 py-2 text-xs text-muted-foreground">Searching all airports…</li>
+          ) : null}
+          {results.map((a, i) => (
+            <li key={a.code}>
+              <button
+                type="button"
+                // Keep focus in the input so blur doesn't close the list before the click lands.
+                onMouseDown={(e) => e.preventDefault()}
+                onMouseEnter={() => setActive(i)}
+                onClick={() => pick(a.code)}
+                className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left ${
+                  i === active ? "bg-gold-soft" : ""
+                }`}
+              >
+                <PlaneTakeoff className="size-4 shrink-0 text-muted-foreground" />
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-semibold text-navy">
+                    {a.city}, {a.country}
                   </span>
-                  <span className="shrink-0 text-xs font-bold text-navy">{a.code}</span>
-                </button>
-              </li>
-            ))
-          )}
+                  <span className="block truncate text-xs text-muted-foreground">{a.name}</span>
+                </span>
+                <span className="shrink-0 text-xs font-bold text-navy">{a.code}</span>
+              </button>
+            </li>
+          ))}
         </ul>
       ) : null}
     </div>

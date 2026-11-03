@@ -14,7 +14,7 @@ import {
   newYorkYmd,
   type StaffRole,
 } from "@/lib/admin-logic";
-import { cityOf } from "@/lib/airports";
+import { cityOf, useAirports } from "@/lib/airports";
 import { DatePicker } from "@/components/site/DatePicker";
 
 const CABINS = ["Economy", "Premium Economy", "Business", "First"] as const;
@@ -71,6 +71,7 @@ const toForm = (d: DealRow): DealForm => ({
 
 /** The deals shown on /deals: add, edit, end and delete. Managers and superadmins only. */
 export function DealsSection({ role }: { role: StaffRole }) {
+  useAirports();
   const fetchDeals = useServerFn(listDeals);
   const save = useServerFn(saveDeal);
   const end = useServerFn(endDeal);

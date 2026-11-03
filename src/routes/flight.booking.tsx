@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { format } from "date-fns";
 import { ArrowLeft, ArrowRight, CreditCard, Info, Lock, User } from "lucide-react";
 import { parseFlightSearch, currencySymbol } from "@/lib/flight-search-params";
-import { cityOf } from "@/lib/airports";
+import { cityOf, useAirports } from "@/lib/airports";
 import {
   CheckoutCard,
   CheckoutShell,
@@ -177,6 +177,7 @@ const backBtn =
   "inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition hover:text-navy";
 
 function BookingPage() {
+  useAirports();
   const search = Route.useSearch();
   const navigate = useNavigate();
   const sym = currencySymbol(search.currency);
