@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Price } from "@/components/site/CurrencyContext";
 import { routes as routeData } from "@/lib/travel-data";
 import { PageShell, Card, SectionTitle } from "@/components/site/ui";
 import { Clock, Plane, TrendingDown } from "lucide-react";
@@ -14,7 +15,9 @@ export const Route = createFileRoute("/routes/$routeId")({
       return { meta: [{ title: "Route not found" }, { name: "robots", content: "noindex" }] };
     }
     const r = loaderData.route;
-    const cheapest = Math.min(...r.fares.map((f: { airline: string; price: number; stops: string }) => f.price));
+    const cheapest = Math.min(
+      ...r.fares.map((f: { airline: string; price: number; stops: string }) => f.price),
+    );
     const title = `${r.label} Business Class from $${cheapest} — Fare Comparison`;
     const description = `${r.label} business class: ${r.duration} on ${r.aircraft}. Live fare comparison and best booking window (${r.bestWindow}).`;
     return {
@@ -38,7 +41,9 @@ export const Route = createFileRoute("/routes/$routeId")({
 
 function RoutePage() {
   const { route: r } = Route.useLoaderData();
-  const cheapest = Math.min(...r.fares.map((f: { airline: string; price: number; stops: string }) => f.price));
+  const cheapest = Math.min(
+    ...r.fares.map((f: { airline: string; price: number; stops: string }) => f.price),
+  );
   return (
     <PageShell
       eyebrow={`${r.origin} → ${r.destination}`}
@@ -58,7 +63,7 @@ function RoutePage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="font-display text-lg font-semibold text-navy">
-                      ${f.price.toLocaleString()}
+                      <Price amount={f.price} />
                     </span>
                     <Link
                       to="/flight/fare-details"
@@ -102,11 +107,17 @@ function RoutePage() {
           </p>
           <p className="mt-2 text-sm font-semibold text-navy">{r.bestWindow}</p>
           <p className="mt-4 font-display text-3xl font-semibold text-navy">
-            ${cheapest.toLocaleString()}
+            <Price amount={cheapest} />
           </p>
           <Link
             to="/flight/search"
-            search={{ origin: "JFK", destination: "MIA", date: "", passengers: 1, cabin: "Business" }}
+            search={{
+              origin: "JFK",
+              destination: "MIA",
+              date: "",
+              passengers: 1,
+              cabin: "Business",
+            }}
             className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-gold px-5 py-3 text-sm font-bold text-gold-foreground"
           >
             See all options

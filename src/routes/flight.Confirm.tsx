@@ -160,6 +160,7 @@ function ConfirmPage() {
             <div className="mt-4 border-t border-border pt-4">
               <PriceSummary
                 sym={sym}
+                currency={s.currency}
                 lines={[
                   ...(discount > 0 ? [{ label: "Fare", value: total + discount }] : []),
                   ...(discount > 0

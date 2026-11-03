@@ -784,6 +784,7 @@ function BookingPage() {
           <TripSummary flight={search} selected={selected}>
             <PriceSummary
               sym={sym}
+              currency={search.currency}
               lines={priceLines}
               total={total}
               totalLabel={paxCount > 1 ? `Total (${paxCount} travellers)` : "Total"}

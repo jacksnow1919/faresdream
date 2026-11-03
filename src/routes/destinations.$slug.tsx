@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Price } from "@/components/site/CurrencyContext";
 import { destinations } from "@/lib/travel-data";
 import { PageShell, Card, SectionTitle } from "@/components/site/ui";
 import { Car, MapPin, Sofa } from "lucide-react";
@@ -67,11 +68,17 @@ function DestinationPage() {
             <MapPin className="size-3.5" /> Lowest live fare
           </p>
           <p className="mt-2 font-display text-3xl font-semibold text-navy">
-            ${d.fromPrice.toLocaleString()}
+            <Price amount={d.fromPrice} />
           </p>
           <Link
             to="/flight/search"
-            search={{ origin: "JFK", destination: "MIA", date: "", passengers: 1, cabin: "Business" }}
+            search={{
+              origin: "JFK",
+              destination: "MIA",
+              date: "",
+              passengers: 1,
+              cabin: "Business",
+            }}
             className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-gold px-5 py-3 text-sm font-bold text-gold-foreground"
           >
             Search fares to {d.city}

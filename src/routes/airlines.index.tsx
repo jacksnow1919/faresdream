@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Price } from "@/components/site/CurrencyContext";
 import { airlines } from "@/lib/travel-data";
 import { PageShell, Card, Pill } from "@/components/site/ui";
 import { Star } from "lucide-react";
@@ -13,7 +14,10 @@ export const Route = createFileRoute("/airlines/")({
           "Compare business class cabins, lie-flat seats, baggage policies and lounge access across Emirates, Qatar, Lufthansa, Turkish and Singapore Airlines.",
       },
       { property: "og:title", content: "Business Class Airlines & Cabin Guides" },
-      { property: "og:description", content: "Cabin specs, baggage rules and lounge perks for 47+ partner airlines." },
+      {
+        property: "og:description",
+        content: "Cabin specs, baggage rules and lounge perks for 47+ partner airlines.",
+      },
     ],
   }),
   component: AirlinesIndex,
@@ -46,7 +50,7 @@ function AirlinesIndex() {
             </div>
             <div className="mt-4 flex items-center justify-between">
               <p className="font-display text-xl font-semibold text-navy">
-                from ${a.fromPrice.toLocaleString()}
+                from <Price amount={a.fromPrice} />
               </p>
               <Link
                 to="/airlines/$slug"

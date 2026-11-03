@@ -26,6 +26,6 @@ The search boxes load every airport from `src/lib/airports-all.gen.ts`, built fr
 
 ```bash
 npx tsc --noEmit
-node --test scripts/admin-logic.test.ts scripts/fare-filters.test.ts scripts/airports.test.ts
+node --test scripts/admin-logic.test.ts scripts/fare-filters.test.ts scripts/airports.test.ts scripts/regional.test.ts
 npm run build
 ```

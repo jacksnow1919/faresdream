@@ -117,6 +117,7 @@ function FareDetails() {
           <TripSummary flight={s} selected={selected}>
             <PriceSummary
               sym={sym}
+              currency={s.currency}
               lines={
                 base > 0 && taxes > 0
                   ? [

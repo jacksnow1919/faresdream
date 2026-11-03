@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Price } from "@/components/site/CurrencyContext";
 import { airlines } from "@/lib/travel-data";
 import { PageShell, Card, SectionTitle } from "@/components/site/ui";
 import { BedDouble, Briefcase, Sofa, Star } from "lucide-react";
@@ -38,7 +39,11 @@ export const Route = createFileRoute("/airlines/$slug")({
 function AirlinePage() {
   const { airline: a } = Route.useLoaderData();
   return (
-    <PageShell eyebrow={`${a.code} · ${a.rating} ★`} title={`${a.name} Business Class`} subtitle={a.cabin}>
+    <PageShell
+      eyebrow={`${a.code} · ${a.rating} ★`}
+      title={`${a.name} Business Class`}
+      subtitle={a.cabin}
+    >
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="space-y-4">
           <Card>
@@ -74,13 +79,21 @@ function AirlinePage() {
 
         <Card className="lg:sticky lg:top-40 lg:self-start">
           <SectionTitle>Exclusive deals</SectionTitle>
-          <p className="mt-2 text-xs text-muted-foreground">Unpublished {a.name} fares, live today.</p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Unpublished {a.name} fares, live today.
+          </p>
           <p className="mt-3 font-display text-3xl font-semibold text-navy">
-            ${a.fromPrice.toLocaleString()}
+            <Price amount={a.fromPrice} />
           </p>
           <Link
             to="/flight/search"
-            search={{ origin: "JFK", destination: "MIA", date: "", passengers: 1, cabin: "Business" }}
+            search={{
+              origin: "JFK",
+              destination: "MIA",
+              date: "",
+              passengers: 1,
+              cabin: "Business",
+            }}
             className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-gold px-5 py-3 text-sm font-bold text-gold-foreground"
           >
             Search {a.name} fares

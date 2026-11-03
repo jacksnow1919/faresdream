@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useEffectEvent, useRef, useState, type ReactNode } from "react";
+import { countryByCode } from "@/lib/regional";
 import { useNavigate } from "@tanstack/react-router";
 import { format, isBefore, parseISO } from "date-fns";
 import {
@@ -121,7 +122,7 @@ export function FlightSearchBar({
   variant?: "home" | "results";
 }) {
   const navigate = useNavigate();
-  const { currency } = useCurrency();
+  const { currency, country } = useCurrency();
   // The results page uses a compact bar (60px fields, fare type beside the trip pills).
   const onBlue = variant === "results";
   const seg = (active = false) => segCls(active, onBlue);
@@ -134,6 +135,15 @@ export function FlightSearchBar({
     initial?.origin ?? prefill?.from ?? (prefill?.to === "JFK" ? "MIA" : "JFK"),
   );
   const [destination, setDestination] = useState(initial?.destination ?? prefill?.to ?? "MIA");
+
+  // A new search starts from the main airport of the visitor's country.
+  useEffect(() => {
+    if (initial || prefill?.from) return;
+    const airport = countryByCode(country)?.airport;
+    if (airport && airport !== destination) setOrigin(airport);
+    // Only when the country changes, so a route the visitor picked isn't overwritten.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [country]);
   // A new search starts a week out with a week's stay, not "leave today, back today".
   const [date, setDate] = useState<Date>(() =>
     initial ? parseISO(initial.date) : shortcutDates().depart,

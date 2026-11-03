@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Price } from "@/components/site/CurrencyContext";
 import { useState } from "react";
 import { BedDouble, DoorClosed, Utensils, Wine, MessageSquare, ArrowRight } from "lucide-react";
 import { CabinRouteModal, type CabinRouteTarget } from "@/components/site/CabinRouteModal";
 import { UnpublishedFaresModal } from "@/components/site/UnpublishedFaresModal";
-
 
 export const Route = createFileRoute("/cabin-suites")({
   head: () => ({
@@ -46,7 +46,7 @@ const suites: Suite[] = [
     code: "QR",
     product: "Qsuite",
     cabin: "Business",
-    bed: "79\" fully flat bed, centre pairs convert to a double bed",
+    bed: '79" fully flat bed, centre pairs convert to a double bed',
     privacy: "Closing door, quad suite for groups of four",
     dining: "Dine-on-demand à la carte",
     aircraft: "A350-1000 · 777-300ER",
@@ -116,10 +116,26 @@ const suites: Suite[] = [
 ];
 
 const promises = [
-  { icon: BedDouble, title: "Truly lie-flat", body: "We only sell seats that go fully flat — never angled recliners sold as business." },
-  { icon: DoorClosed, title: "Direct aisle access", body: "1-2-1 layouts by default, so you never step over another traveller." },
-  { icon: Utensils, title: "Dining that matters", body: "Dine-on-demand, pre-order menus and proper wine lists, cabin by cabin." },
-  { icon: Wine, title: "Ground experience", body: "Flagship lounges, chauffeur transfers and fast-track where the fare includes it." },
+  {
+    icon: BedDouble,
+    title: "Truly lie-flat",
+    body: "We only sell seats that go fully flat — never angled recliners sold as business.",
+  },
+  {
+    icon: DoorClosed,
+    title: "Direct aisle access",
+    body: "1-2-1 layouts by default, so you never step over another traveller.",
+  },
+  {
+    icon: Utensils,
+    title: "Dining that matters",
+    body: "Dine-on-demand, pre-order menus and proper wine lists, cabin by cabin.",
+  },
+  {
+    icon: Wine,
+    title: "Ground experience",
+    body: "Flagship lounges, chauffeur transfers and fast-track where the fare includes it.",
+  },
 ];
 
 function CabinSuitesPage() {
@@ -156,7 +172,6 @@ function CabinSuitesPage() {
         </div>
       </section>
 
-
       <section className="px-4 pb-12 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-page gap-4 lg:grid-cols-2">
           {suites.map((s) => (
@@ -176,7 +191,7 @@ function CabinSuitesPage() {
                 </div>
                 <p className="shrink-0 text-right">
                   <span className="block font-display text-xl font-semibold text-gold">
-                    ${s.fromPrice.toLocaleString()}
+                    <Price amount={s.fromPrice} />
                   </span>
                   <span className="text-[10px] uppercase tracking-widest text-navy-foreground/50">
                     from

@@ -5,17 +5,17 @@ import {
   Menu,
   X,
   User,
-  Globe,
   Compass,
   Briefcase,
   Star,
   HelpCircle,
   MessageSquare,
-  DollarSign,
 } from "lucide-react";
-import { CurrencySelect } from "@/components/site/CurrencyContext";
+import { useCurrency } from "@/components/site/CurrencyContext";
+import { RegionalSettingsDialog, RegionalSummary } from "@/components/site/RegionalSettings";
 import { AgentAvatar } from "@/components/site/ui";
 import { LOGO, PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
+import { countryByCode } from "@/lib/regional";
 
 const drawerLinks = [
   { to: "/destinations", label: "Explore Travel", icon: Compass },
@@ -26,6 +26,9 @@ const drawerLinks = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [regionalOpen, setRegionalOpen] = useState(false);
+  const { country, currency } = useCurrency();
+  const regionalLabel = `Regional settings: English, ${countryByCode(country)?.name ?? country}, ${currency}`;
 
   return (
     <>
@@ -63,7 +66,16 @@ export function SiteHeader() {
               <Phone className="size-4" /> Call
             </a>
 
-            <CurrencySelect className="hidden h-9 py-0 lg:inline-flex" />
+            <button
+              type="button"
+              onClick={() => setRegionalOpen(true)}
+              aria-haspopup="dialog"
+              aria-label={regionalLabel}
+              className="hidden h-10 cursor-pointer items-center gap-3.5 rounded-xl bg-navy px-4 text-sm font-medium text-navy-foreground transition hover:brightness-110 lg:inline-flex"
+            >
+              <RegionalSummary />
+            </button>
+            <RegionalSettingsDialog open={regionalOpen} onOpenChange={setRegionalOpen} />
 
             <Link
               to="/auth"
@@ -143,26 +155,17 @@ export function SiteHeader() {
               </nav>
 
               <div className="mt-3 space-y-2 border-t border-border pt-3">
-                <div className="flex items-center justify-between gap-3 px-3 py-1.5">
-                  <span className="flex items-center gap-2 text-sm font-semibold text-navy">
-                    <Globe className="size-4 text-primary" /> Change Language
-                  </span>
-                  <select
-                    aria-label="Change language"
-                    defaultValue="en"
-                    className="cursor-pointer rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold text-navy outline-none focus:border-primary"
-                  >
-                    <option value="en">English</option>
-                    <option value="es">Español</option>
-                    <option value="fr">Français</option>
-                  </select>
-                </div>
-                <div className="flex items-center justify-between gap-3 px-3 py-1.5">
-                  <span className="flex items-center gap-2 text-sm font-semibold text-navy">
-                    <DollarSign className="size-4 text-primary" /> Change Currency
-                  </span>
-                  <CurrencySelect className="px-3 py-1.5 text-xs" />
-                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    setRegionalOpen(true);
+                  }}
+                  aria-label={regionalLabel}
+                  className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl bg-navy px-3.5 py-3 text-left text-sm font-medium text-navy-foreground transition hover:brightness-110"
+                >
+                  <RegionalSummary />
+                </button>
                 <Link
                   to="/contact"
                   onClick={() => setOpen(false)}

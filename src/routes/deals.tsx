@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useCurrency } from "@/components/site/CurrencyContext";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { format, parseISO } from "date-fns";
@@ -52,13 +53,6 @@ function dealSearch(d: FallbackDeal) {
     currency: d.currency,
   };
 }
-
-const money = (amount: number, currency: string) =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: 0,
-  }).format(amount);
 
 function DealsPage() {
   useAirports();
@@ -136,6 +130,7 @@ function DealsPage() {
 }
 
 function DealCard({ d }: { d: FallbackDeal }) {
+  const { money } = useCurrency();
   const from = cityOf(d.origin);
   const to = cityOf(d.destination);
   return (

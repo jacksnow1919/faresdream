@@ -1,4 +1,5 @@
 import { Phone, Plane, Search } from "lucide-react";
+import { useCurrency } from "@/components/site/CurrencyContext";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
 
 const POPULAR_FROM = { code: "JFK", city: "New York" };
@@ -26,6 +27,7 @@ export function PopularRoutes({
   onPick?: (to: string, from: string) => void;
   onSearchOther?: () => void;
 }) {
+  const { money } = useCurrency();
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {ROUTES.map((r) => (
@@ -33,7 +35,7 @@ export function PopularRoutes({
           key={r.code}
           type="button"
           onClick={() => onPick?.(r.code, POPULAR_FROM.code)}
-          aria-label={`Search round-trip flights from ${POPULAR_FROM.city} to ${r.city}, average $${r.price}`}
+          aria-label={`Search round-trip flights from ${POPULAR_FROM.city} to ${r.city}, average ${money(r.price)}`}
           className="group flex items-center gap-3 rounded-xl border border-border bg-card px-3.5 py-3 text-left shadow-card transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lux sm:gap-4 sm:px-4"
         >
           <img
@@ -81,7 +83,7 @@ export function PopularRoutes({
               Avg. round trip
             </span>
             <span className="block font-display text-xl font-bold leading-tight text-gold">
-              ${r.price}
+              {money(r.price)}
             </span>
           </span>
         </button>

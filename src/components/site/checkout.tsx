@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useCurrency } from "@/components/site/CurrencyContext";
 import { Link } from "@tanstack/react-router";
 import { differenceInCalendarDays, format, parseISO } from "date-fns";
 import { ArrowLeft, Check, Headphones, Lock, ReceiptText, ShieldCheck } from "lucide-react";
@@ -272,15 +273,19 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
 /** Price lines and a bold total, e.g. Base fare / Taxes & fees / Promo / Total. */
 export function PriceSummary({
   sym,
+  currency,
   lines,
   total,
   totalLabel,
 }: {
   sym: string;
+  /** What the customer actually pays in; the visitor's own currency is only an estimate. */
+  currency: string;
   lines: { label: string; value: number; discount?: boolean }[];
   total: number;
   totalLabel: string;
 }) {
+  const { money, displayCurrency } = useCurrency();
   return (
     <div>
       <p className="flex items-center gap-2 text-sm font-semibold text-foreground">
@@ -306,6 +311,11 @@ export function PriceSummary({
         </span>
       </div>
       <p className="text-right text-xs text-muted-foreground">Taxes and fees included</p>
+      {displayCurrency(currency) !== currency ? (
+        <p className="text-right text-xs text-muted-foreground">
+          About {money(total, currency)}. You pay in {currency}.
+        </p>
+      ) : null}
     </div>
   );
 }

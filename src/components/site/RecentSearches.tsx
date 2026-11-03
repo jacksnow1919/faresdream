@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { useCurrency } from "@/components/site/CurrencyContext";
 import { Link } from "@tanstack/react-router";
 import { format, parseISO } from "date-fns";
 import { ArrowUpRight, Plane } from "lucide-react";
 import { airportByCode, cityOf, useAirports } from "@/lib/airports";
-import { currencySymbol } from "@/lib/flight-search-params";
 import { clearRecentSearches, loadRecentSearches, type RecentSearch } from "@/lib/recent-searches";
 
 /** Saved cabins come from the results page ("PremiumEconomy") or checkout ("Premium Economy"). */
@@ -16,6 +16,7 @@ const toSearchCabin = (cabin: string) => {
 };
 
 function RecentSearchCard({ s }: { s: RecentSearch }) {
+  const { money } = useCurrency();
   return (
     <div className="w-[85%] shrink-0 snap-start overflow-hidden rounded-2xl border-2 border-primary bg-linear-to-r from-navy to-primary shadow-card sm:w-[300px]">
       <div className="rounded-b-2xl bg-card px-4 py-3">
@@ -40,8 +41,7 @@ function RecentSearchCard({ s }: { s: RecentSearch }) {
         {s.price ? (
           <span>
             <span className="block font-display text-lg font-bold leading-tight">
-              {currencySymbol(s.currency)}
-              {s.price.toLocaleString()}
+              {money(s.price, s.currency)}
             </span>
             <span className="block text-xs text-white/80">Per person · last seen</span>
           </span>

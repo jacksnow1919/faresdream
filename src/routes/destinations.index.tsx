@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Price } from "@/components/site/CurrencyContext";
 import { destinations } from "@/lib/travel-data";
 import { PageShell, Card } from "@/components/site/ui";
 
@@ -12,7 +13,10 @@ export const Route = createFileRoute("/destinations/")({
           "Destination guides for business class travellers: lounge access, airport transfers and the best booking windows for Dubai, London and Singapore.",
       },
       { property: "og:title", content: "Luxury Destination Guides" },
-      { property: "og:description", content: "Lounge maps, transfers and travel guides for premium cabins." },
+      {
+        property: "og:description",
+        content: "Lounge maps, transfers and travel guides for premium cabins.",
+      },
     ],
   }),
   component: DestinationsIndex,
@@ -33,7 +37,7 @@ function DestinationsIndex() {
             <p className="mt-3 line-clamp-3 text-sm text-muted-foreground">{d.guide}</p>
             <div className="mt-4 flex items-center justify-between">
               <span className="font-display text-lg font-semibold text-navy">
-                from ${d.fromPrice.toLocaleString()}
+                from <Price amount={d.fromPrice} />
               </span>
               <Link
                 to="/destinations/$slug"

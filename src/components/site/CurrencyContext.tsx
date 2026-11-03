@@ -1,31 +1,94 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
-import { CURRENCIES, DEFAULT_CURRENCY } from "@/lib/brand";
+import { useQuery } from "@tanstack/react-query";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+import { DEFAULT_CURRENCY } from "@/lib/brand";
+import { getExchangeRates } from "@/lib/exchange-rates.functions";
+import {
+  convertAmount,
+  countryByCode,
+  currencyByCode,
+  DEFAULT_COUNTRY,
+  formatAmount,
+} from "@/lib/regional";
 
-type Ctx = {
-  currency: string;
-  symbol: string;
-  setCurrency: (c: string) => void;
+const STORAGE_KEY = "faresdream:region";
+const RATES_FRESH_MS = 6 * 60 * 60 * 1000;
+
+type Region = { country: string; currency: string };
+
+type Ctx = Region & {
+  setRegion: (region: Region) => void;
+  /** The currency `money` shows an amount in: the visitor's, or `from` when there's no rate. */
+  displayCurrency: (from?: string) => string;
+  /** An amount quoted in `from` (US dollars by default), in the visitor's currency. */
+  money: (amount: number, from?: string) => string;
 };
 
 const CurrencyCtx = createContext<Ctx>({
+  country: DEFAULT_COUNTRY,
   currency: DEFAULT_CURRENCY,
-  symbol: "$",
-  setCurrency: () => {},
+  setRegion: () => {},
+  displayCurrency: (from = DEFAULT_CURRENCY) => from,
+  money: (amount, from = DEFAULT_CURRENCY) => formatAmount(amount, from),
 });
 
 export function CurrencyProvider({ children }: { children: ReactNode }) {
   // USD is the global default for search params, API payloads and display.
-  const [currency, setCurrencyState] = useState<string>(DEFAULT_CURRENCY);
+  const [region, setRegionState] = useState<Region>({
+    country: DEFAULT_COUNTRY,
+    currency: DEFAULT_CURRENCY,
+  });
 
-  const setCurrency = useCallback((c: string) => setCurrencyState(c.toUpperCase()), []);
+  // localStorage is only available after mount, which also keeps SSR markup stable.
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null") as Region | null;
+      if (saved && countryByCode(saved.country) && currencyByCode(saved.currency)) {
+        setRegionState({ country: saved.country, currency: saved.currency });
+      }
+    } catch {
+      // Blocked or damaged storage just means the defaults.
+    }
+  }, []);
+
+  const setRegion = useCallback((next: Region) => {
+    setRegionState(next);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    } catch {
+      // The choice still applies until the page reloads.
+    }
+  }, []);
+
+  const { data: rates } = useQuery({
+    queryKey: ["exchange-rates"],
+    queryFn: () => getExchangeRates(),
+    enabled: region.currency !== DEFAULT_CURRENCY,
+    staleTime: RATES_FRESH_MS,
+    retry: 1,
+  });
 
   const value = useMemo<Ctx>(
     () => ({
-      currency,
-      symbol: CURRENCIES.find((c) => c.code === currency)?.symbol ?? "$",
-      setCurrency,
+      ...region,
+      setRegion,
+      displayCurrency: (from = DEFAULT_CURRENCY) =>
+        convertAmount(1, from, region.currency, rates) === null ? from : region.currency,
+      money: (amount, from = DEFAULT_CURRENCY) => {
+        const converted = convertAmount(amount, from, region.currency, rates);
+        return converted === null
+          ? formatAmount(amount, from)
+          : formatAmount(converted, region.currency);
+      },
     }),
-    [currency, setCurrency],
+    [region, rates, setRegion],
   );
 
   return <CurrencyCtx.Provider value={value}>{children}</CurrencyCtx.Provider>;
@@ -33,20 +96,8 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
 
 export const useCurrency = () => useContext(CurrencyCtx);
 
-export function CurrencySelect({ className = "" }: { className?: string }) {
-  const { currency, setCurrency } = useCurrency();
-  return (
-    <select
-      aria-label="Change currency"
-      value={currency}
-      onChange={(e) => setCurrency(e.target.value)}
-      className={`cursor-pointer rounded-full border border-border bg-background px-3 py-2 text-sm font-semibold text-foreground outline-none focus:border-primary ${className}`}
-    >
-      {CURRENCIES.map((c) => (
-        <option key={c.code} value={c.code}>
-          {c.label}
-        </option>
-      ))}
-    </select>
-  );
+/** A price quoted in US dollars, shown in the visitor's currency. */
+export function Price({ amount }: { amount: number }) {
+  const { money } = useCurrency();
+  return <>{money(amount)}</>;
 }

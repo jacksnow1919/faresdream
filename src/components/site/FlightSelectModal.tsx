@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useCurrency } from "@/components/site/CurrencyContext";
 import { format, parseISO } from "date-fns";
 import { ReceiptText, Share2, X } from "lucide-react";
 import { cityOf } from "@/lib/airports";
@@ -34,7 +35,9 @@ export function FlightSelectModal({
   const closeRef = useRef<HTMLButtonElement>(null);
   const [shared, setShared] = useState(false);
   const sym = currencySymbol(fare.currency);
-  const money = (n: number) => `${sym}${n.toLocaleString()}`;
+  const { money: shownMoney, displayCurrency } = useCurrency();
+  const money = (n: number) => shownMoney(n, fare.currency);
+  const estimated = displayCurrency(fare.currency) !== fare.currency;
   const travellerText = `${travellers} traveller${travellers > 1 ? "s" : ""}`;
 
   useEffect(() => {
@@ -135,6 +138,12 @@ export function FlightSelectModal({
               Total for {travellerText}
               {fare.inbound ? ", round trip" : ""} · taxes included
             </p>
+            {estimated ? (
+              <p className="text-xs text-muted-foreground">
+                Estimate. You pay {sym}
+                {(fare.price * travellers).toLocaleString()} {fare.currency} at checkout.
+              </p>
+            ) : null}
           </div>
           {continueTo(
             "inline-flex shrink-0 items-center justify-center rounded-lg bg-navy px-7 py-3 text-base font-semibold text-navy-foreground transition hover:brightness-110",

@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { currencyByCode } from "@/lib/regional";
+import { useCurrency } from "@/components/site/CurrencyContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -14,7 +16,6 @@ import {
 import { searchFlights, type PkfareNormalisedFare } from "@/services/pkfareApi";
 import { saveRecentSearch } from "@/lib/recent-searches";
 import { saveSelectedFare } from "@/lib/selected-fare";
-import { currencySymbol } from "@/lib/flight-search-params";
 import { PHONE_DISPLAY } from "@/lib/brand";
 import {
   AIRLINE_NAMES,
@@ -102,15 +103,13 @@ export const Route = createFileRoute("/flight/search")({
   ),
 });
 
-const money = (amount: number, currency: string) =>
-  `${currencySymbol(currency)}${amount.toLocaleString()}`;
-
 /** "06h 05m", as on the sort tabs. */
 const clockDuration = (minutes: number) =>
   `${String(Math.floor(minutes / 60)).padStart(2, "0")}h ${String(minutes % 60).padStart(2, "0")}m`;
 
 function SearchPage() {
   const airportsStatus = useAirports();
+  const { money, displayCurrency } = useCurrency();
   const search = Route.useSearch();
   const { origin, destination, date, returnDate, passengers, cabin, currency } = search;
   const airline = search.airline ?? "";
@@ -183,6 +182,9 @@ function SearchPage() {
 
   // Remember this search (and its cheapest per-person fare) for the homepage "Recent Searches".
   const lowestPrice = carrierFlights.length ? bounds.minPrice : 0;
+  const fareCurrency = carrierFlights[0]?.currency ?? currency ?? "USD";
+  const shownCurrency = displayCurrency(fareCurrency);
+
   useEffect(() => {
     saveRecentSearch({
       origin,
@@ -190,10 +192,10 @@ function SearchPage() {
       date,
       passengers,
       cabin,
-      currency: currency || "USD",
+      currency: fareCurrency,
       ...(lowestPrice > 0 ? { price: lowestPrice } : {}),
     });
-  }, [origin, destination, date, passengers, cabin, currency, lowestPrice]);
+  }, [origin, destination, date, passengers, cabin, fareCurrency, lowestPrice]);
 
   const flights = useMemo(
     () => sortFares(applyFilters(carrierFlights, filters), sort, bounds),
@@ -203,7 +205,6 @@ function SearchPage() {
   const isLoading = isPending;
   const showEmpty = !isLoading && (isError || carrierFlights.length === 0);
   const filteredOut = !isLoading && !showEmpty && flights.length === 0;
-  const fareCurrency = carrierFlights[0]?.currency ?? currency ?? "USD";
   const fmt = (n: number) => money(n, fareCurrency);
 
   const cheapest = flights.length ? sortFares(flights, "cheapest", bounds)[0] : undefined;
@@ -380,7 +381,7 @@ function SearchPage() {
                           <ThumbsUp className="size-6" strokeWidth={1.6} />
                         ) : t.key === "cheapest" ? (
                           <span className="block w-6 text-center text-2xl leading-none">
-                            {currencySymbol(fareCurrency).trim()}
+                            {(currencyByCode(shownCurrency)?.symbol ?? shownCurrency).trim()}
                           </span>
                         ) : (
                           <History className="size-6" strokeWidth={1.6} />
@@ -450,6 +451,12 @@ function SearchPage() {
                   Clear all filters
                 </button>
               </div>
+            ) : null}
+
+            {flights.length > 0 && shownCurrency !== fareCurrency ? (
+              <p className="rounded-xl border border-primary/15 bg-sky-50 px-4 py-2.5 text-sm text-navy">
+                Prices are estimates in {shownCurrency}. You pay in {fareCurrency} at checkout.
+              </p>
             ) : null}
 
             {flights.map((f) => (
