@@ -4,7 +4,6 @@ import { FaqAccordion, type Faq } from "@/components/site/FaqAccordion";
 import { FlightSearchBar } from "@/components/site/FlightSearchBar";
 import { MovingSky } from "@/components/site/MovingSky";
 import { NewsletterCard } from "@/components/site/NewsletterCard";
-import { PriceDropBanner } from "@/components/site/PriceDropBanner";
 import { WhyBookCards } from "@/components/site/WhyBookCards";
 import { TrendingDestinations } from "@/components/site/TrendingDestinations";
 import { PopularRoutes } from "@/components/site/PopularRoutes";
@@ -112,9 +111,6 @@ function Home() {
 
       {/* RECENT SEARCHES — only for returning visitors with saved searches */}
       <RecentSearches />
-
-      {/* PRICE DROP BANNER */}
-      <PriceDropBanner />
 
       {/* WHY BOOK WITH FARESDREAM */}
       <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
