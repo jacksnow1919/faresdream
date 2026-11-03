@@ -20,6 +20,7 @@ import { Route as DealsRouteImport } from './routes/deals'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as SitemapRouteImport } from './routes/sitemap'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAgentRouteImport } from './routes/_authenticated/agent'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -93,6 +94,11 @@ const RefundPolicyRoute = RefundPolicyRouteImport.update({
 const SitemapRoute = SitemapRouteImport.update({
   id: '/sitemap',
   path: '/sitemap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -207,6 +213,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/sitemap': typeof SitemapRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/agent': typeof AuthenticatedAgentRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -239,6 +246,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/sitemap': typeof SitemapRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/agent': typeof AuthenticatedAgentRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -273,6 +281,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/sitemap': typeof SitemapRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/_authenticated/agent': typeof AuthenticatedAgentRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -307,6 +316,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/refund-policy'
     | '/sitemap'
+    | '/sitemap.xml'
     | '/terms'
     | '/agent'
     | '/dashboard'
@@ -339,6 +349,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/refund-policy'
     | '/sitemap'
+    | '/sitemap.xml'
     | '/terms'
     | '/agent'
     | '/dashboard'
@@ -372,6 +383,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/refund-policy'
     | '/sitemap'
+    | '/sitemap.xml'
     | '/terms'
     | '/_authenticated/agent'
     | '/_authenticated/dashboard'
@@ -406,6 +418,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RefundPolicyRoute: typeof RefundPolicyRoute
   SitemapRoute: typeof SitemapRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AirlinesSlugRoute: typeof AirlinesSlugRoute
@@ -503,6 +516,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap'
       fullPath: '/sitemap'
       preLoaderRoute: typeof SitemapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -673,6 +693,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RefundPolicyRoute: RefundPolicyRoute,
   SitemapRoute: SitemapRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AirlinesSlugRoute: AirlinesSlugRoute,
