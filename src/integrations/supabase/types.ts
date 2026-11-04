@@ -766,6 +766,72 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_counters: {
+        Row: { hits: number; key: string; window_started: string }
+        Insert: { hits?: number; key: string; window_started?: string }
+        Update: { hits?: number; key?: string; window_started?: string }
+        Relationships: []
+      }
+      search_guard_blocks: {
+        Row: {
+          country: string | null
+          id: string
+          occurred_at: string
+          path: string
+          reason: string
+        }
+        Insert: {
+          country?: string | null
+          id?: string
+          occurred_at?: string
+          path: string
+          reason: string
+        }
+        Update: {
+          country?: string | null
+          id?: string
+          occurred_at?: string
+          path?: string
+          reason?: string
+        }
+        Relationships: []
+      }
+      site_events: {
+        Row: {
+          country: string | null
+          detail: Json | null
+          event_type: string
+          id: string
+          occurred_at: string
+          path: string | null
+          route: string | null
+          visit_id: string
+          visitor_id: string
+        }
+        Insert: {
+          country?: string | null
+          detail?: Json | null
+          event_type: string
+          id?: string
+          occurred_at?: string
+          path?: string | null
+          route?: string | null
+          visit_id: string
+          visitor_id: string
+        }
+        Update: {
+          country?: string | null
+          detail?: Json | null
+          event_type?: string
+          id?: string
+          occurred_at?: string
+          path?: string | null
+          route?: string | null
+          visit_id?: string
+          visitor_id?: string
+        }
+        Relationships: []
+      }
       staff_users: {
         Row: {
           active: boolean
@@ -983,6 +1049,32 @@ export type Database = {
     }
     Functions: {
       next_booking_reference: { Args: never; Returns: string }
+      rate_limit_hit: {
+        Args: { p_key: string; p_limit: number; p_window_seconds: number }
+        Returns: boolean
+      }
+      search_guard_summary: {
+        Args: { p_since: string; p_until: string }
+        Returns: Json
+      }
+      visitor_summary: {
+        Args: { p_since: string; p_until: string }
+        Returns: Json
+      }
+      visitor_recent: {
+        Args: { p_limit: number; p_search: string | null; p_since: string; p_until: string }
+        Returns: {
+          actions: number
+          booked: boolean
+          country: string | null
+          first_seen: string
+          landing: string | null
+          last_seen: string
+          searched: boolean
+          visitor_id: string
+          visits: number
+        }[]
+      }
       provider_search_stats: {
         Args: { since: string }
         Returns: {

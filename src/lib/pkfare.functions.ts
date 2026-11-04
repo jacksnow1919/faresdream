@@ -29,6 +29,10 @@ const searchSchema = z.object({
 export const searchOneProvider = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => searchSchema.parse(input))
   .handler(async ({ data: { provider, searchId, ...query } }) => {
+    const { admitSearch } = await import("./search-guard.server");
+    if (!(await admitSearch(provider))) {
+      return { provider, status: "error" as const, fares: [] };
+    }
     const { searchProvider } = await import("./provider-search.server");
     return searchProvider(provider, query, searchId);
   });

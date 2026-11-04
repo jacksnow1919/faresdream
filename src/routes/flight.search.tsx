@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { searchFlights, type PkfareNormalisedFare } from "@/services/pkfareApi";
 import { mergeFares, PROVIDER_KEYS, type ProviderAnswer } from "@/lib/flight-providers";
+import { recordVisitorEvent } from "@/lib/visitor-tracking";
 import { saveRecentSearch } from "@/lib/recent-searches";
 import { saveSelectedFare } from "@/lib/selected-fare";
 import { PHONE_DISPLAY } from "@/lib/brand";
@@ -179,6 +180,23 @@ function SearchPage() {
   });
 
   const airlineName = airline ? (AIRLINE_NAMES[airline] ?? airline) : "";
+  // One journey step per search, then one when every API has answered.
+  const journeyRoute = `${origin}-${destination}`;
+  useEffect(() => {
+    recordVisitorEvent("search_run", {
+      route: journeyRoute,
+      detail: { date, cabin, travellers: passengers, ...(returnDate ? { return: returnDate } : {}) },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchId]);
+  const faresFound = allFlights.length;
+  useEffect(() => {
+    if (!stillSearching) {
+      recordVisitorEvent("search_result", { route: journeyRoute, detail: { fares: faresFound } });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stillSearching, searchId]);
+
   const carrierFlights = useMemo(
     () =>
       airline
@@ -259,7 +277,13 @@ function SearchPage() {
     <button
       type="button"
       aria-haspopup="dialog"
-      onClick={() => setSelectedFare(f)}
+      onClick={() => {
+        setSelectedFare(f);
+        recordVisitorEvent("fare_selected", {
+          route: journeyRoute,
+          detail: { airline: airlineNameOf(f), price: f.price, ...(f.provider ? { api: f.provider } : {}) },
+        });
+      }}
       className="inline-flex shrink-0 items-center justify-center rounded-full bg-navy px-6 py-2.5 text-sm font-semibold text-navy-foreground transition hover:brightness-110"
     >
       Select

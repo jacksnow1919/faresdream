@@ -45,7 +45,7 @@ const sections: LegalSection[] = [
   {
     h: "5. Cookies and analytics",
     p: [
-      "We use essential cookies to keep your search and booking session working, and analytics cookies to understand which routes and fares travellers are interested in. You can disable non-essential cookies in your browser without losing access to booking functionality.",
+      "We use essential cookies to keep your search and booking session working, and analytics cookies to understand which routes and fares travellers are interested in. We also keep a random visitor ID in your browser, with the pages you view, the searches you run, the fares you select and your country, so we can see how people use the site and stop automated abuse. It isn't linked to your name or contact details. You can disable non-essential cookies in your browser without losing access to booking functionality.",
     ],
   },
   {

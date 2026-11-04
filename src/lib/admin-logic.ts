@@ -19,6 +19,7 @@ export const canSettleRefunds = isManager;
 export const canViewActivity = isManager;
 /** Pausing a flight API changes which fares customers see. */
 export const canManageProviders = isManager;
+export const canViewVisitors = isManager;
 
 /* --------------------------------- money ---------------------------------- */
 

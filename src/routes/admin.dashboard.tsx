@@ -25,7 +25,14 @@ import { DealsSection } from "@/components/admin/DealsSection";
 import { RefundsSection } from "@/components/admin/RefundsSection";
 import { ActivitySection } from "@/components/admin/ActivitySection";
 import { ProvidersSection } from "@/components/admin/ProvidersSection";
-import { bookingSource, canManageProviders, canViewActivity, formatMoney } from "@/lib/admin-logic";
+import { VisitorsSection } from "@/components/admin/VisitorsSection";
+import {
+  bookingSource,
+  canManageProviders,
+  canViewActivity,
+  canViewVisitors,
+  formatMoney,
+} from "@/lib/admin-logic";
 import { providerLabel } from "@/lib/flight-providers";
 import {
   LayoutDashboard,
@@ -43,6 +50,7 @@ import {
   RotateCcw,
   History,
   Server,
+  Footprints,
 } from "lucide-react";
 
 
@@ -81,6 +89,7 @@ const NAV: {
   { label: "Leads & Quotes", hash: "leads", icon: Inbox },
   { label: "Verification", hash: "verification", icon: ShieldCheck },
   { label: "Flight APIs", hash: "providers", icon: Server, show: canManageProviders },
+  { label: "Visitors", hash: "visitors", icon: Footprints, show: canViewVisitors },
   { label: "Activity log", hash: "activity", icon: History, show: canViewActivity },
   { label: "Staff & roles", hash: "staff", icon: Users, show: (r) => r === "superadmin" },
 ];
@@ -571,6 +580,7 @@ function AdminDashboard() {
         <LeadsSection />
         <VerificationSection />
         {canManageProviders(role) ? <ProvidersSection /> : null}
+        {canViewVisitors(role) ? <VisitorsSection /> : null}
         {canViewActivity(role) ? <ActivitySection /> : null}
         {role === "superadmin" ? <StaffSection /> : null}
       </main>

@@ -3,6 +3,7 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
+  useLocation,
   useRouter,
   HeadContent,
   Scripts,
@@ -12,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { initAnalytics } from "../lib/analytics";
 import { captureClickId } from "../lib/click-id";
+import { recordVisitorEvent, watchCallClicks } from "../lib/visitor-tracking";
 import { SiteHeader } from "../components/site/SiteHeader";
 import { SiteFooter } from "../components/site/SiteFooter";
 import { StickyCallBar } from "../components/site/StickyCallBar";
@@ -141,7 +143,13 @@ function RootComponent() {
   useEffect(() => {
     captureClickId();
     initAnalytics();
+    return watchCallClicks();
   }, []);
+
+  const pathname = useLocation({ select: (l) => l.pathname });
+  useEffect(() => {
+    recordVisitorEvent("page_view");
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>
