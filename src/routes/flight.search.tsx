@@ -109,6 +109,8 @@ export const Route = createFileRoute("/flight/search")({
 const clockDuration = (minutes: number) =>
   `${String(Math.floor(minutes / 60)).padStart(2, "0")}h ${String(minutes % 60).padStart(2, "0")}m`;
 
+const SEARCH_FRESH_MS = 10 * 60_000;
+
 /** The fares so far from the APIs that have answered, and whether any are still working. */
 function combineSearches(results: UseQueryResult<ProviderAnswer>[]) {
   const answers = results.flatMap((r) => (r.data ? [r.data] : []));
@@ -160,6 +162,10 @@ function SearchPage() {
         currency,
       ],
       retry: false,
+      // Every search spends paid API lookups, so returning to the tab mustn't repeat one
+      // until the fares are worth refreshing.
+      staleTime: SEARCH_FRESH_MS,
+      refetchOnReconnect: false,
       queryFn: () =>
         searchFlights(
           provider,
