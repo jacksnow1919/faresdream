@@ -123,7 +123,7 @@ function ContactPage() {
           <ContactCard icon={MapPin} title="Our office" value={OFFICE_ADDRESS} />
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_21.25rem] lg:items-start">
           <section className="rounded-2xl border border-border bg-card p-5 shadow-card sm:p-8">
             <h2 className="font-display text-xl font-bold text-navy sm:text-2xl">
               Send us a message

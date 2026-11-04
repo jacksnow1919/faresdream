@@ -383,8 +383,8 @@ export function ProvidersSection() {
               No searches in this period.
             </p>
           ) : (
-            <div className="mt-2 max-h-[420px] overflow-auto rounded-xl border border-border">
-              <table className="w-full min-w-[720px] text-left text-xs">
+            <div className="mt-2 max-h-[26.25rem] overflow-auto rounded-xl border border-border">
+              <table className="w-full min-w-[45rem] text-left text-xs">
                 <thead className="sticky top-0 bg-secondary text-[11px] uppercase tracking-widest text-muted-foreground">
                   <tr>
                     <th className="px-3 py-2 font-semibold">When</th>

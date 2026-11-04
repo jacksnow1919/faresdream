@@ -439,7 +439,7 @@ function BookingPage() {
       title={step === 1 ? "Traveller details" : step === 2 ? "Contact details" : "Payment"}
       subtitle={`${cityOf(search.origin)} to ${cityOf(search.destination)} · ${travellerSummary} · ${search.cabin}`}
     >
-      <div className="grid gap-5 pb-20 lg:grid-cols-[minmax(0,1fr)_340px] lg:pb-0">
+      <div className="grid gap-5 pb-20 lg:grid-cols-[minmax(0,1fr)_21.25rem] lg:pb-0">
         <div className="space-y-4">
           <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 rounded-lg border border-border bg-card px-4 py-2.5 text-sm text-muted-foreground">
             <User className="size-4 shrink-0 text-primary" />
@@ -831,8 +831,8 @@ function BookingPage() {
       </div>
 
       {step === 3 ? (
-        <div className="fixed inset-x-0 bottom-14 z-30 border-t border-border bg-card/95 px-4 py-3 shadow-[0_-4px_16px_rgb(15_23_42/0.08)] backdrop-blur md:bottom-0">
-          <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-3 sm:px-2 lg:px-4">
+        <div className="fixed inset-x-0 bottom-14 z-30 border-t border-border bg-card/95 py-3 shadow-[0_-4px_16px_rgb(15_23_42/0.08)] backdrop-blur md:bottom-0">
+          <div className="page-container flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-muted-foreground">
               You pay{" "}
               <span className="font-display text-xl font-bold text-foreground">

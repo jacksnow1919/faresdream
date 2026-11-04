@@ -44,7 +44,7 @@ function JourneyRow({
 }) {
   const plus = extraDays(journey);
   return (
-    <div className="grid gap-3 sm:grid-cols-[minmax(0,170px)_minmax(0,1fr)] sm:items-center sm:gap-4 xl:grid-cols-[minmax(0,180px)_minmax(0,1fr)] xl:gap-5">
+    <div className="grid gap-3 sm:grid-cols-[minmax(0,10.625rem)_minmax(0,1fr)] sm:items-center sm:gap-4 xl:grid-cols-[minmax(0,11.25rem)_minmax(0,1fr)] xl:gap-5">
       <div className="flex min-w-0 items-center gap-3">
         <AirlineMark code={code} logoUrl={logoUrl} />
         <div className="min-w-0">

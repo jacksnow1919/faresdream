@@ -29,7 +29,7 @@ export function PopularRoutes({
 }) {
   const { money } = useCurrency();
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid gap-4 xl:grid-cols-2">
       {ROUTES.map((r) => (
         <button
           key={r.code}
@@ -71,7 +71,7 @@ export function PopularRoutes({
             </span>
           </span>
 
-          <span className="w-[76px] shrink-0 text-right sm:w-24">
+          <span className="w-[4.75rem] shrink-0 text-right sm:w-24">
             <span className="block font-display text-lg font-bold leading-tight text-navy">
               {r.code}
             </span>

@@ -23,7 +23,10 @@ function CheckoutSteps({ current }: { current: number }) {
           <li
             key={label}
             aria-current={active ? "step" : undefined}
-            className="flex min-w-0 flex-1 items-center gap-1.5 last:flex-none sm:gap-2"
+            className={`flex items-center gap-1.5 last:flex-none sm:gap-2 ${
+              // The current step keeps room for its label; the others share what's left.
+              active ? "flex-auto shrink-0" : "min-w-0 flex-1"
+            }`}
           >
             <span
               className={`grid size-6 shrink-0 place-items-center rounded-full text-xs font-bold ${
@@ -71,8 +74,8 @@ export function CheckoutShell({
 }) {
   return (
     <div className="min-h-[100dvh] bg-secondary/40 pb-24">
-      <div className="bg-linear-to-r from-primary to-sky-500 px-4 pb-5 pt-4 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-page">
+      <div className="bg-linear-to-r from-primary to-sky-500 pb-5 pt-4 text-white">
+        <div className="page-container">
           <CheckoutSteps current={step} />
           <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
             <div className="min-w-0">
@@ -83,7 +86,7 @@ export function CheckoutShell({
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-page-padded px-4 py-5 sm:px-6 lg:px-8">{children}</div>
+      <div className="page-container py-5">{children}</div>
     </div>
   );
 }

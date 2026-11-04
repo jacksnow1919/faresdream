@@ -18,7 +18,7 @@ const toSearchCabin = (cabin: string) => {
 function RecentSearchCard({ s }: { s: RecentSearch }) {
   const { money } = useCurrency();
   return (
-    <div className="w-[85%] shrink-0 snap-start overflow-hidden rounded-2xl border-2 border-primary bg-linear-to-r from-navy to-primary shadow-card sm:w-[300px]">
+    <div className="w-[85%] shrink-0 snap-start overflow-hidden rounded-2xl border-2 border-primary bg-linear-to-r from-navy to-primary shadow-card sm:w-[18.75rem]">
       <div className="rounded-b-2xl bg-card px-4 py-3">
         <div className="flex items-center gap-3 text-sm font-semibold text-foreground">
           <span className="min-w-0 truncate">{cityOf(s.origin)}</span>
@@ -83,8 +83,8 @@ export function RecentSearches() {
   if (items.length === 0) return null;
 
   return (
-    <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
-      <div className="mx-auto max-w-page">
+    <section className="pt-12 lg:pt-16">
+      <div className="page-container">
         <div className="flex items-end justify-between gap-4">
           <h2 className="font-display text-xl font-bold text-navy sm:text-2xl">Recent Searches</h2>
           <button

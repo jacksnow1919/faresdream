@@ -44,7 +44,7 @@ function AirlinePage() {
       title={`${a.name} Business Class`}
       subtitle={a.cabin}
     >
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Card>
             <SectionTitle>Cabin guide</SectionTitle>

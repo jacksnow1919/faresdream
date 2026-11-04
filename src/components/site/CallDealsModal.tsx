@@ -52,7 +52,7 @@ export function CallDealsModal() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {/* The dialog's built-in close button is hidden; ours sits on the blue header. */}
-      <DialogContent className="w-[calc(100%-2rem)] max-w-[400px] gap-0 overflow-hidden rounded-3xl border-0 p-0 sm:rounded-3xl [&>button:last-child]:hidden">
+      <DialogContent className="w-[calc(100%-2rem)] max-w-[25rem] gap-0 overflow-hidden rounded-3xl border-0 p-0 sm:rounded-3xl [&>button:last-child]:hidden">
         <div className="relative bg-linear-to-br from-primary to-sky-500 px-6 pb-9 pt-7 text-center text-white">
           <div
             aria-hidden="true"

@@ -52,7 +52,7 @@ type Line = "solid" | "dotted";
 
 /** A piece of the timeline's vertical line; solid while flying, dotted during a layover. */
 const lineCls = (line: Line) =>
-  `absolute left-[7px] border-l-2 ${
+  `absolute left-[0.4375rem] border-l-2 ${
     line === "solid" ? "border-solid border-foreground/70" : "border-dotted border-foreground/60"
   }`;
 
@@ -77,8 +77,8 @@ function Stop({
 }) {
   return (
     <div className={`relative pl-9 ${className}`}>
-      {above ? <span className={`${lineCls(above)} top-0 h-[10px]`} /> : null}
-      {below ? <span className={`${lineCls(below)} bottom-0 top-[10px]`} /> : null}
+      {above ? <span className={`${lineCls(above)} top-0 h-[0.625rem]`} /> : null}
+      {below ? <span className={`${lineCls(below)} bottom-0 top-[0.625rem]`} /> : null}
       <span className="absolute left-0 top-0.5 z-10 size-4 rounded-full border-2 border-foreground/80 bg-card" />
       <p className="text-xs text-muted-foreground">{whenText(at)}</p>
       <p className="font-semibold text-foreground">
@@ -118,7 +118,7 @@ function SegmentRow({
   // Airline details sit to the right on wider screens and between the two stops on phones.
   // The departure stretches (flex-1) so the solid line fills any extra row height.
   return (
-    <div className="grid sm:grid-cols-[minmax(0,1fr)_minmax(0,220px)] sm:gap-6">
+    <div className="grid sm:grid-cols-[minmax(0,1fr)_minmax(0,13.75rem)] sm:gap-6">
       <div className="flex flex-col">
         <Stop
           at={s.departAt}
@@ -211,7 +211,7 @@ export function InfoBlock({
   children: ReactNode;
 }) {
   return (
-    <section className="grid gap-4 border-t border-border py-5 sm:grid-cols-[minmax(0,200px)_minmax(0,1fr)] sm:gap-8">
+    <section className="grid gap-4 border-t border-border py-5 sm:grid-cols-[minmax(0,12.5rem)_minmax(0,1fr)] sm:gap-8">
       <div>
         <h3 className="text-base font-bold text-foreground">{title}</h3>
         <p className="text-sm text-muted-foreground">{hint}</p>

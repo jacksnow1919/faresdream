@@ -93,7 +93,7 @@ export const Route = createFileRoute("/flight/search")({
   }),
   component: SearchPage,
   errorComponent: () => (
-    <div className="mx-auto max-w-2xl px-4 py-24 text-center">
+    <div className="page-gutter mx-auto max-w-2xl py-24 text-center">
       <h1 className="font-display text-2xl font-semibold text-navy">
         We are currently checking live rates with our airline desk.
       </h1>
@@ -287,8 +287,8 @@ function SearchPage() {
   return (
     <div className="min-h-[100dvh] bg-secondary/40 pb-20">
       {/* Search bar: pinned under the site header while the results scroll (like Thomas Cook) */}
-      <section className="sticky top-16 z-30 bg-linear-to-r from-primary to-sky-500 px-4 py-3 shadow-[0_6px_16px_rgb(15_23_42/0.12)] sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-page">
+      <section className="sticky top-16 z-30 bg-linear-to-r from-primary to-sky-500 py-3 shadow-[0_6px_16px_rgb(15_23_42/0.12)]">
+        <div className="page-container">
           <ResultsSearchBar
             key={`${origin}-${destination}-${date}-${returnDate ?? ""}-${passengers}-${cabin}`}
             query={{ origin, destination, date, returnDate, passengers, cabin }}
@@ -296,8 +296,8 @@ function SearchPage() {
         </div>
       </section>
 
-      <section className="border-b border-border bg-card px-4 py-2.5 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-page">
+      <section className="border-b border-border bg-card py-2.5">
+        <div className="page-container">
           <DateStrip
             key={date}
             date={date}
@@ -315,7 +315,7 @@ function SearchPage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-page-padded px-4 py-4 sm:px-6 lg:px-8">
+      <div className="page-container py-4">
         <nav
           aria-label="Breadcrumb"
           className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground"
@@ -331,7 +331,7 @@ function SearchPage() {
           </span>
         </nav>
 
-        <div className="grid gap-5 lg:grid-cols-[250px_minmax(0,1fr)]">
+        <div className="grid gap-5 lg:grid-cols-[15.625rem_minmax(0,1fr)]">
           <aside className="hidden lg:block">
             {/* Pinned below the header (4rem) and the blue search panel (~7.75rem) */}
             <div className="sticky top-[12.75rem] space-y-3">

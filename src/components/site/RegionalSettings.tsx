@@ -46,10 +46,10 @@ export function RegionalSummary() {
             alt=""
             width={20}
             height={15}
-            className="h-[15px] w-5 shrink-0 rounded-[2px] object-cover"
+            className="h-[0.9375rem] w-5 shrink-0 rounded-[2px] object-cover"
           />
         ) : null}
-        <span className="max-w-[130px] truncate">{place?.name ?? country}</span>
+        <span className="max-w-[8.125rem] truncate">{place?.name ?? country}</span>
       </span>
       <span className="whitespace-nowrap">{currencyShort(currency)}</span>
     </>
@@ -77,7 +77,7 @@ export function RegionalSettingsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-[440px] gap-0 overflow-y-auto rounded-3xl border-0 p-6 sm:rounded-3xl">
+      <DialogContent className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-[27.5rem] gap-0 overflow-y-auto rounded-3xl border-0 p-6 sm:rounded-3xl">
         <DialogTitle className="font-display text-xl font-bold text-navy">
           Regional settings
         </DialogTitle>

@@ -83,7 +83,7 @@ function DealsPage() {
         <div
           role="group"
           aria-label="Filter by airline"
-          className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0 [&::-webkit-scrollbar]:hidden"
+          className="page-bleed flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0 [&::-webkit-scrollbar]:hidden"
         >
           {/* Just "All" until the deals load, so the backup list doesn't flash up first. */}
           {(isLoading ? ["All"] : airlineList).map((a) => {
@@ -121,7 +121,7 @@ function DealsPage() {
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {isLoading
           ? Array.from({ length: 6 }, (_, i) => (
-              <div key={i} className="h-[214px] animate-pulse rounded-2xl bg-card shadow-card" />
+              <div key={i} className="h-[13.375rem] animate-pulse rounded-2xl bg-card shadow-card" />
             ))
           : filtered.map((d) => <DealCard key={d.id} d={d} />)}
       </div>

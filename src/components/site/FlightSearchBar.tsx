@@ -49,10 +49,10 @@ const FARES = [
 
 /** One segment of the joined bar; the active one gets an orange underline. */
 const segCls = (active = false, compact = false) =>
-  `relative flex h-full w-full min-w-0 flex-col justify-center px-3.5 text-left lg:min-h-0 lg:py-0 after:absolute after:inset-x-[18px] after:bottom-0 after:h-0.5 after:rounded-full after:transition ${
+  `relative flex h-full w-full min-w-0 flex-col justify-center px-3.5 text-left lg:min-h-0 lg:py-0 after:absolute after:inset-x-[1.125rem] after:bottom-0 after:h-0.5 after:rounded-full after:transition ${
     compact
-      ? "min-h-[56px] gap-0.5 py-2 lg:h-[60px] xl:px-[18px]"
-      : "min-h-[68px] gap-1 py-3 sm:px-[18px] lg:h-[84px]"
+      ? "min-h-[3.5rem] gap-0.5 py-2 lg:h-[3.75rem] xl:px-[1.125rem]"
+      : "min-h-[4.25rem] gap-1 py-3 sm:px-[1.125rem] lg:h-[5.25rem]"
   } ${active ? "after:bg-gold" : "after:bg-transparent"}`;
 
 function SegLabel({ icon: Icon, children }: { icon?: LucideIcon; children: ReactNode }) {
@@ -361,7 +361,7 @@ export function FlightSearchBar({
             value={f.id}
             checked={fare === f.id}
             onChange={() => setFare(f.id)}
-            className={`cursor-pointer accent-navy ${onBlue ? "size-4" : "size-[18px]"}`}
+            className={`cursor-pointer accent-navy ${onBlue ? "size-4" : "size-[1.125rem]"}`}
           />
           {f.label}
         </label>
@@ -372,7 +372,7 @@ export function FlightSearchBar({
   return (
     <div
       id={onBlue ? undefined : FLIGHT_SEARCH_ID}
-      className={onBlue ? "text-left" : "mx-auto max-w-[1116px] text-left"}
+      className={onBlue ? "text-left" : "mx-auto max-w-[69.75rem] text-left"}
     >
       {/* Trip type (and, on the results page, fare type on the same row) */}
       <div
@@ -386,7 +386,7 @@ export function FlightSearchBar({
               type="button"
               aria-pressed={active}
               onClick={() => changeTrip(t.id)}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition ${onBlue ? "h-[30px]" : "h-[33px]"} ${
+              className={`inline-flex items-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition ${onBlue ? "h-[1.875rem]" : "h-[2.0625rem]"} ${
                 onBlue
                   ? active
                     ? "border border-yellow-300 bg-yellow-300/10 text-yellow-300"
@@ -485,7 +485,7 @@ export function FlightSearchBar({
                     <button
                       type="button"
                       onClick={addLeg}
-                      className={`flex h-12 flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/80 bg-white/10 text-base font-semibold text-white backdrop-blur-sm transition hover:bg-white/25 ${onBlue ? "lg:h-[60px]" : "lg:h-[84px]"}`}
+                      className={`flex h-12 flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/80 bg-white/10 text-base font-semibold text-white backdrop-blur-sm transition hover:bg-white/25 ${onBlue ? "lg:h-[3.75rem]" : "lg:h-[5.25rem]"}`}
                     >
                       <Plus className="size-5" /> Add city
                     </button>
@@ -493,7 +493,7 @@ export function FlightSearchBar({
                   <button
                     type="button"
                     onClick={searchMulti}
-                    className={`h-12 flex-1 rounded-lg bg-navy font-display text-lg font-semibold text-navy-foreground transition hover:brightness-110 ${onBlue ? "lg:h-[60px]" : "lg:h-[84px]"}`}
+                    className={`h-12 flex-1 rounded-lg bg-navy font-display text-lg font-semibold text-navy-foreground transition hover:brightness-110 ${onBlue ? "lg:h-[3.75rem]" : "lg:h-[5.25rem]"}`}
                   >
                     Search
                   </button>
@@ -590,7 +590,7 @@ export function FlightSearchBar({
             type="button"
             onClick={submitSearch}
             className={`rounded-b-lg bg-navy px-6 font-display font-semibold text-navy-foreground transition hover:brightness-110 lg:h-auto lg:shrink-0 lg:rounded-none lg:rounded-r-lg lg:px-0 ${
-              onBlue ? "h-11 text-base lg:w-[88px] xl:w-[104px]" : "h-12 text-lg lg:w-[84px]"
+              onBlue ? "h-11 text-base lg:w-[5.5rem] xl:w-[6.5rem]" : "h-12 text-lg lg:w-[5.25rem]"
             }`}
           >
             Search

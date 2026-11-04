@@ -43,12 +43,12 @@ export function PageShell({
 }) {
   return (
     <div className="min-h-[100dvh] bg-secondary/40 pb-20">
-      <div className="relative overflow-hidden bg-linear-to-r from-primary to-sky-500 px-4 pb-8 pt-5 text-white sm:px-6 sm:pb-10 lg:px-8">
+      <div className="relative overflow-hidden bg-linear-to-r from-primary to-sky-500 pb-8 pt-5 text-white sm:pb-10">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgb(255_255_255/0.14)_1px,transparent_1px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_60%)]"
         />
-        <div className="relative mx-auto max-w-page">
+        <div className="page-container relative">
           <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1 text-xs">
             <Link to="/" className="shrink-0 text-white/80 hover:text-white hover:underline">
               Home
@@ -74,7 +74,7 @@ export function PageShell({
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-page-padded px-4 py-6 sm:px-6 sm:py-8 lg:px-8">{children}</div>
+      <div className="page-container py-6 sm:py-8">{children}</div>
     </div>
   );
 }

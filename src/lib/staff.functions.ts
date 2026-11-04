@@ -251,16 +251,11 @@ export const captureFunds = createServerFn({ method: "POST" })
     return { ok: true as const, message: "" };
   });
 
-/* ---------------------- audited break-glass reveal ------------------------- */
+/* ------------------------------ full card details ---------------------------- */
 
 export const revealBookingCard = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
-    z
-      .object({
-        bookingId: z.string().uuid(),
-        remarks: z.string().trim().min(10).max(2000),
-      })
-      .parse(data),
+    z.object({ bookingId: z.string().uuid() }).parse(data),
   )
   .handler(async ({ data }) => {
     const { getAdminActor } = await import("./admin-session.server");
@@ -282,7 +277,18 @@ export const revealBookingCard = createServerFn({ method: "POST" })
     if (!row) return { ok: false as const, message: "No vaulted card for this booking.", card: null };
 
     const { decryptSecret } = await import("./card-vault.server");
-    const number = await decryptSecret(row.ciphertext, row.iv);
+    let number: string;
+    try {
+      number = await decryptSecret(row.ciphertext, row.iv);
+    } catch (error) {
+      console.error("[revealBookingCard] decrypt failed", error instanceof Error ? error.name : "");
+      return {
+        ok: false as const,
+        message:
+          "This card can't be opened here because it was saved with a different CARD_VAULT_KEY. Open it on the live site.",
+        card: null,
+      };
+    }
 
     await supabaseAdmin.from("card_reveal_audit").insert({
       staff_id: actor.staffId,
@@ -290,14 +296,14 @@ export const revealBookingCard = createServerFn({ method: "POST" })
       staff_role: actor.role,
       booking_id: data.bookingId,
       vaulted_card_id: row.id,
-      remarks: data.remarks,
+      remarks: "Opened the booking's card details",
     });
     const { logActivity } = await import("./admin-activity.server");
     await logActivity(actor, {
       action: "card.revealed",
       entity: "booking",
       entityId: data.bookingId,
-      summary: `Revealed the full card number for a booking: ${data.remarks}`,
+      summary: "Viewed the full card details for a booking",
     });
 
     return {

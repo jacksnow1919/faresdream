@@ -86,7 +86,7 @@ function Field({
     <label className="block">
       <span className="text-sm font-medium text-foreground">{label}</span>
       <span className="relative mt-1.5 block">
-        <Icon className="pointer-events-none absolute left-3.5 top-1/2 size-[18px] -translate-y-1/2 text-muted-foreground" />
+        <Icon className="pointer-events-none absolute left-3.5 top-1/2 size-[1.125rem] -translate-y-1/2 text-muted-foreground" />
         {children}
       </span>
       {hint ? <span className="mt-1 block text-xs text-muted-foreground">{hint}</span> : null}
@@ -145,8 +145,8 @@ function AuthPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-secondary/40 px-4 pb-28 pt-6 sm:px-6 sm:pt-10 lg:pb-16">
-      <div className="mx-auto grid max-w-[960px] overflow-hidden rounded-3xl border border-border bg-card shadow-lux lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+    <div className="min-h-[100dvh] page-gutter bg-secondary/40 pb-28 pt-6 sm:pt-10 lg:pb-16">
+      <div className="mx-auto grid max-w-[60rem] overflow-hidden rounded-3xl border border-border bg-card shadow-lux lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
         <aside className="relative hidden flex-col justify-between gap-8 overflow-hidden bg-linear-to-br from-navy via-primary to-sky-500 p-8 text-white lg:flex xl:p-10">
           <div
             aria-hidden="true"
@@ -163,7 +163,7 @@ function AuthPage() {
               {PERKS.map((p) => (
                 <li key={p.text} className="flex items-center gap-3">
                   <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/15">
-                    <p.icon className="size-[18px]" />
+                    <p.icon className="size-[1.125rem]" />
                   </span>
                   {p.text}
                 </li>
@@ -262,9 +262,9 @@ function AuthPage() {
                 className="absolute right-1.5 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-lg text-muted-foreground transition hover:bg-secondary hover:text-navy"
               >
                 {showPassword ? (
-                  <EyeOff className="size-[18px]" />
+                  <EyeOff className="size-[1.125rem]" />
                 ) : (
-                  <Eye className="size-[18px]" />
+                  <Eye className="size-[1.125rem]" />
                 )}
               </button>
             </Field>

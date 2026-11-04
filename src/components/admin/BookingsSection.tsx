@@ -185,7 +185,7 @@ export function BookingsSection({
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[860px] text-left text-sm">
+        <table className="w-full min-w-[53.75rem] text-left text-sm">
           <thead className="bg-secondary text-[11px] uppercase tracking-widest text-muted-foreground">
             <tr>
               <th className="px-4 py-2.5 font-semibold">Reference</th>

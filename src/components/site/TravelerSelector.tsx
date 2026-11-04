@@ -138,7 +138,7 @@ export function TravelerSelector({
             ref={panelRef}
             role="dialog"
             aria-label="Travellers and class"
-            className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl bg-card text-left shadow-lux md:absolute md:bottom-auto md:left-auto md:right-0 md:top-[calc(100%+0.75rem)] md:w-[360px] md:rounded-xl md:border md:border-border xl:left-0 xl:right-auto"
+            className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl bg-card text-left shadow-lux md:absolute md:bottom-auto md:left-auto md:right-0 md:top-[calc(100%+0.75rem)] md:w-[22.5rem] md:rounded-xl md:border md:border-border xl:left-0 xl:right-auto"
           >
             <div className="flex items-center justify-between border-b border-border px-5 py-3">
               <p className="text-base font-semibold text-foreground md:text-lg">

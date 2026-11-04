@@ -33,12 +33,12 @@ export function SiteHeader() {
   return (
     <>
       <header className="sticky top-0 z-40 bg-blue-950 text-white">
-        <div className="mx-auto flex h-16 max-w-page-padded items-center gap-4 px-4 sm:px-6 lg:gap-6 lg:px-8">
+        <div className="page-container flex h-16 items-center gap-4 lg:gap-6">
           <Link to="/" className="flex min-w-0 shrink-0 items-center">
             <img
               src={LOGO_ON_DARK.src}
               alt="FaresDream — cheap flights and airfare comparison"
-              className="h-5 w-auto sm:h-6"
+              className="h-7 w-auto lg:h-8"
               width={LOGO_ON_DARK.width}
               height={LOGO_ON_DARK.height}
             />
@@ -110,7 +110,7 @@ export function SiteHeader() {
                 loading="lazy"
                 width={LOGO_ON_LIGHT.width}
                 height={LOGO_ON_LIGHT.height}
-                className="h-5 w-auto"
+                className="h-7 w-auto"
               />
               <button
                 onClick={() => setOpen(false)}

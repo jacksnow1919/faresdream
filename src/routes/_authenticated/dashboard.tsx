@@ -80,7 +80,7 @@ function Dashboard() {
         <Stat label="Loyalty tier" value={tier.toUpperCase()} />
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Card>
             <div className="flex flex-wrap items-center justify-between gap-3">

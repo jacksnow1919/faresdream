@@ -37,8 +37,8 @@ export function AirportField({
       <label
         className={`relative flex h-full w-full cursor-pointer flex-col justify-center text-left lg:min-h-0 lg:py-0 ${
           compact
-            ? "min-h-[56px] gap-0.5 px-3.5 py-2 lg:h-[60px] xl:px-[18px]"
-            : "min-h-[68px] gap-1 px-[18px] py-3 lg:h-[84px]"
+            ? "min-h-[3.5rem] gap-0.5 px-3.5 py-2 lg:h-[3.75rem] xl:px-[1.125rem]"
+            : "min-h-[4.25rem] gap-1 px-[1.125rem] py-3 lg:h-[5.25rem]"
         }`}
       >
         <span className="text-xs text-muted-foreground">{label}</span>

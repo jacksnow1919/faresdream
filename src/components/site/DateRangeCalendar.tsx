@@ -203,7 +203,7 @@ export function DateRangeCalendar({
       ref={panelRef}
       role="dialog"
       aria-label="Select dates"
-      className="fixed inset-0 z-50 flex flex-col bg-card text-left md:absolute md:inset-auto md:right-0 md:top-[calc(100%+0.75rem)] md:w-[min(860px,calc(100vw-2rem))] md:rounded-xl md:border md:border-border md:shadow-lux"
+      className="fixed inset-0 z-50 flex flex-col bg-card text-left md:absolute md:inset-auto md:right-0 md:top-[calc(100%+0.75rem)] md:w-[min(53.75rem,calc(100vw-2rem))] md:rounded-xl md:border md:border-border md:shadow-lux"
     >
       <div className="flex items-center gap-3 border-b border-border px-5 py-4 md:px-6 md:py-3">
         <CalendarDays className="size-5 shrink-0 text-foreground" strokeWidth={1.5} />

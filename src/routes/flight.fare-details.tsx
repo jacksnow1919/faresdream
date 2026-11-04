@@ -73,7 +73,7 @@ function FareDetails() {
       } · ${travellerText(s)} · ${s.cabin}`}
       action={<ChangeFlightLink flight={s} />}
     >
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_21.25rem]">
         <div className="space-y-4">
           <CheckoutCard title="Flight details">
             {selected ? (

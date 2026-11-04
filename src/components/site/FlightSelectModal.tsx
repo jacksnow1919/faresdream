@@ -77,7 +77,7 @@ export function FlightSelectModal({
       aria-labelledby={titleId}
     >
       <div className="absolute inset-0 bg-navy/50" aria-hidden="true" onClick={onClose} />
-      <div className="modal-in relative flex h-[100dvh] w-full flex-col bg-card shadow-2xl sm:h-auto sm:max-h-[92dvh] sm:max-w-[880px] sm:rounded-2xl">
+      <div className="modal-in relative flex h-[100dvh] w-full flex-col bg-card shadow-2xl sm:h-auto sm:max-h-[92dvh] sm:max-w-[55rem] sm:rounded-2xl">
         <header className="flex items-start justify-between gap-4 px-5 pb-2 pt-5 sm:px-8 sm:pt-7">
           <div className="min-w-0">
             <h2 id={titleId} className="font-display text-xl font-bold text-foreground sm:text-2xl">

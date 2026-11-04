@@ -11,12 +11,12 @@ export const PROMO_CODE = "DIAL50";
 /** The simple mark: white for the dark header and footer, navy for light backgrounds. */
 export const LOGO_ON_DARK = {
   src: "/brand/faresdream-mark-on-dark.svg",
-  width: 1141,
+  width: 919,
   height: 180,
 } as const;
 export const LOGO_ON_LIGHT = {
   src: "/brand/faresdream-mark-on-light.svg",
-  width: 1141,
+  width: 919,
   height: 180,
 } as const;
 

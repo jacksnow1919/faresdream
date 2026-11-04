@@ -17,7 +17,7 @@ import {
 import { LeadsSection } from "@/components/admin/LeadsSection";
 import { VerificationSection } from "@/components/admin/VerificationSection";
 import { StaffSection } from "@/components/admin/StaffSection";
-import { CardRevealModal } from "@/components/admin/CardRevealModal";
+import { CardDetails } from "@/components/admin/CardDetails";
 import { BookingsSection, SourceBadge, StatusBadge } from "@/components/admin/BookingsSection";
 import { PnrQueue } from "@/components/admin/PnrQueue";
 import { BookingOpsPanel } from "@/components/admin/BookingOpsPanel";
@@ -30,7 +30,6 @@ import { providerLabel } from "@/lib/flight-providers";
 import {
   LayoutDashboard,
   ShieldCheck,
-  ShieldAlert,
   Inbox,
   Link2,
   Ticket,
@@ -186,7 +185,6 @@ function DetailsPanel({
   const captureFn = useServerFn(captureFunds);
   const [remarks, setRemarks] = useState(booking.verification_remarks ?? "");
   const [notice, setNotice] = useState("");
-  const [revealOpen, setRevealOpen] = useState(false);
 
   const privileged = role === "manager" || role === "superadmin";
   const isVerified = booking.verification_status === "verified";
@@ -337,28 +335,29 @@ function DetailsPanel({
 
         <section className="mt-5">
           <h3 className="font-display text-sm font-semibold text-navy">Payment card</h3>
-          <div className="mt-1.5">
-            <Row
-              label="Vaulted card"
-              value={
-                booking.card_last4
-                  ? `${booking.card_brand ?? "Card"} •••• •••• •••• ${booking.card_last4}`
-                  : "No card vaulted"
-              }
-            />
-          </div>
           {booking.card_last4 && privileged ? (
-            <button
-              onClick={() => setRevealOpen(true)}
-              className="mt-2 inline-flex items-center gap-2 rounded-xl border border-destructive/40 px-3 py-2 text-xs font-bold text-destructive"
-            >
-              <ShieldAlert className="size-3.5" /> Break-glass reveal
-            </button>
-          ) : booking.card_last4 ? (
-            <p className="mt-2 text-xs text-muted-foreground">
-              Card numbers stay masked for the agent role.
-            </p>
-          ) : null}
+            <CardDetails
+              key={booking.id}
+              bookingId={booking.id}
+              masked={`${booking.card_brand ?? "Card"} •••• •••• •••• ${booking.card_last4}`}
+            />
+          ) : (
+            <div className="mt-1.5">
+              <Row
+                label="Card"
+                value={
+                  booking.card_last4
+                    ? `${booking.card_brand ?? "Card"} •••• •••• •••• ${booking.card_last4}`
+                    : "No card saved"
+                }
+              />
+              {booking.card_last4 ? (
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Card numbers stay masked for the agent role.
+                </p>
+              ) : null}
+            </div>
+          )}
         </section>
 
         <section className="mt-5">
@@ -425,10 +424,6 @@ function DetailsPanel({
           {notice ? <p className="mt-2 text-xs font-semibold text-destructive">{notice}</p> : null}
         </section>
       </div>
-
-      {revealOpen ? (
-        <CardRevealModal bookingId={booking.id} onClose={() => setRevealOpen(false)} />
-      ) : null}
     </div>
   );
 }
@@ -514,7 +509,7 @@ function AdminDashboard() {
   const openBooking = all.find((b) => b.id === openId) ?? null;
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] bg-secondary/60 lg:grid-cols-[260px_minmax(0,1fr)]">
+    <div className="grid grid-cols-[minmax(0,1fr)] bg-secondary/60 lg:grid-cols-[16.25rem_minmax(0,1fr)]">
       <Sidebar
         role={role}
         onSignOut={async () => {

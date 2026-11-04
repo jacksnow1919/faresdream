@@ -112,8 +112,8 @@ function CorporatePage() {
 
   return (
     <div className="min-h-[100dvh] bg-navy text-navy-foreground">
-      <section className="px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-page gap-10 lg:grid-cols-2">
+      <section className="py-12">
+        <div className="page-container grid gap-10 lg:grid-cols-2">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-gold">
               Corporate desk

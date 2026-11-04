@@ -71,7 +71,7 @@ function ConfirmPage() {
       title="Booking received"
       subtitle={`${cityOf(s.origin)} to ${cityOf(s.destination)} · ${dayText(s.departDate)}`}
     >
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_21.25rem]">
         <div className="space-y-4">
           <section className="flex gap-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 sm:p-5">
             <span className="grid size-11 shrink-0 place-items-center rounded-full bg-emerald-600 text-white">

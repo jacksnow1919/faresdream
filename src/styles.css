@@ -18,11 +18,59 @@
  * 2. Register it in @theme inline as --color-<name>: var(--<name>)
  */
 
+/* Page layout: the site's size, width and side spacing are set here and nowhere else. */
+:root {
+  /* How large everything looks on screens 1024px and wider; 100% is the browser's normal size.
+     Sizes below are in rem so they follow it: at 80%, 90rem is 1152px and 2.5rem is 32px. */
+  --page-scale: 80%;
+  --page-max-width: 90rem;
+  --page-gutter-desktop: 2.5rem; /* 1024px and wider */
+  --page-gutter-tablet: 1.75rem; /* 768px to 1023px */
+  --page-gutter-mobile: 1.25rem; /* 480px to 767px */
+  --page-gutter-small: 1rem; /* under 480px */
+  --page-gutter: var(--page-gutter-small);
+}
+@media (min-width: 480px) {
+  :root {
+    --page-gutter: var(--page-gutter-mobile);
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: var(--page-gutter-tablet);
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --page-gutter: var(--page-gutter-desktop);
+  }
+  html {
+    font-size: var(--page-scale);
+  }
+}
+
+/* Wraps a section's content, never its background: put colours and photos on the parent so
+   they stay edge to edge. */
+@utility page-container {
+  width: 100%;
+  max-width: var(--page-max-width);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+/* Side spacing only, for full-screen panels with their own narrower content. */
+@utility page-gutter {
+  padding-inline: var(--page-gutter);
+}
+/* A scrolling row that runs to the screen edges from inside a page-container. */
+@utility page-bleed {
+  margin-inline: calc(var(--page-gutter) * -1);
+  padding-inline: var(--page-gutter);
+}
+
 @theme inline {
-  /* Page width. Use max-w-page when the side padding is on a parent, and max-w-page-padded
-     when it's on the same element (px-4 sm:px-6 lg:px-8). Both leave 1200px of content. */
-  --container-page: 75rem;
-  --container-page-padded: 79rem;
+  /* At the 80% page size, a 1024px screen has the room of a 1280px one, so the widest layouts
+     start there. Set this back to 80rem if --page-scale goes back to 100%. */
+  --breakpoint-xl: 64rem;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

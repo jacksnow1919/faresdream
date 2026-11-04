@@ -34,11 +34,11 @@ export function LegalPage({
 }) {
   return (
     <PageShell crumb={crumb} title={title} subtitle={subtitle}>
-      <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start">
+      <div className="grid gap-6 lg:grid-cols-[16.25rem_minmax(0,1fr)] lg:items-start">
         <aside className="min-w-0 space-y-4 lg:sticky lg:top-20">
           <nav
             aria-label="Policies"
-            className="-mx-4 flex gap-2 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:px-0 lg:block lg:space-y-1 lg:rounded-2xl lg:border lg:border-border lg:bg-card lg:p-2 lg:shadow-card [&::-webkit-scrollbar]:hidden"
+            className="page-bleed flex gap-2 overflow-x-auto [scrollbar-width:none] sm:mx-0 sm:px-0 lg:block lg:space-y-1 lg:rounded-2xl lg:border lg:border-border lg:bg-card lg:p-2 lg:shadow-card [&::-webkit-scrollbar]:hidden"
           >
             {LEGAL_PAGES.map((p) => (
               <Link

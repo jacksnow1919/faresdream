@@ -67,7 +67,7 @@ function AgentPortal() {
         <Stat label="Payout cycle" value="Monthly · Net 15" />
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <Card>
           <SectionTitle>Net fare search</SectionTitle>
           <div className="mt-3 grid gap-3 sm:grid-cols-3">

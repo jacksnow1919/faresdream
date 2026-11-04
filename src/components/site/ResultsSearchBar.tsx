@@ -105,7 +105,7 @@ export function DateStrip({
               type="button"
               aria-pressed={active}
               onClick={() => !active && onPick(key)}
-              className={`relative min-w-[96px] flex-1 snap-start border-r border-border px-3.5 py-2 text-left transition last:border-r-0 hover:bg-secondary/60 ${
+              className={`relative min-w-[6rem] flex-1 snap-start border-r border-border px-3.5 py-2 text-left transition last:border-r-0 hover:bg-secondary/60 ${
                 active
                   ? "after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:bg-gold"
                   : ""

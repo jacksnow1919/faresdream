@@ -108,7 +108,7 @@ export function LeadsSection() {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[820px] text-left text-sm">
+        <table className="w-full min-w-[51.25rem] text-left text-sm">
           <thead className="bg-secondary text-[11px] uppercase tracking-widest text-muted-foreground">
             <tr>
               <th className="px-4 py-2.5 font-semibold">Date</th>

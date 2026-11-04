@@ -144,8 +144,8 @@ function CabinSuitesPage() {
 
   return (
     <div className="min-h-[100dvh] bg-navy text-navy-foreground">
-      <section className="px-4 pb-6 pt-8 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-page">
+      <section className="pb-6 pt-8">
+        <div className="page-container">
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-gold">
             Cabin suites
           </span>
@@ -172,8 +172,8 @@ function CabinSuitesPage() {
         </div>
       </section>
 
-      <section className="px-4 pb-12 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-page gap-4 lg:grid-cols-2">
+      <section className="pb-12">
+        <div className="page-container grid gap-4 lg:grid-cols-2">
           {suites.map((s) => (
             <article
               key={`${s.airline}-${s.product}`}

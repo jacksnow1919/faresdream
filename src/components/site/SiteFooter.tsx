@@ -163,7 +163,7 @@ export function SiteFooter() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgb(255_255_255/0.09)_1px,transparent_1px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_65%)]"
       />
 
-      <div className="relative mx-auto max-w-page-padded px-4 sm:px-6 lg:px-8">
+      <div className="page-container relative">
         {/* Brand + links */}
         <div className="grid gap-8 py-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-4">
@@ -171,7 +171,7 @@ export function SiteFooter() {
               <img
                 src={LOGO_ON_DARK.src}
                 alt="FaresDream"
-                className="h-6 w-auto"
+                className="h-7 w-auto lg:h-8"
                 loading="lazy"
                 width={LOGO_ON_DARK.width}
                 height={LOGO_ON_DARK.height}

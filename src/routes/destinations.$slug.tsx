@@ -40,7 +40,7 @@ function DestinationPage() {
   const { destination: d } = Route.useLoaderData();
   return (
     <PageShell eyebrow={d.airport} title={`Business Class to ${d.city}`} subtitle={d.guide}>
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Card>
             <SectionTitle>Travel guide</SectionTitle>

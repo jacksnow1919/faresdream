@@ -54,7 +54,7 @@ function AdminLogin() {
 
 
   return (
-    <div className="grid min-h-[100dvh] place-items-center bg-navy px-4 py-12">
+    <div className="grid min-h-[100dvh] place-items-center page-gutter bg-navy py-12">
       <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-card">
         <span className="grid size-11 place-items-center rounded-xl bg-navy text-navy-foreground">
           <ShieldCheck className="size-5" />

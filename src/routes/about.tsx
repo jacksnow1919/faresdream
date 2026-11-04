@@ -92,7 +92,7 @@ function AboutPage() {
     >
       <div className="space-y-10 sm:space-y-12">
         {/* Who we are + talk to us */}
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_22.5rem]">
           <section className="rounded-2xl border border-border bg-card p-5 shadow-card sm:p-8">
             <Heading>Who we are</Heading>
             <div className="mt-4 space-y-3 text-[15px] leading-relaxed text-muted-foreground">

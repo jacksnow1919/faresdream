@@ -50,7 +50,7 @@ function RoutePage() {
       title={`${r.label} Business Class`}
       subtitle={`${r.duration} · ${r.aircraft}`}
     >
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Card>
             <SectionTitle>Live fare comparison</SectionTitle>

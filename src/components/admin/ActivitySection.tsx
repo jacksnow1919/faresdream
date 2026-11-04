@@ -83,11 +83,11 @@ export function ActivitySection() {
           {q ? "Nothing matches that search." : "No activity recorded yet."}
         </p>
       ) : (
-        <ul className="max-h-[480px] divide-y divide-border overflow-y-auto">
+        <ul className="max-h-[30rem] divide-y divide-border overflow-y-auto">
           {rows.map((r) => (
             <li
               key={r.id}
-              className="grid gap-1 px-4 py-2.5 text-sm sm:grid-cols-[150px_200px_minmax(0,1fr)] sm:gap-4"
+              className="grid gap-1 px-4 py-2.5 text-sm sm:grid-cols-[9.375rem_12.5rem_minmax(0,1fr)] sm:gap-4"
             >
               <span className="text-xs text-muted-foreground">
                 {new Date(r.created_at).toLocaleString()}
