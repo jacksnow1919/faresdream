@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { currencyByCode } from "@/lib/regional";
 import { useCurrency } from "@/components/site/CurrencyContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, type UseQueryResult } from "@tanstack/react-query";
 import { format } from "date-fns";
 import {
   ArrowUp,
@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { searchFlights, type PkfareNormalisedFare } from "@/services/pkfareApi";
+import { mergeFares, PROVIDER_KEYS, type ProviderAnswer } from "@/lib/flight-providers";
 import { saveRecentSearch } from "@/lib/recent-searches";
 import { saveSelectedFare } from "@/lib/selected-fare";
 import { PHONE_DISPLAY } from "@/lib/brand";
@@ -107,6 +108,17 @@ export const Route = createFileRoute("/flight/search")({
 const clockDuration = (minutes: number) =>
   `${String(Math.floor(minutes / 60)).padStart(2, "0")}h ${String(minutes % 60).padStart(2, "0")}m`;
 
+/** The fares so far from the APIs that have answered, and whether any are still working. */
+function combineSearches(results: UseQueryResult<ProviderAnswer>[]) {
+  const answers = results.flatMap((r) => (r.data ? [r.data] : []));
+  return {
+    allFlights: mergeFares(...answers.map((a) => a.fares)).fares,
+    stillSearching: results.some((r) => r.isPending),
+    // No API gave a real answer: they all failed, or none is switched on.
+    isError: results.every((r) => !r.isPending) && !answers.some((a) => a.status === "ok"),
+  };
+}
+
 function SearchPage() {
   const airportsStatus = useAirports();
   const { money, displayCurrency } = useCurrency();
@@ -125,34 +137,45 @@ function SearchPage() {
     setFilters(emptyFilters);
   }, [origin, destination, date, returnDate, passengers, cabin, airline]);
 
-  const {
-    data: allFlights = [],
-    isPending,
-    isError,
-  } = useQuery({
-    queryKey: [
-      "flight-search",
-      origin,
-      destination,
-      date,
-      returnDate,
-      passengers,
-      cabin,
-      airline,
-      currency,
-    ],
-    retry: false,
-    queryFn: () =>
-      searchFlights({
+  // One id per search, so the admin panel can show every API's answer on one row.
+  const searchId = useMemo(
+    () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [origin, destination, date, returnDate, passengers, cabin, airline, currency],
+  );
+
+  const { allFlights, stillSearching, isError } = useQueries({
+    queries: PROVIDER_KEYS.map((provider) => ({
+      queryKey: [
+        "flight-search",
+        provider,
         origin,
         destination,
-        departDate: date,
-        ...(returnDate ? { returnDate } : {}),
-        adults: passengers,
-        cabinClass: cabin,
-        currency: currency || "USD",
-        ...(airline ? { airline } : {}),
-      }),
+        date,
+        returnDate,
+        passengers,
+        cabin,
+        airline,
+        currency,
+      ],
+      retry: false,
+      queryFn: () =>
+        searchFlights(
+          provider,
+          {
+            origin,
+            destination,
+            departDate: date,
+            ...(returnDate ? { returnDate } : {}),
+            adults: passengers,
+            cabinClass: cabin,
+            currency: currency || "USD",
+            ...(airline ? { airline } : {}),
+          },
+          searchId,
+        ),
+    })),
+    combine: combineSearches,
   });
 
   const airlineName = airline ? (AIRLINE_NAMES[airline] ?? airline) : "";
@@ -202,7 +225,7 @@ function SearchPage() {
     [carrierFlights, filters, sort, bounds],
   );
 
-  const isLoading = isPending;
+  const isLoading = stillSearching && carrierFlights.length === 0;
   const showEmpty = !isLoading && (isError || carrierFlights.length === 0);
   const filteredOut = !isLoading && !showEmpty && flights.length === 0;
   const fmt = (n: number) => money(n, fareCurrency);
@@ -224,6 +247,7 @@ function SearchPage() {
     cabin: f.cabin,
     currency: f.currency,
     price: String(f.price * passengers),
+    ...(f.provider ? { provider: f.provider } : {}),
     ...(f.baseFare !== undefined && f.taxes !== undefined
       ? { baseFare: String(f.baseFare * passengers), taxes: String(f.taxes * passengers) }
       : {}),
@@ -456,6 +480,13 @@ function SearchPage() {
             {flights.length > 0 && shownCurrency !== fareCurrency ? (
               <p className="rounded-xl border border-primary/15 bg-sky-50 px-4 py-2.5 text-sm text-navy">
                 Prices are estimates in {shownCurrency}. You pay in {fareCurrency} at checkout.
+              </p>
+            ) : null}
+
+            {stillSearching && flights.length > 0 ? (
+              <p className="flex items-center gap-2 text-sm font-medium text-navy">
+                <Loader2 className="size-4 animate-spin text-gold" />
+                Checking more airlines…
               </p>
             ) : null}
 

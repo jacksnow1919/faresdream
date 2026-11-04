@@ -16,6 +16,7 @@ const bookingInput = z.object({
   origin: z.string().min(3).max(4),
   destination: z.string().min(3).max(4),
   airline: z.string().max(120).optional(),
+  fareProvider: z.string().max(20).optional(),
   cabinClass: z.string().max(40).optional(),
   departDate: z.string().max(20).optional(),
   totalPrice: z.number().nonnegative(),
@@ -102,6 +103,7 @@ export const createBooking = createServerFn({ method: "POST" })
         origin: data.origin,
         destination: data.destination,
         airline: data.airline ?? null,
+        fare_provider: data.fareProvider ?? null,
         cabin_class: data.cabinClass ?? null,
         depart_date: data.departDate || null,
         total_price: data.totalPrice,
@@ -282,6 +284,7 @@ export type AdminBookingRow = {
   origin: string;
   destination: string;
   airline: string | null;
+  fare_provider: string | null;
   cabin_class: string | null;
   depart_date: string | null;
   return_date: string | null;
@@ -315,7 +318,7 @@ export type AdminBookingsResult =
   | { authorized: true; rows: AdminBookingRow[] };
 
 const ADMIN_BOOKING_COLUMNS =
-  "id, pnr, created_at, origin, destination, airline, cabin_class, depart_date, return_date, total_price, currency, status, source, utm_source, click_id, promo_code, promo_discount, lead_name, guest_email, guest_phone, billing_address, billing_city, billing_country, billing_postal_code, verification_status, verification_remarks, verified_by, verified_at, captured_at, captured_by";
+  "id, pnr, created_at, origin, destination, airline, fare_provider, cabin_class, depart_date, return_date, total_price, currency, status, source, utm_source, click_id, promo_code, promo_discount, lead_name, guest_email, guest_phone, billing_address, billing_city, billing_country, billing_postal_code, verification_status, verification_remarks, verified_by, verified_at, captured_at, captured_by";
 
 export const getAdminBookings = createServerFn({ method: "GET" }).handler(
   async (): Promise<AdminBookingsResult> => {

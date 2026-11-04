@@ -5,7 +5,7 @@ Flight search and booking website: [faresdream.com](https://www.faresdream.com).
 - **App:** TanStack Start, React and Tailwind CSS
 - **Hosting:** Cloudflare Workers (deploys automatically from `main`)
 - **Database and sign-in:** Supabase
-- **Flight data:** Duffel
+- **Flight data:** PKFARE, Duffel and mcontent, searched together
 
 ## Run it locally
 
@@ -26,6 +26,6 @@ The search boxes load every airport from `src/lib/airports-all.gen.ts`, built fr
 
 ```bash
 npx tsc --noEmit
-node --test scripts/admin-logic.test.ts scripts/fare-filters.test.ts scripts/airports.test.ts scripts/regional.test.ts
+node --test scripts/flight-providers.test.ts scripts/admin-logic.test.ts scripts/fare-filters.test.ts scripts/airports.test.ts scripts/regional.test.ts
 npm run build
 ```

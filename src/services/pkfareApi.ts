@@ -1,18 +1,24 @@
 /**
  * Client-side flight search service.
- * All PKFARE traffic (MD5 signing + /apiv2/shopping) happens server-side in
- * src/lib/pkfare.server.ts via the `searchPkfare` server function, so partner
- * credentials are never exposed to the browser.
+ * All flight API traffic happens server-side through the `searchOneProvider` server
+ * function, so API keys are never exposed to the browser.
  */
-import { searchPkfare } from "@/lib/pkfare.functions";
-import type { PkfareNormalisedFare, PkfareSearchQuery } from "@/lib/pkfare-types";
+import { searchOneProvider } from "@/lib/pkfare.functions";
+import type { ProviderAnswer, ProviderKey } from "@/lib/flight-providers";
+import type { PkfareSearchQuery } from "@/lib/pkfare-types";
 
 export type * from "@/lib/pkfare-types";
 
-/** Search live inventory through the secure backend. Throws on upstream/credential errors. */
-export async function searchFlights(query: PkfareSearchQuery): Promise<PkfareNormalisedFare[]> {
-  return searchPkfare({
+/** Asks one flight API through the secure backend. A failed API answers with status "error". */
+export async function searchFlights(
+  provider: ProviderKey,
+  query: PkfareSearchQuery,
+  searchId: string,
+): Promise<ProviderAnswer> {
+  return searchOneProvider({
     data: {
+      provider,
+      searchId,
       origin: query.origin,
       destination: query.destination,
       departDate: query.departDate,

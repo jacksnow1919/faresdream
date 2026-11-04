@@ -1,4 +1,5 @@
 /** Shared PKFARE types — safe to import from client and server code. */
+import type { ProviderKey } from "./flight-providers";
 
 export interface PkfareSearchQuery {
   origin: string;
@@ -162,4 +163,6 @@ export interface PkfareNormalisedFare {
   /** Airline rules before departure; absent when the provider doesn't say. */
   refundRule?: FareRule | undefined;
   changeRule?: FareRule | undefined;
+  /** Which flight API quoted this fare. */
+  provider?: ProviderKey | undefined;
 }

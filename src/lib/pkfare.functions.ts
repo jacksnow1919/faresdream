@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { PROVIDER_KEYS } from "./flight-providers";
 
 const searchSchema = z.object({
   origin: z.string().min(3).max(4),
@@ -13,17 +14,21 @@ const searchSchema = z.object({
   currency: z.string().min(3).max(3).optional(),
   solutions: z.number().int().min(1).max(50).optional(),
   airline: z.string().max(3).optional(),
+  provider: z.enum(PROVIDER_KEYS),
+  /** Random per search, made by the page; ties each API's log row together. */
+  searchId: z
+    .string()
+    .regex(/^[a-z0-9-]{6,40}$/)
+    .optional(),
 });
 
 /**
- * Searches live PKFARE inventory on the server; credentials stay server-side.
- * Without PKFARE credentials, a DUFFEL_ACCESS_TOKEN (e.g. in .env.local) serves the search.
+ * Asks one flight API for live fares on the server; credentials stay server-side. The page
+ * calls this once per API so fares appear as soon as the fastest one answers.
  */
-export const searchPkfare = createServerFn({ method: "POST" })
+export const searchOneProvider = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => searchSchema.parse(input))
-  .handler(async ({ data }) => {
-    const { duffelEnabled, runDuffelSearch } = await import("./duffel.server");
-    if (duffelEnabled()) return runDuffelSearch(data);
-    const { runPkfareSearch } = await import("./pkfare.server");
-    return runPkfareSearch(data);
+  .handler(async ({ data: { provider, searchId, ...query } }) => {
+    const { searchProvider } = await import("./provider-search.server");
+    return searchProvider(provider, query, searchId);
   });

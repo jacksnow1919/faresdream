@@ -44,12 +44,17 @@ async function fetchCheapestFare(
   destination: string,
   cabin: string,
 ): Promise<{ price: number; currency: string; airline: string | null } | null> {
+  // Off unless switched on: this address is public, so any visitor could spend PKFARE searches.
+  if (process.env["FARE_CACHE_USE_PKFARE"] !== "true") return null;
+
   const partnerId = process.env["PKFARE_PARTNER_ID"];
   const partnerKey = process.env["PKFARE_PARTNER_KEY"];
   if (!partnerId || !partnerKey) {
     console.error("[fare-cache] PKFARE credentials are not configured");
     return null;
   }
+  const { isProviderPaused } = await import("./provider-switch.server");
+  if (await isProviderPaused("pkfare")) return null;
 
   const body = {
     authentication: { sign: md5(`${partnerId}${partnerKey}`), partnerId },

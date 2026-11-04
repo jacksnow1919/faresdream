@@ -12,6 +12,8 @@ export type FlightSearch = {
   baseFare?: string;
   taxes?: string;
   itineraryId?: string;
+  /** Which flight API quoted the fare, for the staff who ticket it. */
+  provider?: string;
   adults?: number;
   children?: number;
   infants?: number;
@@ -60,6 +62,7 @@ export const parseFlightSearch = (search: Record<string, unknown>): FlightSearch
   const baseFare = str(search["base_fare"], "");
   const taxes = str(search["taxes"], "");
   const itineraryId = str(search["itinerary_id"], "");
+  const provider = str(search["provider"], "");
 
   return {
     origin: str(search["origin"], "JFK").toUpperCase(),
@@ -75,6 +78,7 @@ export const parseFlightSearch = (search: Record<string, unknown>): FlightSearch
     ...(baseFare ? { baseFare } : {}),
     ...(taxes ? { taxes } : {}),
     ...(itineraryId ? { itineraryId } : {}),
+    ...(/^[a-z]{1,20}$/.test(provider) ? { provider } : {}),
     adults: num(search["adults"], 1),
     children: num(search["children"], 0),
     infants: num(search["infants"], 0),

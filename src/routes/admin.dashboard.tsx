@@ -24,7 +24,9 @@ import { BookingOpsPanel } from "@/components/admin/BookingOpsPanel";
 import { DealsSection } from "@/components/admin/DealsSection";
 import { RefundsSection } from "@/components/admin/RefundsSection";
 import { ActivitySection } from "@/components/admin/ActivitySection";
-import { bookingSource, canViewActivity, formatMoney } from "@/lib/admin-logic";
+import { ProvidersSection } from "@/components/admin/ProvidersSection";
+import { bookingSource, canManageProviders, canViewActivity, formatMoney } from "@/lib/admin-logic";
+import { providerLabel } from "@/lib/flight-providers";
 import {
   LayoutDashboard,
   ShieldCheck,
@@ -41,6 +43,7 @@ import {
   Tag,
   RotateCcw,
   History,
+  Server,
 } from "lucide-react";
 
 
@@ -78,6 +81,7 @@ const NAV: {
   { label: "Deals", hash: "deals", icon: Tag },
   { label: "Leads & Quotes", hash: "leads", icon: Inbox },
   { label: "Verification", hash: "verification", icon: ShieldCheck },
+  { label: "Flight APIs", hash: "providers", icon: Server, show: canManageProviders },
   { label: "Activity log", hash: "activity", icon: History, show: canViewActivity },
   { label: "Staff & roles", hash: "staff", icon: Users, show: (r) => r === "superadmin" },
 ];
@@ -259,6 +263,7 @@ function DetailsPanel({
             <Row label="PNR" value={booking.pnr ?? ""} />
             <Row label="Route" value={`${booking.origin} → ${booking.destination}`} />
             <Row label="Airline" value={booking.airline ?? ""} />
+            <Row label="Flight API" value={providerLabel(booking.fare_provider)} />
             <Row label="Cabin" value={booking.cabin_class ?? ""} />
             <Row label="Travel date" value={booking.depart_date ?? ""} />
             <Row label="Return" value={booking.return_date ?? ""} />
@@ -509,7 +514,7 @@ function AdminDashboard() {
   const openBooking = all.find((b) => b.id === openId) ?? null;
 
   return (
-    <div className="grid bg-secondary/60 lg:grid-cols-[260px_minmax(0,1fr)]">
+    <div className="grid grid-cols-[minmax(0,1fr)] bg-secondary/60 lg:grid-cols-[260px_minmax(0,1fr)]">
       <Sidebar
         role={role}
         onSignOut={async () => {
@@ -570,6 +575,7 @@ function AdminDashboard() {
         <DealsSection role={role} />
         <LeadsSection />
         <VerificationSection />
+        {canManageProviders(role) ? <ProvidersSection /> : null}
         {canViewActivity(role) ? <ActivitySection /> : null}
         {role === "superadmin" ? <StaffSection /> : null}
       </main>

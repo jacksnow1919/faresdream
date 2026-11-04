@@ -17,6 +17,8 @@ export const canManageDeals = isManager;
 /** Marking a refund paid or rejected settles money with the customer. */
 export const canSettleRefunds = isManager;
 export const canViewActivity = isManager;
+/** Pausing a flight API changes which fares customers see. */
+export const canManageProviders = isManager;
 
 /* --------------------------------- money ---------------------------------- */
 

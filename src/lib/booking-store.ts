@@ -86,6 +86,7 @@ export const persistBooking = async (record: BookingRecord, card?: CardCapture) 
       origin: record.flight.origin,
       destination: record.flight.destination,
       airline: record.flight.airline,
+      ...(record.flight.provider ? { fareProvider: record.flight.provider } : {}),
       cabinClass: record.flight.cabin,
       departDate: record.flight.departDate,
       totalPrice: record.total,

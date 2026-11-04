@@ -7,6 +7,7 @@
  *  - the JSON body is base64-encoded and POSTed as a `param` form field
  *  - flights/segments come back as flat pools referenced by id
  */
+import { providerError } from "./flight-providers";
 import type {
   FareJourney,
   PkfareNormalisedFare,
@@ -129,7 +130,10 @@ export async function pkfarePost<T>(path: string, body: Record<string, unknown>)
       text = "<unreadable>";
     }
     console.error(`[PKFARE] ${base}${path} failed (${res.status}): ${text}`);
-    throw new Error("The flight provider returned an error. Please try again shortly.");
+    throw providerError(
+      "The flight provider returned an error. Please try again shortly.",
+      `PKFARE ${res.status}: ${text}`,
+    );
   }
 
   try {
@@ -339,6 +343,9 @@ export interface PkfareItinerary {
 export async function runPkfareItinerarySearch(
   query: PkfareSearchQuery,
 ): Promise<PkfareItinerary[]> {
+  const { isProviderPaused } = await import("./provider-switch.server");
+  if (await isProviderPaused("pkfare")) return [];
+
   const cabinClass = query.cabinClass ?? "Economy";
   const res = await pkfareShopping(query, cabinClass);
 
@@ -393,10 +400,11 @@ export async function runPkfareSearch(query: PkfareSearchQuery): Promise<PkfareN
   const code = String(res.errorCode ?? "0");
   if (code !== "0" && code !== "S") {
     console.error(`[PKFARE] api error ${code}: ${res.errorMsg ?? ""}`);
-    throw new Error(
+    throw providerError(
       res.errorMsg
         ? `The flight provider couldn't complete that search (${code}).`
         : `PKFARE error ${code}`,
+      `PKFARE error ${code}: ${res.errorMsg ?? ""}`,
     );
   }
 

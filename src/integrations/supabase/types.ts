@@ -93,6 +93,7 @@ export type Database = {
           billing_country: string | null
           billing_postal_code: string | null
           cabin_class: string | null
+          fare_provider: string | null
           captured_at: string | null
           captured_by: string | null
           click_id: string | null
@@ -126,6 +127,7 @@ export type Database = {
           billing_country?: string | null
           billing_postal_code?: string | null
           cabin_class?: string | null
+          fare_provider?: string | null
           captured_at?: string | null
           captured_by?: string | null
           click_id?: string | null
@@ -159,6 +161,7 @@ export type Database = {
           billing_country?: string | null
           billing_postal_code?: string | null
           cabin_class?: string | null
+          fare_provider?: string | null
           captured_at?: string | null
           captured_by?: string | null
           click_id?: string | null
@@ -572,6 +575,87 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_searches: {
+        Row: {
+          adults: number
+          cabin: string | null
+          created_at: string
+          depart_date: string
+          destination: string
+          fares: number
+          id: string
+          message: string | null
+          ms: number
+          origin: string
+          provider: string
+          return_date: string | null
+          search_id: string
+          status: string
+        }
+        Insert: {
+          adults?: number
+          cabin?: string | null
+          created_at?: string
+          depart_date: string
+          destination: string
+          fares?: number
+          id?: string
+          message?: string | null
+          ms?: number
+          origin: string
+          provider: string
+          return_date?: string | null
+          search_id: string
+          status: string
+        }
+        Update: {
+          adults?: number
+          cabin?: string | null
+          created_at?: string
+          depart_date?: string
+          destination?: string
+          fares?: number
+          id?: string
+          message?: string | null
+          ms?: number
+          origin?: string
+          provider?: string
+          return_date?: string | null
+          search_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      provider_switches: {
+        Row: {
+          paused: boolean
+          paused_at: string | null
+          paused_by: string | null
+          paused_until: string | null
+          provider: string
+          reason: string | null
+          updated_at: string
+        }
+        Insert: {
+          paused?: boolean
+          paused_at?: string | null
+          paused_by?: string | null
+          paused_until?: string | null
+          provider: string
+          reason?: string | null
+          updated_at?: string
+        }
+        Update: {
+          paused?: boolean
+          paused_at?: string | null
+          paused_by?: string | null
+          paused_until?: string | null
+          provider?: string
+          reason?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       refunds: {
         Row: {
           airline_penalty: number
@@ -899,6 +983,20 @@ export type Database = {
     }
     Functions: {
       next_booking_reference: { Args: never; Returns: string }
+      provider_search_stats: {
+        Args: { since: string }
+        Returns: {
+          avg_ms: number
+          failed: number
+          fares_returned: number
+          last_error: string | null
+          last_error_at: string | null
+          last_fares_at: string | null
+          lookups: number
+          provider: string
+          with_fares: number
+        }[]
+      }
     }
     Enums: {
       app_role: "customer" | "agent" | "admin"

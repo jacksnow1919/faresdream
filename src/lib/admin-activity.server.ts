@@ -1,7 +1,7 @@
 import type { AdminActor } from "./admin-session.server";
 
 export type ActivityEntity =
-  "booking" | "ticket" | "refund" | "deal" | "lead" | "staff" | "verification";
+  "booking" | "ticket" | "refund" | "deal" | "lead" | "staff" | "verification" | "provider";
 
 /** True when Postgres/PostgREST says the table doesn't exist (migration not applied yet). */
 export function isMissingTable(error: { code?: string; message?: string } | null | undefined) {

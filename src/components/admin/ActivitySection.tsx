@@ -14,6 +14,7 @@ const ENTITY_LABELS: Record<string, string> = {
   lead: "Lead",
   staff: "Staff",
   verification: "ID check",
+  provider: "Flight API",
 };
 
 const CSV_COLUMNS: { header: string; value: (r: ActivityRow) => unknown }[] = [

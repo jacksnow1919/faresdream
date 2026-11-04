@@ -1,9 +1,8 @@
 /**
  * Duffel flight search (Offer Requests API) — SERVER ONLY.
- * Used instead of PKFARE when DUFFEL_ACCESS_TOKEN is set and PKFARE isn't
- * configured, so local development shows real offers. Keep the token in
- * .env.local (git-ignored), never in .env, which is committed.
+ * Keep the token in .env.local (git-ignored), never in .env, which is committed.
  */
+import { providerError } from "./flight-providers";
 import type {
   FareJourney,
   FareRule,
@@ -93,11 +92,6 @@ interface DuffelOffer {
 interface DuffelResponse {
   data?: { offers?: DuffelOffer[] };
   errors?: { title?: string; message?: string }[];
-}
-
-/** Duffel serves the search when it has a token and PKFARE has no credentials. */
-export function duffelEnabled(): boolean {
-  return !!process.env["DUFFEL_ACCESS_TOKEN"] && !process.env["PKFARE_PARTNER_ID"];
 }
 
 /** Minutes in an ISO 8601 duration such as "PT7H25M" or "P1DT2H5M". */
@@ -298,7 +292,10 @@ export async function runDuffelSearch(query: PkfareSearchQuery): Promise<PkfareN
   if (!res.ok) {
     const detail = (body.errors ?? []).map((e) => e.message || e.title).join("; ");
     console.error(`[Duffel] offer request failed (${res.status}): ${detail}`);
-    throw new Error("The flight provider returned an error. Please try again shortly.");
+    throw providerError(
+      "The flight provider returned an error. Please try again shortly.",
+      `Duffel ${res.status}: ${detail}`,
+    );
   }
 
   const cheapest = new Map<string, DuffelOffer>();
