@@ -14,7 +14,7 @@ import {
 import { useCurrency } from "@/components/site/CurrencyContext";
 import { RegionalSettingsDialog, RegionalSummary } from "@/components/site/RegionalSettings";
 import { AgentAvatar } from "@/components/site/ui";
-import { LOGO, PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
+import { LOGO_ON_DARK, LOGO_ON_LIGHT, PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
 import { countryByCode } from "@/lib/regional";
 
 const drawerLinks = [
@@ -32,38 +32,36 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-border bg-background shadow-card">
+      <header className="sticky top-0 z-40 bg-blue-950 text-white">
         <div className="mx-auto flex h-16 max-w-page-padded items-center gap-4 px-4 sm:px-6 lg:gap-6 lg:px-8">
           <Link to="/" className="flex min-w-0 shrink-0 items-center">
             <img
-              src={LOGO.src}
+              src={LOGO_ON_DARK.src}
               alt="FaresDream — cheap flights and airfare comparison"
-              className="h-6 w-auto max-w-[130px] object-contain sm:h-7 sm:max-w-[150px]"
-              width={LOGO.width}
-              height={LOGO.height}
+              className="h-5 w-auto sm:h-6"
+              width={LOGO_ON_DARK.width}
+              height={LOGO_ON_DARK.height}
             />
           </Link>
 
           <div className="ml-auto flex shrink-0 items-center gap-2 whitespace-nowrap lg:gap-3">
             <a
               href={`tel:${PHONE_TEL}`}
-              className="hidden items-center gap-2.5 rounded-full border border-primary/15 bg-sky-50 py-1.5 pl-1.5 pr-4 transition hover:border-primary/40 lg:flex"
+              className="hidden items-center gap-2.5 rounded-xl px-2.5 py-1.5 transition hover:bg-white/10 lg:flex"
             >
-              <span className="grid size-8 place-items-center rounded-full bg-primary text-primary-foreground">
+              <span className="grid size-8 place-items-center rounded-full bg-white/10">
                 <Phone className="size-4" />
               </span>
               <span className="leading-tight">
-                <span className="block text-[11px] font-medium text-muted-foreground">
-                  24/7 phone deals
-                </span>
-                <span className="block text-sm font-bold text-navy">{PHONE_DISPLAY}</span>
+                <span className="block text-[11px] font-medium text-white/70">Call us</span>
+                <span className="block text-sm font-semibold">{PHONE_DISPLAY}</span>
               </span>
             </a>
             <a
               href={`tel:${PHONE_TEL}`}
-              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground transition hover:brightness-110 lg:hidden"
+              className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-xs font-semibold transition hover:bg-white/20 lg:hidden"
             >
-              <Phone className="size-4" /> Call
+              <Phone className="size-4" /> Call us
             </a>
 
             <button
@@ -71,7 +69,7 @@ export function SiteHeader() {
               onClick={() => setRegionalOpen(true)}
               aria-haspopup="dialog"
               aria-label={regionalLabel}
-              className="hidden h-10 cursor-pointer items-center gap-3.5 rounded-xl bg-navy px-4 text-sm font-medium text-navy-foreground transition hover:brightness-110 lg:inline-flex"
+              className="hidden h-10 cursor-pointer items-center gap-3.5 rounded-xl px-3 text-sm font-medium transition hover:bg-white/10 lg:inline-flex"
             >
               <RegionalSummary />
             </button>
@@ -79,11 +77,9 @@ export function SiteHeader() {
 
             <Link
               to="/auth"
-              className="hidden items-center gap-2 rounded-full px-2 py-1.5 text-sm font-semibold text-navy transition hover:text-primary lg:inline-flex"
+              className="hidden h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold transition hover:bg-white/10 lg:inline-flex"
             >
-              <span className="grid size-8 place-items-center rounded-full border border-border">
-                <User className="size-4" />
-              </span>
+              <User className="size-4" />
               Sign in
             </Link>
 
@@ -91,7 +87,7 @@ export function SiteHeader() {
               type="button"
               onClick={() => setOpen(true)}
               aria-label="Open menu"
-              className="grid size-9 place-items-center rounded-xl border border-border text-navy lg:hidden"
+              className="grid size-9 place-items-center rounded-xl transition hover:bg-white/10 lg:hidden"
             >
               <Menu className="size-5" />
             </button>
@@ -109,12 +105,12 @@ export function SiteHeader() {
           <aside className="absolute right-0 top-0 flex h-full w-80 max-w-[88vw] flex-col bg-background shadow-lux">
             <div className="flex items-center justify-between px-4 pt-4">
               <img
-                src={LOGO.src}
+                src={LOGO_ON_LIGHT.src}
                 alt="FaresDream"
                 loading="lazy"
-                width={LOGO.width}
-                height={LOGO.height}
-                className="h-6 w-auto max-w-[130px] object-contain"
+                width={LOGO_ON_LIGHT.width}
+                height={LOGO_ON_LIGHT.height}
+                className="h-5 w-auto"
               />
               <button
                 onClick={() => setOpen(false)}

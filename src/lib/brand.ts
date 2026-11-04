@@ -8,7 +8,17 @@ export const OFFICE_ADDRESS = "Ground Floor, 13th Street. 47 W 13th St, New York
 export const PROMO_CODE = "DIAL50";
 
 /** The site logo (from faresdream.com, trimmed of its empty margins), served from /public. */
-export const LOGO = { src: "/brand/faresdream-logo.webp", width: 687, height: 128 } as const;
+/** The simple mark: white for the dark header and footer, navy for light backgrounds. */
+export const LOGO_ON_DARK = {
+  src: "/brand/faresdream-mark-on-dark.svg",
+  width: 1141,
+  height: 180,
+} as const;
+export const LOGO_ON_LIGHT = {
+  src: "/brand/faresdream-mark-on-light.svg",
+  width: 1141,
+  height: 180,
+} as const;
 
 /** Our own fees per passenger; keep in sync with /refund-policy and the home FAQ. */
 export const CANCEL_SERVICE_FEE_USD = 75;

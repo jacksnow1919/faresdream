@@ -5,7 +5,7 @@ import { ArrowRight, ArrowUp, ChevronDown, Mail, MapPin, Phone } from "lucide-re
 import { useCurrency } from "@/components/site/CurrencyContext";
 import {
   DEFAULT_CURRENCY,
-  LOGO,
+  LOGO_ON_DARK,
   OFFICE_ADDRESS,
   PHONE_DISPLAY,
   PHONE_TEL,
@@ -167,14 +167,14 @@ export function SiteFooter() {
         {/* Brand + links */}
         <div className="grid gap-8 py-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-4">
-            <Link to="/" className="inline-flex items-center rounded-lg bg-white px-3 py-2">
+            <Link to="/" className="inline-flex items-center">
               <img
-                src={LOGO.src}
+                src={LOGO_ON_DARK.src}
                 alt="FaresDream"
-                className="h-8 w-auto max-w-[170px] object-contain"
+                className="h-6 w-auto"
                 loading="lazy"
-                width={LOGO.width}
-                height={LOGO.height}
+                width={LOGO_ON_DARK.width}
+                height={LOGO_ON_DARK.height}
               />
             </Link>
             <p className="mt-5 text-sm leading-relaxed text-white/65">

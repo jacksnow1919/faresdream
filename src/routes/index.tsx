@@ -97,7 +97,9 @@ function Home() {
   return (
     <div className="bg-background pb-16">
       {/* HERO + SEARCH on a moving sky — kept above the fold on mobile and desktop */}
-      <section className="px-4 pt-4 sm:px-6 sm:pt-6 lg:px-8">
+      <section className="relative px-4 pt-4 sm:px-6 sm:pt-6 lg:px-8">
+        {/* Carries the header's colour down behind the hero, so the two read as one. */}
+        <div aria-hidden className="absolute inset-x-0 top-0 h-40 bg-blue-950" />
         <div className="relative mx-auto max-w-page rounded-3xl px-4 pb-8 pt-6 sm:px-8 sm:pb-12 lg:min-h-[375px] lg:pb-10">
           <MovingSky />
           <div className="relative">
