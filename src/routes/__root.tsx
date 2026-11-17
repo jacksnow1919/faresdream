@@ -6,7 +6,9 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
+import { canonicalUrl, isNoindexPath } from "../lib/seo";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
@@ -17,7 +19,6 @@ import { SiteFooter } from "../components/site/SiteFooter";
 import { StickyCallBar } from "../components/site/StickyCallBar";
 import { CallDealsModal } from "../components/site/CallDealsModal";
 import { CurrencyProvider } from "../components/site/CurrencyContext";
-
 
 function NotFoundComponent() {
   return (
@@ -126,6 +127,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <CanonicalLink />
       </head>
       <body>
         {children}
@@ -133,6 +135,13 @@ function RootShell({ children }: { children: ReactNode }) {
       </body>
     </html>
   );
+}
+
+/** One canonical address per page, so Google never splits rankings between URL variants. */
+function CanonicalLink() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  if (isNoindexPath(pathname)) return null;
+  return <link rel="canonical" href={canonicalUrl(pathname)} />;
 }
 
 function RootComponent() {
@@ -156,5 +165,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-
-
