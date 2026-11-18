@@ -16,6 +16,8 @@ export const usaGuides: Guide[] = [
   {
     slug: "cheapest-time-to-fly-to-hawaii",
     region: "USA",
+    photo: "https://images.unsplash.com/photo-1524565308556-b777381b2f73?auto=format&fit=crop&w=1600&h=640&q=65",
+    photoAlt: "Honolulu, Hawaii",
     title: "Cheapest Time to Fly to Hawaii",
     metaTitle: "Cheapest Time to Fly to Hawaii (2027 Fare Data) | FaresDream",
     description:
@@ -38,6 +40,7 @@ export const usaGuides: Guide[] = [
       rows: [
         {
           route: "Los Angeles (LAX) – Honolulu (HNL)",
+          monthly: [353, 339, 447, 376, 406, 521, 511, 439, 376, 376, 468, 546],
           cheapestMonth: "February · $339",
           priciestMonths: "December $546 · June $521",
           typical: "61%",
@@ -46,6 +49,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "San Francisco (SFO) – Honolulu (HNL)",
+          monthly: [382, 399, 434, 443, 465, 581, 544, 502, 457, 444, 508, 606],
           cheapestMonth: "January · $382",
           priciestMonths: "December $606 · June $581",
           typical: "58%",
@@ -54,6 +58,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Seattle (SEA) – Honolulu (HNL)",
+          monthly: [428, 475, 456, 498, 496, 693, 632, 593, 555, 581, 618, 679],
           cheapestMonth: "January · $428",
           priciestMonths: "June $693 · December $679",
           typical: "61%",
@@ -62,6 +67,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "New York (NYC) – Honolulu (HNL)",
+          monthly: [813, 796, 890, 861, 831, 1066, 1131, 1047, 899, 948, 896, 1281],
           cheapestMonth: "February · $796",
           priciestMonths: "December $1,281 · July $1,131",
           typical: "60%",
@@ -70,6 +76,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Los Angeles (LAX) – Maui (OGG)",
+          monthly: [416, 353, 478, 414, 424, 553, 558, 501, 445, 430, 515, 578],
           cheapestMonth: "February · $353",
           priciestMonths: "December $578 · July $558",
           typical: "63%",
@@ -176,6 +183,8 @@ export const usaGuides: Guide[] = [
   {
     slug: "cheapest-time-to-fly-to-orlando",
     region: "USA",
+    photo: "https://images.pexels.com/photos/20486251/pexels-photo-20486251.jpeg?auto=compress&cs=tinysrgb&w=1600&h=640&fit=crop",
+    photoAlt: "Lake Eola and the downtown Orlando skyline",
     title: "Cheapest Time to Fly to Orlando",
     metaTitle: "Cheapest Time to Fly to Orlando (2027 Fare Data) | FaresDream",
     description:
@@ -198,6 +207,7 @@ export const usaGuides: Guide[] = [
       rows: [
         {
           route: "New York (NYC) – Orlando (MCO)",
+          monthly: [173, 215, 236, 263, 229, 274, 290, 323, 275, 284, 305, 299],
           cheapestMonth: "January · $173",
           priciestMonths: "August $323 · November $305",
           typical: "86%",
@@ -206,6 +216,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Chicago (ORD) – Orlando (MCO)",
+          monthly: [206, 205, 324, 244, 248, 342, 323, 300, 310, 333, 373, 321],
           cheapestMonth: "February · $205",
           priciestMonths: "November $373 · June $342",
           typical: "81%",
@@ -214,6 +225,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Boston (BOS) – Orlando (MCO)",
+          monthly: [232, 279, 258, 342, 254, 359, 309, 343, 319, 347, 373, 316],
           cheapestMonth: "January · $232",
           priciestMonths: "November $373 · June $359",
           typical: "60%",
@@ -222,6 +234,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Atlanta (ATL) – Orlando (MCO)",
+          monthly: [135, 147, 127, 151, 161, 210, 166, 138, 137, 145, 176, 147],
           cheapestMonth: "March · $127",
           priciestMonths: "June $210 · November $176",
           typical: "65%",
@@ -230,6 +243,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Dallas–Fort Worth (DFW) – Orlando (MCO)",
+          monthly: [132, 189, 249, 218, 243, 322, 284, 234, 289, 285, 275, 273],
           cheapestMonth: "January · $132",
           priciestMonths: "June $322 · September $289",
           typical: "143%",
@@ -331,6 +345,8 @@ export const usaGuides: Guide[] = [
   {
     slug: "cheapest-time-to-fly-to-las-vegas",
     region: "USA",
+    photo: "https://images.unsplash.com/photo-1634400139456-292e44ca5327?auto=format&fit=crop&w=1600&h=640&q=65",
+    photoAlt: "The Las Vegas Strip",
     title: "Cheapest Time to Fly to Las Vegas",
     metaTitle: "Cheapest Time to Fly to Las Vegas (2027 Fare Data) | FaresDream",
     description:
@@ -353,6 +369,7 @@ export const usaGuides: Guide[] = [
       rows: [
         {
           route: "Los Angeles (LAX) – Las Vegas (LAS)",
+          monthly: [108, 108, 117, 130, 175, 203, 213, 184, 176, 179, 141, 124],
           cheapestMonth: "January & February · $108",
           priciestMonths: "July $213 · June $203",
           typical: "97%",
@@ -361,6 +378,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "New York (NYC) – Las Vegas (LAS)",
+          monthly: [322, 385, 397, 383, 396, 402, 433, 415, 395, 491, 440, 450],
           cheapestMonth: "January · $322",
           priciestMonths: "October $491 · December $450",
           typical: "52%",
@@ -369,6 +387,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Chicago (ORD) – Las Vegas (LAS)",
+          monthly: [254, 298, 342, 302, 347, 353, 357, 318, 329, 368, 333, 324],
           cheapestMonth: "January · $254",
           priciestMonths: "October $368 · July $357",
           typical: "44%",
@@ -377,6 +396,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Seattle (SEA) – Las Vegas (LAS)",
+          monthly: [188, 233, 237, 244, 307, 270, 296, 225, 280, 251, 306, 282],
           cheapestMonth: "January · $188",
           priciestMonths: "May $307 · November $306",
           typical: "63%",
@@ -385,6 +405,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Dallas–Fort Worth (DFW) – Las Vegas (LAS)",
+          monthly: [171, 183, 248, 219, 279, 326, 353, 255, 302, 295, 271, 235],
           cheapestMonth: "January · $171",
           priciestMonths: "July $353 · June $326",
           typical: "106%",
@@ -484,6 +505,8 @@ export const usaGuides: Guide[] = [
   {
     slug: "cheapest-time-to-fly-to-new-york",
     region: "USA",
+    photo: "https://images.unsplash.com/photo-1588384153148-ebd739ac430c?auto=format&fit=crop&w=1600&h=640&q=65",
+    photoAlt: "The New York City skyline",
     title: "Cheapest Time to Fly to New York",
     metaTitle: "Cheapest Time to Fly to New York (2027 Fare Data) | FaresDream",
     description:
@@ -506,6 +529,7 @@ export const usaGuides: Guide[] = [
       rows: [
         {
           route: "Los Angeles (LAX) – New York",
+          monthly: [247, 278, 373, 361, 393, 484, 478, 438, 455, 443, 447, 442],
           cheapestMonth: "January · $247",
           priciestMonths: "June $484 · July $478",
           typical: "$311–$549",
@@ -514,6 +538,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "San Francisco (SFO) – New York",
+          monthly: [317, 322, 366, 392, 435, 569, 537, 487, 488, 507, 540, 515],
           cheapestMonth: "January · $317",
           priciestMonths: "June $569 · November $540",
           typical: "$342–$598",
@@ -522,6 +547,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Chicago (ORD) – New York",
+          monthly: [147, 174, 196, 198, 232, 275, 263, 251, 281, 324, 283, 250],
           cheapestMonth: "January · $147",
           priciestMonths: "October $324 · November $283",
           typical: "$172–$331",
@@ -530,6 +556,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Dallas–Fort Worth (DFW) – New York",
+          monthly: [189, 219, 260, 257, 302, 330, 353, 321, 335, 380, 338, 324],
           cheapestMonth: "January · $189",
           priciestMonths: "October $380 · July $353",
           typical: "$211–$433",
@@ -538,6 +565,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Atlanta (ATL) – New York",
+          monthly: [131, 126, 136, 190, 224, 276, 266, 258, 288, 295, 261, 222],
           cheapestMonth: "February · $126",
           priciestMonths: "October $295 · September $288",
           typical: "$149–$314",
@@ -546,6 +574,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Miami (MIA) – New York",
+          monthly: [153, 152, 165, 196, 230, 308, 304, 314, 297, 313, 291, 215],
           cheapestMonth: "February · $152",
           priciestMonths: "August $314 · October $313",
           typical: "$164–$370",
@@ -554,6 +583,7 @@ export const usaGuides: Guide[] = [
         },
         {
           route: "Orlando (MCO) – New York",
+          monthly: [103, 133, 165, 166, 186, 263, 299, 281, 265, 262, 249, 211],
           cheapestMonth: "January · $103",
           priciestMonths: "July $299 · August $281",
           typical: "$143–$316",

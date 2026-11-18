@@ -8,6 +8,8 @@ import { usaGuides } from "@/lib/guides-usa";
 export type GuideSource = { label: string; url: string; checked: string };
 export type GuideRouteRow = {
   route: string;
+  /** Median round-trip fare by month, Jan..Dec (same source as the row). Drives the charts. */
+  monthly?: number[];
   cheapestMonth: string;
   priciestMonths: string;
   typical: string;
@@ -20,6 +22,9 @@ export type Guide = {
   slug: string;
   /** Hub grouping on /guides. */
   region: "USA" | "International";
+  /** Header photo URL (free-licence stock) and its alt text. */
+  photo?: string;
+  photoAlt?: string;
   title: string;
   metaTitle: string;
   description: string;
@@ -46,6 +51,8 @@ const internationalGuides: Guide[] = [
   {
     slug: "cheapest-time-to-fly-to-india-from-usa",
     region: "International",
+    photo: "https://images.pexels.com/photos/1603650/pexels-photo-1603650.jpeg?auto=compress&cs=tinysrgb&w=1600&h=640&fit=crop",
+    photoAlt: "The Taj Mahal in Agra, India",
     title: "Cheapest Time to Fly to India from the USA",
     metaTitle: "Cheapest Time to Fly to India from the USA (2027) | FaresDream",
     description:
@@ -67,6 +74,7 @@ const internationalGuides: Guide[] = [
       rows: [
         {
           route: "New York (NYC) – Delhi (DEL)",
+          monthly: [858, 816, 825, 821, 1012, 1141, 1120, 975, 837, 885, 990, 1312],
           cheapestMonth: "February · $816",
           priciestMonths: "December $1,312 · June $1,141",
           typical: "$790–$1,257",
@@ -75,6 +83,7 @@ const internationalGuides: Guide[] = [
         },
         {
           route: "New York (NYC) – Mumbai (BOM)",
+          monthly: [813, 773, 750, 787, 939, 1145, 1082, 994, 792, 808, 896, 1322],
           cheapestMonth: "March · $750",
           priciestMonths: "December $1,322 · June $1,145",
           typical: "$772–$1,252",
@@ -83,6 +92,7 @@ const internationalGuides: Guide[] = [
         },
         {
           route: "Chicago (ORD) – Delhi (DEL)",
+          monthly: [893, 830, 837, 779, 1014, 1229, 1214, 960, 880, 980, 1181, 1412],
           cheapestMonth: "April · $779",
           priciestMonths: "December $1,412 · June $1,229",
           typical: "$833–$1,267",
@@ -91,6 +101,7 @@ const internationalGuides: Guide[] = [
         },
         {
           route: "San Francisco (SFO) – Delhi (DEL)",
+          monthly: [944, 908, 888, 988, 1034, 1362, 1389, 1010, 961, 1069, 1199, 1321],
           cheapestMonth: "March · $888",
           priciestMonths: "July $1,389 · June $1,362",
           typical: "$905–$1,317",

@@ -39,16 +39,33 @@ function GuidesIndex() {
                 key={g.slug}
                 to="/guides/$slug"
                 params={{ slug: g.slug }}
-                className="group flex flex-col rounded-2xl border border-border bg-card p-5 shadow-card transition hover:border-primary/40"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg"
               >
-                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Updated {g.updated}
-                </span>
-                <h3 className="mt-2 font-display text-lg font-bold text-navy">{g.title}</h3>
-                <p className="mt-2 line-clamp-3 text-sm text-foreground/75">{g.description}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-navy">
-                  Read guide <ArrowRight className="size-4 transition group-hover:translate-x-0.5" />
-                </span>
+                <div className="relative aspect-[16/9] overflow-hidden bg-linear-to-br from-navy to-primary">
+                  {g.photo ? (
+                    <img
+                      src={g.photo.replace("w=1600", "w=640").replace("h=640", "h=360")}
+                      alt={g.photoAlt ?? ""}
+                      loading="lazy"
+                      width={640}
+                      height={360}
+                      className="size-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  ) : null}
+                  <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-navy">
+                    {g.table ? `${g.table.rows.length} routes compared` : "Guide"}
+                  </span>
+                </div>
+                <div className="flex flex-1 flex-col p-5">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Updated {g.updated}
+                  </span>
+                  <h3 className="mt-1.5 font-display text-lg font-bold text-navy">{g.title}</h3>
+                  <p className="mt-2 line-clamp-3 text-sm text-foreground/75">{g.description}</p>
+                  <span className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-bold text-primary">
+                    Read guide <ArrowRight className="size-4 transition group-hover:translate-x-0.5" />
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
