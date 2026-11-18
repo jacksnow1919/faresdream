@@ -9,6 +9,7 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { canonicalUrl, isNoindexPath } from "../lib/seo";
+import { jsonLdScript, organizationLd, websiteLd } from "../lib/structured-data";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
@@ -114,6 +115,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
+    scripts: [jsonLdScript([organizationLd(), websiteLd()])],
   }),
 
   shellComponent: RootShell,
@@ -157,7 +159,9 @@ function RootComponent() {
       <CurrencyProvider>
         <SiteHeader />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+        <main id="main-content">
+          <Outlet />
+        </main>
         <SiteFooter />
         <StickyCallBar />
         <CallDealsModal />

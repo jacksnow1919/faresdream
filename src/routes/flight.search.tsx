@@ -323,7 +323,7 @@ function SearchPage() {
             </div>
           </aside>
 
-          <main className="min-w-0 space-y-3">
+          <section aria-label="Flight results" className="min-w-0 space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
               <h1 className="font-display text-base font-semibold text-foreground sm:text-lg">
                 {fromCity} ({origin}) to {toCity} ({destination}) flights
@@ -461,7 +461,7 @@ function SearchPage() {
                 action={selectButton(f)}
               />
             ))}
-          </main>
+          </section>
         </div>
       </div>
 

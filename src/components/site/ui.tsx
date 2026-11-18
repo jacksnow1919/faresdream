@@ -30,11 +30,14 @@ export function PageShell({
   title,
   eyebrow,
   crumb,
+  parents = [],
   subtitle,
   action,
   children,
 }: {
   title: string;
+  /** Breadcrumb steps between Home and this page, e.g. [{ label: "Destinations", href: "/destinations" }]. */
+  parents?: { label: string; href: string }[];
   eyebrow?: string | undefined;
   crumb?: string | undefined;
   subtitle?: ReactNode;
@@ -53,6 +56,14 @@ export function PageShell({
             <Link to="/" className="shrink-0 text-white/80 hover:text-white hover:underline">
               Home
             </Link>
+            {parents.map((p) => (
+              <span key={p.href} className="flex shrink-0 items-center gap-1">
+                <ChevronRight className="size-3.5 shrink-0 text-white/60" />
+                <a href={p.href} className="text-white/80 hover:text-white hover:underline">
+                  {p.label}
+                </a>
+              </span>
+            ))}
             <ChevronRight className="size-3.5 shrink-0 text-white/60" />
             <span aria-current="page" className="truncate font-medium">
               {crumb ?? title}
