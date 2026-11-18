@@ -33,7 +33,7 @@ export function PopularRoutes({
           key={r.code}
           type="button"
           onClick={() => onPick?.(r.code, POPULAR_FROM.code)}
-          aria-label={`Search round-trip flights from ${POPULAR_FROM.city} to ${r.city}, average $${r.price}`}
+          aria-label={`Search round-trip flights from ${POPULAR_FROM.city} to ${r.city}`}
           className="group flex items-center gap-3 rounded-xl border border-border bg-card px-3.5 py-3 text-left shadow-card transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lux sm:gap-4 sm:px-4"
         >
           <img
@@ -77,11 +77,8 @@ export function PopularRoutes({
           </span>
 
           <span className="ml-1 shrink-0 border-l border-border pl-3 text-right sm:pl-4">
-            <span className="block whitespace-nowrap text-[11px] text-muted-foreground">
-              Avg. round trip
-            </span>
-            <span className="block font-display text-xl font-bold leading-tight text-gold">
-              ${r.price}
+            <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-gold px-3 py-1.5 text-xs font-bold text-white">
+              See fares
             </span>
           </span>
         </button>

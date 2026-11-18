@@ -10,6 +10,7 @@ import { TrendingDestinations } from "@/components/site/TrendingDestinations";
 import { PopularRoutes } from "@/components/site/PopularRoutes";
 import { FeaturedDeals } from "@/components/site/FeaturedDeals";
 import { RecentSearches } from "@/components/site/RecentSearches";
+import { ExploreLinks, GuidesTeaser, HeroTrust, HowItWorks } from "@/components/site/HomeSections";
 import { FLIGHT_SEARCH_ID, focusFlightSearch, showFlightsTo } from "@/lib/focus-search";
 import { PHONE_DISPLAY, SUPPORT_EMAIL } from "@/lib/brand";
 
@@ -102,16 +103,33 @@ function Home() {
         <div className="relative mx-auto max-w-page rounded-3xl px-4 pb-8 pt-6 sm:px-8 sm:pb-12 lg:min-h-[375px] lg:pb-10">
           <MovingSky />
           <div className="relative">
-            <h1 className="mx-auto mb-4 max-w-[1116px] font-display text-xl font-bold leading-tight text-white [text-shadow:0_2px_12px_rgb(0_0_0/0.25)] sm:text-2xl">
+            <h1 className="mx-auto mb-4 max-w-[1116px] font-display text-xl font-bold leading-tight text-white [text-shadow:0_2px_12px_rgb(0_0_0/0.25)] sm:text-3xl lg:text-4xl">
               Compare Cheap Flights &amp; Wholesale Airfare Deals
             </h1>
+            <p className="mx-auto -mt-2 mb-4 max-w-[1116px] text-sm text-white/90 [text-shadow:0_1px_8px_rgb(0_0_0/0.3)] sm:text-base">
+              Compare fares from many airlines and travel sites in one search, or talk to a real travel agent any time.
+            </p>
             <FlightSearchBar prefill={prefill} />
+            <HeroTrust />
           </div>
         </div>
       </section>
 
       {/* RECENT SEARCHES — only for returning visitors with saved searches */}
       <RecentSearches />
+
+      {/* HOW IT WORKS */}
+      <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+        <div className="mx-auto max-w-page">
+          <SectionHeading
+            title="How FaresDream Works"
+            subtitle="Three steps from search to boarding pass."
+          />
+          <div className="mt-8">
+            <HowItWorks />
+          </div>
+        </div>
+      </section>
 
       {/* OFFERS & DISCOUNTS */}
       <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
@@ -166,6 +184,19 @@ function Home() {
         </div>
       </section>
 
+      {/* TRAVEL GUIDES */}
+      <section className="mt-12 bg-secondary px-4 py-12 sm:px-6 lg:mt-16 lg:px-8 lg:py-16">
+        <div className="mx-auto max-w-page">
+          <SectionHeading
+            title="Flight Guides: When to Fly and Book for Less"
+            subtitle="Month-by-month fare data for popular routes, with sources."
+          />
+          <div className="mt-8">
+            <GuidesTeaser />
+          </div>
+        </div>
+      </section>
+
       {/* NEWSLETTER */}
       <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
         <div className="mx-auto max-w-page">
@@ -182,13 +213,26 @@ function Home() {
                 Most Popular Round-trip Flights from <span className="text-gold">New York</span>
               </>
             }
-            subtitle="Average round-trip price per person, taxes and fees included."
+            subtitle="Tap a route to see today’s round-trip fares."
           />
           <div className="mt-8">
             <PopularRoutes
               onPick={(to, from) => showFlightsTo(to, from, "round")}
               onSearchOther={focusFlightSearch}
             />
+          </div>
+        </div>
+      </section>
+
+      {/* EXPLORE: crawlable links to every destination and guide */}
+      <section className="px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+        <div className="mx-auto max-w-page">
+          <SectionHeading
+            title="Explore Cheap Flights by Region"
+            subtitle="Destination guides and fare data for travelers flying from the USA."
+          />
+          <div className="mt-8">
+            <ExploreLinks />
           </div>
         </div>
       </section>
