@@ -423,7 +423,7 @@ function SearchPage() {
             ) : null}
 
             {showEmpty ? (
-              <div className="rounded-xl border border-border bg-card p-8 text-center shadow-card">
+              <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-card">
                 <p className="font-display text-lg font-semibold text-navy">
                   {isError
                     ? "We are currently checking live rates with our airline desk."
@@ -438,7 +438,7 @@ function SearchPage() {
             ) : null}
 
             {filteredOut ? (
-              <div className="rounded-xl border border-border bg-card p-6 text-center shadow-card">
+              <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-card">
                 <p className="font-display text-base font-semibold text-navy">
                   No flights match your filters.
                 </p>

@@ -218,7 +218,7 @@ export function SiteFooter() {
         <div className="grid gap-6 border-t border-white/10 py-8 md:grid-cols-[auto_auto_1fr] md:gap-10">
           {BADGES.map((g) => (
             <div key={g.label}>
-              <p className="text-xs font-semibold uppercase tracking-wider text-white/50">
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/75">
                 {g.label}
               </p>
               <ul className="mt-3 flex flex-wrap gap-2">
@@ -239,7 +239,7 @@ export function SiteFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/75 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Faresdream. All rights reserved.</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <Link to="/privacy" className="hover:text-white">

@@ -67,7 +67,7 @@ const formatPan = (v: string) =>
     .trim();
 
 const inputCls = (error?: string | undefined) =>
-  `mt-1.5 h-11 w-full rounded-lg border bg-card px-3.5 text-[15px] text-foreground outline-none transition placeholder:text-muted-foreground/70 focus:ring-2 ${
+  `mt-1.5 h-11 w-full rounded-lg border bg-card px-3.5 text-[15px] text-foreground outline-none transition placeholder:text-muted-foreground focus:ring-2 ${
     error
       ? "border-destructive focus:ring-destructive/15"
       : "border-border focus:border-primary focus:ring-primary/15"

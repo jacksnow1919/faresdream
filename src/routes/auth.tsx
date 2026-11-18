@@ -69,7 +69,7 @@ function friendlyError(message: string) {
 }
 
 const inputCls =
-  "h-12 w-full rounded-xl border border-border bg-card pl-11 pr-4 text-[15px] text-foreground outline-none transition placeholder:text-muted-foreground/70 focus:border-primary focus:ring-2 focus:ring-primary/15";
+  "h-12 w-full rounded-xl border border-border bg-card pl-11 pr-4 text-[15px] text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/15";
 
 function Field({
   label,
