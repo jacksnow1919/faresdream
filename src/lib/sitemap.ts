@@ -5,6 +5,7 @@
  */
 import { airlines, destinations } from "@/lib/travel-data";
 import { guides } from "@/lib/guides";
+import { routePages } from "@/lib/route-pages";
 import { SITE_URL } from "@/lib/seo";
 
 export type SitemapEntry = { path: string; label: string; lastmod?: string };
@@ -45,6 +46,18 @@ export function sitemapGroups(): SitemapGroup[] {
       entries: [
         { path: "/airlines", label: "All airlines" },
         ...airlines.map((a) => ({ path: `/airlines/${a.slug}`, label: `${a.name} flights` })),
+      ],
+    },
+    {
+      key: "routes",
+      title: "Flight routes",
+      entries: [
+        { path: "/flights", label: "All flight routes" },
+        ...routePages.map((r) => ({
+          path: `/flights/${r.slug}`,
+          label: `${r.from.city} (${r.from.code}) to ${r.to.city} (${r.to.code}) flights`,
+          lastmod: r.data.checked,
+        })),
       ],
     },
     {

@@ -36,6 +36,8 @@ import { Route as FlightConfirmationRouteImport } from './routes/flight.confirma
 import { Route as FlightFareDetailsRouteImport } from './routes/flight.fare-details'
 import { Route as FlightPaymentRouteImport } from './routes/flight.payment'
 import { Route as FlightSearchRouteImport } from './routes/flight.search'
+import { Route as FlightsIndexRouteImport } from './routes/flights.index'
+import { Route as FlightsSlugRouteImport } from './routes/flights.$slug'
 import { Route as GuidesIndexRouteImport } from './routes/guides.index'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as RoutesRouteIdRouteImport } from './routes/routes.$routeId'
@@ -179,6 +181,16 @@ const FlightSearchRoute = FlightSearchRouteImport.update({
   path: '/flight/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FlightsIndexRoute = FlightsIndexRouteImport.update({
+  id: '/flights/',
+  path: '/flights/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlightsSlugRoute = FlightsSlugRouteImport.update({
+  id: '/flights/$slug',
+  path: '/flights/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuidesIndexRoute = GuidesIndexRouteImport.update({
   id: '/guides/',
   path: '/guides/',
@@ -244,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/flight/fare-details': typeof FlightFareDetailsRoute
   '/flight/payment': typeof FlightPaymentRoute
   '/flight/search': typeof FlightSearchRoute
+  '/flights/$slug': typeof FlightsSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
   '/sitemaps/$file': typeof SitemapsFileRoute
@@ -251,6 +264,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/airlines/': typeof AirlinesIndexRoute
   '/destinations/': typeof DestinationsIndexRoute
+  '/flights/': typeof FlightsIndexRoute
   '/guides/': typeof GuidesIndexRoute
   '/api/meta/search': typeof ApiMetaSearchRoute
   '/api/public/fare-cache': typeof ApiPublicFareCacheRoute
@@ -280,6 +294,7 @@ export interface FileRoutesByTo {
   '/flight/fare-details': typeof FlightFareDetailsRoute
   '/flight/payment': typeof FlightPaymentRoute
   '/flight/search': typeof FlightSearchRoute
+  '/flights/$slug': typeof FlightsSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
   '/sitemaps/$file': typeof SitemapsFileRoute
@@ -287,6 +302,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/airlines': typeof AirlinesIndexRoute
   '/destinations': typeof DestinationsIndexRoute
+  '/flights': typeof FlightsIndexRoute
   '/guides': typeof GuidesIndexRoute
   '/api/meta/search': typeof ApiMetaSearchRoute
   '/api/public/fare-cache': typeof ApiPublicFareCacheRoute
@@ -318,6 +334,7 @@ export interface FileRoutesById {
   '/flight/fare-details': typeof FlightFareDetailsRoute
   '/flight/payment': typeof FlightPaymentRoute
   '/flight/search': typeof FlightSearchRoute
+  '/flights/$slug': typeof FlightsSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
   '/sitemaps/$file': typeof SitemapsFileRoute
@@ -325,6 +342,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/airlines/': typeof AirlinesIndexRoute
   '/destinations/': typeof DestinationsIndexRoute
+  '/flights/': typeof FlightsIndexRoute
   '/guides/': typeof GuidesIndexRoute
   '/api/meta/search': typeof ApiMetaSearchRoute
   '/api/public/fare-cache': typeof ApiPublicFareCacheRoute
@@ -356,6 +374,7 @@ export interface FileRouteTypes {
     | '/flight/fare-details'
     | '/flight/payment'
     | '/flight/search'
+    | '/flights/$slug'
     | '/guides/$slug'
     | '/routes/$routeId'
     | '/sitemaps/$file'
@@ -363,6 +382,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/airlines/'
     | '/destinations/'
+    | '/flights/'
     | '/guides/'
     | '/api/meta/search'
     | '/api/public/fare-cache'
@@ -392,6 +412,7 @@ export interface FileRouteTypes {
     | '/flight/fare-details'
     | '/flight/payment'
     | '/flight/search'
+    | '/flights/$slug'
     | '/guides/$slug'
     | '/routes/$routeId'
     | '/sitemaps/$file'
@@ -399,6 +420,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/airlines'
     | '/destinations'
+    | '/flights'
     | '/guides'
     | '/api/meta/search'
     | '/api/public/fare-cache'
@@ -429,6 +451,7 @@ export interface FileRouteTypes {
     | '/flight/fare-details'
     | '/flight/payment'
     | '/flight/search'
+    | '/flights/$slug'
     | '/guides/$slug'
     | '/routes/$routeId'
     | '/sitemaps/$file'
@@ -436,6 +459,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/airlines/'
     | '/destinations/'
+    | '/flights/'
     | '/guides/'
     | '/api/meta/search'
     | '/api/public/fare-cache'
@@ -465,6 +489,7 @@ export interface RootRouteChildren {
   FlightFareDetailsRoute: typeof FlightFareDetailsRoute
   FlightPaymentRoute: typeof FlightPaymentRoute
   FlightSearchRoute: typeof FlightSearchRoute
+  FlightsSlugRoute: typeof FlightsSlugRoute
   GuidesSlugRoute: typeof GuidesSlugRoute
   RoutesRouteIdRoute: typeof RoutesRouteIdRoute
   SitemapsFileRoute: typeof SitemapsFileRoute
@@ -472,6 +497,7 @@ export interface RootRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AirlinesIndexRoute: typeof AirlinesIndexRoute
   DestinationsIndexRoute: typeof DestinationsIndexRoute
+  FlightsIndexRoute: typeof FlightsIndexRoute
   GuidesIndexRoute: typeof GuidesIndexRoute
   ApiMetaSearchRoute: typeof ApiMetaSearchRoute
   ApiPublicFareCacheRoute: typeof ApiPublicFareCacheRoute
@@ -669,6 +695,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FlightSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/flights/': {
+      id: '/flights/'
+      path: '/flights'
+      fullPath: '/flights/'
+      preLoaderRoute: typeof FlightsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flights/$slug': {
+      id: '/flights/$slug'
+      path: '/flights/$slug'
+      fullPath: '/flights/$slug'
+      preLoaderRoute: typeof FlightsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guides/': {
       id: '/guides/'
       path: '/guides'
@@ -764,6 +804,7 @@ const rootRouteChildren: RootRouteChildren = {
   FlightFareDetailsRoute: FlightFareDetailsRoute,
   FlightPaymentRoute: FlightPaymentRoute,
   FlightSearchRoute: FlightSearchRoute,
+  FlightsSlugRoute: FlightsSlugRoute,
   GuidesSlugRoute: GuidesSlugRoute,
   RoutesRouteIdRoute: RoutesRouteIdRoute,
   SitemapsFileRoute: SitemapsFileRoute,
@@ -771,6 +812,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AirlinesIndexRoute: AirlinesIndexRoute,
   DestinationsIndexRoute: DestinationsIndexRoute,
+  FlightsIndexRoute: FlightsIndexRoute,
   GuidesIndexRoute: GuidesIndexRoute,
   ApiMetaSearchRoute: ApiMetaSearchRoute,
   ApiPublicFareCacheRoute: ApiPublicFareCacheRoute,

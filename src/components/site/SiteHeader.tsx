@@ -27,7 +27,7 @@ const drawerLinks = [
 ] as const;
 
 const mainNav = [
-  { to: "/", label: "Flights" },
+  { to: "/flights", label: "Flights" },
   { to: "/deals", label: "Deals" },
   { to: "/destinations", label: "Destinations" },
   { to: "/airlines", label: "Airlines" },
