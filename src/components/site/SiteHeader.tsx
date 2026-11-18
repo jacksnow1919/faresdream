@@ -32,6 +32,7 @@ const mainNav = [
   { to: "/destinations", label: "Destinations" },
   { to: "/airlines", label: "Airlines" },
   { to: "/cabin-suites", label: "Business Class" },
+  { to: "/guides", label: "Guides" },
   { to: "/contact", label: "Help" },
 ] as const;
 
@@ -58,7 +59,7 @@ export function SiteHeader() {
                 key={l.label}
                 to={l.to}
                 activeOptions={{ exact: l.to === "/" }}
-                className="rounded-full px-3 py-2 text-sm font-semibold text-navy transition hover:bg-accent hover:text-primary"
+                className="whitespace-nowrap rounded-full px-2.5 py-2 text-sm xl:px-3 font-semibold text-navy transition hover:bg-accent hover:text-primary"
                 activeProps={{ className: "bg-accent text-primary" }}
               >
                 {l.label}

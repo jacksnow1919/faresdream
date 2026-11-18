@@ -15,6 +15,7 @@ import { PageShell, Card, SectionTitle } from "@/components/site/ui";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
 import { breadcrumbLd, faqLd, jsonLdScript } from "@/lib/structured-data";
+import { guides } from "@/lib/guides";
 
 const photoUrl = (id: string, w: number) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${Math.round(w * 0.4)}&q=65`;
@@ -86,6 +87,7 @@ export const Route = createFileRoute("/destinations/$slug")({
 function DestinationPage() {
   const { destination: d } = Route.useLoaderData();
   const faqs = destinationFaqs(d);
+  const cityGuides = guides.filter((g) => g.related.some((r) => r.href === `/destinations/${d.slug}`));
   const airportCodes = new Set(d.airports.map((a) => a.code));
   const cityRoutes = routes.filter((r) => airportCodes.has(r.destination));
   const sameRegion = destinations.filter((o) => o.slug !== d.slug && o.region === d.region);
@@ -113,6 +115,14 @@ function DestinationPage() {
         <div className="space-y-6">
           <Card>
             <p className="text-[15px] leading-relaxed text-foreground/85">{d.intro}</p>
+            {cityGuides.map((g) => (
+              <p key={g.slug} className="mt-3 text-sm">
+                <span className="font-semibold text-navy">Planning ahead? </span>
+                <Link to="/guides/$slug" params={{ slug: g.slug }} className="font-semibold text-navy underline underline-offset-2">
+                  {g.title}
+                </Link>
+              </p>
+            ))}
           </Card>
 
           <div className="grid gap-6 md:grid-cols-2">

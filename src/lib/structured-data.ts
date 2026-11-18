@@ -97,3 +97,25 @@ export function faqLd(faqs: { q: string; a: string }[]): Json {
     })),
   };
 }
+
+/** A guide or article, with visible dates and the organization as author and publisher. */
+export function articleLd(a: {
+  headline: string;
+  description: string;
+  path: string;
+  published: string;
+  updated: string;
+  author: string;
+}): Json {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: a.headline,
+    description: a.description,
+    mainEntityOfPage: SITE_URL + a.path,
+    datePublished: a.published,
+    dateModified: a.updated,
+    author: { "@type": "Organization", name: a.author, url: SITE_URL + "/about" },
+    publisher: { "@type": "Organization", name: "FaresDream", url: SITE_URL },
+  };
+}
