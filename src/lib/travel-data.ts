@@ -131,48 +131,7 @@ export const routes: RouteInfo[] = [
   },
 ];
 
-export type Destination = {
-  slug: string;
-  city: string;
-  airport: string;
-  guide: string;
-  lounges: string[];
-  transfer: string;
-  fromPrice: number;
-};
-
-export const destinations: Destination[] = [
-  {
-    slug: "dubai",
-    city: "Dubai",
-    airport: "DXB — Dubai International",
-    guide:
-      "Winter (Nov–Mar) is peak season for beach clubs and desert safaris. Business cabins fill fastest around GITEX and Expo weeks.",
-    lounges: ["Emirates Business Lounge Concourse A", "Marhaba Lounge T3", "Ahlan Lounge T1"],
-    transfer: "Complimentary Emirates chauffeur-drive within 70km for business class tickets.",
-    fromPrice: 2140,
-  },
-  {
-    slug: "london",
-    city: "London",
-    airport: "LHR — Heathrow",
-    guide:
-      "Shoulder seasons (April–May, Sept–Oct) offer the best fare-to-weather ratio. Terminal 5 clears fastest for premium cabins.",
-    lounges: ["BA Galleries First T5", "Plaza Premium T2", "Cathay First & Business T3"],
-    transfer: "Heathrow Express in 15 min, or pre-booked black cab from the premium rank.",
-    fromPrice: 1890,
-  },
-  {
-    slug: "singapore",
-    city: "Singapore",
-    airport: "SIN — Changi",
-    guide:
-      "A year-round hub; February and July offer the strongest business class availability into Southeast Asia.",
-    lounges: ["SilverKris Business T3", "Qantas Lounge T1", "Plaza Premium T1"],
-    transfer: "Changi to Marina Bay in 20 min; premium limousine transfer bookable at checkout.",
-    fromPrice: 3120,
-  },
-];
+export { destinations, type Destination } from "./destinations";
 
 export const upsells = [
   { id: "lounge", label: "Airport Lounge Pass", detail: "Premium lounge access at both ends", price: 89 },

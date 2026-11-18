@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { airlines } from "@/lib/travel-data";
 import { PageShell, Card, Pill } from "@/components/site/ui";
-import { Star } from "lucide-react";
 
 export const Route = createFileRoute("/airlines/")({
   head: () => ({
@@ -13,7 +12,7 @@ export const Route = createFileRoute("/airlines/")({
           "Compare business class cabins, lie-flat seats, baggage policies and lounge access across Emirates, Qatar, Lufthansa, Turkish and Singapore Airlines.",
       },
       { property: "og:title", content: "Business Class Airlines & Cabin Guides" },
-      { property: "og:description", content: "Cabin specs, baggage rules and lounge perks for 47+ partner airlines." },
+      { property: "og:description", content: "Seats, baggage rules and lounges for major international airlines." },
     ],
   }),
   component: AirlinesIndex,
@@ -22,9 +21,9 @@ export const Route = createFileRoute("/airlines/")({
 function AirlinesIndex() {
   return (
     <PageShell
-      eyebrow="Partner Airlines"
+      eyebrow="Airlines"
       title="Airline Cabin Guides"
-      subtitle="Seat specs, baggage policies, lounge privileges and unpublished fares for every partner carrier."
+      subtitle="Seats, baggage and lounges on major long-haul airlines, and how to compare their fares on your route."
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {airlines.map((a) => (
@@ -36,7 +35,7 @@ function AirlinesIndex() {
               <div className="min-w-0">
                 <p className="truncate font-display text-lg font-semibold text-navy">{a.name}</p>
                 <p className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Star className="size-3 text-gold" /> {a.rating} · {a.cabin}
+                  {a.cabin}
                 </p>
               </div>
             </div>
@@ -45,9 +44,7 @@ function AirlinesIndex() {
               <Pill>{a.baggage}</Pill>
             </div>
             <div className="mt-4 flex items-center justify-between">
-              <p className="font-display text-xl font-semibold text-navy">
-                from ${a.fromPrice.toLocaleString()}
-              </p>
+              <span className="text-xs text-muted-foreground">Fares change daily</span>
               <Link
                 to="/airlines/$slug"
                 params={{ slug: a.slug }}

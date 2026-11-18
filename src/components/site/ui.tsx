@@ -31,6 +31,7 @@ export function PageShell({
   eyebrow,
   crumb,
   parents = [],
+  photo,
   subtitle,
   action,
   children,
@@ -38,6 +39,8 @@ export function PageShell({
   title: string;
   /** Breadcrumb steps between Home and this page, e.g. [{ label: "Destinations", href: "/destinations" }]. */
   parents?: { label: string; href: string }[];
+  /** Optional header photo URL; a dark overlay keeps the white text readable. */
+  photo?: string | undefined;
   eyebrow?: string | undefined;
   crumb?: string | undefined;
   subtitle?: ReactNode;
@@ -47,6 +50,17 @@ export function PageShell({
   return (
     <div className="min-h-[100dvh] bg-secondary/40 pb-20">
       <div className="relative overflow-hidden bg-linear-to-r from-primary to-sky-500 px-4 pb-8 pt-5 text-white sm:px-6 sm:pb-10 lg:px-8">
+        {photo ? (
+          <>
+            <img
+              src={photo}
+              alt=""
+              fetchPriority="high"
+              className="pointer-events-none absolute inset-0 size-full object-cover"
+            />
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-to-r from-navy/90 via-navy/70 to-navy/30" />
+          </>
+        ) : null}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgb(255_255_255/0.14)_1px,transparent_1px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_60%)]"
