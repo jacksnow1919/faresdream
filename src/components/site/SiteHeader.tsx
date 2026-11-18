@@ -18,10 +18,21 @@ import { AgentAvatar } from "@/components/site/ui";
 import { LOGO, PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
 
 const drawerLinks = [
-  { to: "/destinations", label: "Explore Travel", icon: Compass },
+  { to: "/deals", label: "Flight Deals", icon: DollarSign },
+  { to: "/destinations", label: "Destinations", icon: Compass },
+  { to: "/airlines", label: "Airlines", icon: Globe },
+  { to: "/cabin-suites", label: "Business Class", icon: Star },
   { to: "/dashboard", label: "My Trips", icon: Briefcase },
-  { to: "/deals", label: "My Rewards", icon: Star },
   { to: "/contact", label: "Need Help?", icon: HelpCircle },
+] as const;
+
+const mainNav = [
+  { to: "/", label: "Flights" },
+  { to: "/deals", label: "Deals" },
+  { to: "/destinations", label: "Destinations" },
+  { to: "/airlines", label: "Airlines" },
+  { to: "/cabin-suites", label: "Business Class" },
+  { to: "/contact", label: "Help" },
 ] as const;
 
 export function SiteHeader() {
@@ -41,10 +52,24 @@ export function SiteHeader() {
             />
           </Link>
 
+          <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+            {mainNav.map((l) => (
+              <Link
+                key={l.label}
+                to={l.to}
+                activeOptions={{ exact: l.to === "/" }}
+                className="rounded-full px-3 py-2 text-sm font-semibold text-navy transition hover:bg-accent hover:text-primary"
+                activeProps={{ className: "bg-accent text-primary" }}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+
           <div className="ml-auto flex shrink-0 items-center gap-2 whitespace-nowrap lg:gap-3">
             <a
               href={`tel:${PHONE_TEL}`}
-              className="hidden items-center gap-2.5 rounded-full border border-primary/15 bg-sky-50 py-1.5 pl-1.5 pr-4 transition hover:border-primary/40 lg:flex"
+              className="hidden items-center gap-2.5 rounded-full border border-primary/15 bg-sky-50 py-1.5 pl-1.5 pr-4 transition hover:border-primary/40 xl:flex"
             >
               <span className="grid size-8 place-items-center rounded-full bg-primary text-primary-foreground">
                 <Phone className="size-4" />
@@ -58,7 +83,7 @@ export function SiteHeader() {
             </a>
             <a
               href={`tel:${PHONE_TEL}`}
-              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground transition hover:brightness-110 lg:hidden"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground transition hover:brightness-110 xl:hidden"
             >
               <Phone className="size-4" /> Call
             </a>
