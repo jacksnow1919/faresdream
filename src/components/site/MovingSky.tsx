@@ -1,6 +1,10 @@
 /** Free Unsplash photo: deep blue sky above a carpet of clouds. */
-const SKY =
-  "https://images.unsplash.com/photo-1637446857758-edf6fe04d67a?auto=format&fit=crop&w=2000&q=70";
+const SKY_BASE =
+  "https://images.unsplash.com/photo-1637446857758-edf6fe04d67a?auto=format&fit=crop&q=65";
+const SKY_WIDTHS = [640, 960, 1280, 1600, 2000];
+/** Phones download a ~640px photo instead of the full 2000px one (the home page's LCP image). */
+export const SKY_SRCSET = SKY_WIDTHS.map((w) => `${SKY_BASE}&w=${w} ${w}w`).join(", ");
+export const SKY_SRC = `${SKY_BASE}&w=1280`;
 
 /** Soft cloud wisps drifting across the sky: vertical position, size, speed and start offset. */
 const PUFFS = [
@@ -22,9 +26,14 @@ export function MovingSky() {
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] bg-sky-700 [container-type:inline-size]"
     >
-      <div
-        className="sky-pan absolute -inset-[6%] bg-cover bg-[center_35%]"
-        style={{ backgroundImage: `url(${SKY})` }}
+      <img
+        src={SKY_SRC}
+        srcSet={SKY_SRCSET}
+        sizes="100vw"
+        alt=""
+        fetchPriority="high"
+        decoding="async"
+        className="sky-pan absolute -inset-[6%] h-[112%] w-[112%] max-w-none object-cover object-[center_35%]"
       />
       {PUFFS.map((p) => (
         <span
