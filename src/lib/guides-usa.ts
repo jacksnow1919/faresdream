@@ -167,6 +167,7 @@ export const usaGuides: Guide[] = [
       kayak("Los Angeles to Kahului (Maui) flights", "Los-Angeles-LAX/Kahului-OGG"),
     ],
     related: [
+      { label: "Cheapest time to fly to New York", href: "/guides/cheapest-time-to-fly-to-new-york" },
       { label: "Cheapest time to fly to Las Vegas", href: "/guides/cheapest-time-to-fly-to-las-vegas" },
       { label: "Cheapest time to fly to Orlando", href: "/guides/cheapest-time-to-fly-to-orlando" },
       { label: "Search flights", href: "/" },
@@ -477,6 +478,199 @@ export const usaGuides: Guide[] = [
     related: [
       { label: "Cheapest time to fly to Hawaii", href: "/guides/cheapest-time-to-fly-to-hawaii" },
       { label: "Cheapest time to fly to Orlando", href: "/guides/cheapest-time-to-fly-to-orlando" },
+      { label: "Search flights", href: "/" },
+    ],
+  },
+  {
+    slug: "cheapest-time-to-fly-to-new-york",
+    region: "USA",
+    title: "Cheapest Time to Fly to New York",
+    metaTitle: "Cheapest Time to Fly to New York (2027 Fare Data) | FaresDream",
+    description:
+      "January is the cheapest month to fly to New York from most US cities, and Sunday is the priciest day. Fares from 7 cities and the cheapest NYC airport (JFK, LGA or EWR) for each.",
+    published: "2026-11-18",
+    updated: "2026-11-18",
+    author: "FaresDream Travel Desk",
+    answer:
+      "January is the cheapest month to fly to New York from most US cities, and February from Atlanta and Miami. Los Angeles–New York averaged $247 round trip in January against $484 in June in KAYAK's 12-month data. Wednesday was usually the cheapest day and Sunday the most expensive on all 7 routes we checked. Booking 5 to 24 weeks ahead saved 29% to 43% compared with booking in the last two weeks.",
+    keyFacts: [
+      "Cheapest month: January from Los Angeles, Chicago, San Francisco, Dallas and Orlando; February from Atlanta and Miami.",
+      "Sunday was the most expensive day to fly on all 7 routes, up to 27% above an average day.",
+      "Wednesday was the cheapest day on 4 of the 7 routes (Thursday on 2, Tuesday on 1).",
+      "There is no single cheapest NYC airport: LaGuardia was cheapest from 4 cities, JFK from 2 and Newark from 1.",
+      "Orlando–New York was the cheapest route: $103 round trip in January.",
+    ],
+    table: {
+      caption: "Round-trip economy fares to New York (all airports) by route",
+      typicalLabel: "Typical fare",
+      rows: [
+        {
+          route: "Los Angeles (LAX) – New York",
+          cheapestMonth: "January · $247",
+          priciestMonths: "June $484 · July $478",
+          typical: "$311–$549",
+          bookAhead: "12 weeks (≈38% saving)",
+          cheapestDay: "Wednesday",
+        },
+        {
+          route: "San Francisco (SFO) – New York",
+          cheapestMonth: "January · $317",
+          priciestMonths: "June $569 · November $540",
+          typical: "$342–$598",
+          bookAhead: "24 weeks (≈39% saving)",
+          cheapestDay: "Tuesday",
+        },
+        {
+          route: "Chicago (ORD) – New York",
+          cheapestMonth: "January · $147",
+          priciestMonths: "October $324 · November $283",
+          typical: "$172–$331",
+          bookAhead: "7 weeks (≈38% saving)",
+          cheapestDay: "Wednesday",
+        },
+        {
+          route: "Dallas–Fort Worth (DFW) – New York",
+          cheapestMonth: "January · $189",
+          priciestMonths: "October $380 · July $353",
+          typical: "$211–$433",
+          bookAhead: "9 weeks (≈38% saving)",
+          cheapestDay: "Wednesday",
+        },
+        {
+          route: "Atlanta (ATL) – New York",
+          cheapestMonth: "February · $126",
+          priciestMonths: "October $295 · September $288",
+          typical: "$149–$314",
+          bookAhead: "5 weeks (≈29% saving)",
+          cheapestDay: "Wednesday",
+        },
+        {
+          route: "Miami (MIA) – New York",
+          cheapestMonth: "February · $152",
+          priciestMonths: "August $314 · October $313",
+          typical: "$164–$370",
+          bookAhead: "6 weeks (≈43% saving)",
+          cheapestDay: "Thursday",
+        },
+        {
+          route: "Orlando (MCO) – New York",
+          cheapestMonth: "January · $103",
+          priciestMonths: "July $299 · August $281",
+          typical: "$143–$316",
+          bookAhead: "14 weeks (≈38% saving)",
+          cheapestDay: "Thursday",
+        },
+      ],
+      note: "Source: KAYAK route pages (median round-trip prices by month and typical price range over the past 12 months), read November 18, 2026. Savings are KAYAK's figures for booking in the cheapest window. These are averages, not quotes; today's fare for your dates can be higher or lower.",
+    },
+    sections: [
+      {
+        id: "by-month",
+        heading: "When is it cheapest to fly to New York, month by month?",
+        paragraphs: [
+          "New York fares drop hard after the holidays. In KAYAK's data the priciest month cost 79% to 190% more than the cheapest month, depending on the route, so the month you pick matters more than anything else.",
+        ],
+        bullets: [
+          "January–February: the cheapest months on every route we checked. January won on 5 routes, February on 2 (Atlanta and Miami).",
+          "June–August: summer is the priciest time from the West Coast and Florida. June was the most expensive month from Los Angeles and San Francisco, July from Orlando, August from Miami.",
+          "September–November: autumn is the priciest time from Chicago, Dallas and Atlanta, where October was the most expensive month.",
+          "December: KAYAK lists December as the busiest month from Los Angeles, so expect crowds around the holidays even when it is not the priciest month.",
+        ],
+      },
+      {
+        id: "which-airport",
+        heading: "Which New York airport is cheapest: JFK, LaGuardia or Newark?",
+        paragraphs: [
+          "It depends on where you fly from. KAYAK compares the three main New York airports for each route, and the cheapest one changed by city:",
+          "Search all New York airports at once (code NYC) instead of picking one. LaGuardia is the closest to Manhattan; JFK has the most long-haul and international flights; Newark is in New Jersey and often easiest for the west side of Manhattan and New Jersey.",
+        ],
+        bullets: [
+          "LaGuardia (LGA): cheapest from Los Angeles (5% average saving), Dallas–Fort Worth (11%), San Francisco ($57 cheaper) and Orlando ($19 cheaper).",
+          "JFK: cheapest from Chicago O'Hare ($29 cheaper) and Miami (7% average saving).",
+          "Newark (EWR): cheapest from Atlanta ($12 cheaper).",
+        ],
+      },
+      {
+        id: "how-far-ahead",
+        heading: "How far ahead should I book flights to New York?",
+        paragraphs: [
+          "About 5 to 14 weeks ahead from most cities, and about 24 weeks from San Francisco. KAYAK's data shows savings of 29% to 43% in those windows.",
+          "Last-minute fares (booked within two weeks) ran 14% to 39% above the route average. The gap was biggest from Los Angeles (39%) and smallest from Atlanta (14%).",
+        ],
+      },
+      {
+        id: "which-day",
+        heading: "Which day of the week is cheapest to fly to New York?",
+        paragraphs: [
+          "Wednesday was cheapest from Los Angeles, Chicago, Dallas and Atlanta; Thursday from Miami and Orlando; Tuesday from San Francisco. The savings were small, 5% to 7% below an average day.",
+          "Avoiding Sunday matters more: Sunday was the most expensive day on all 7 routes, from 13% (San Francisco) to 27% (Orlando) above an average day.",
+        ],
+      },
+      {
+        id: "airlines",
+        heading: "Which airlines fly nonstop to New York?",
+        paragraphs: [
+          "Every route in our table has nonstop flights. From Los Angeles, JetBlue, American and others fly nonstop in about 5h 21m. From Miami, American, Delta and United take about 3h 07m, and from Dallas–Fort Worth, American, Delta and others take about 3h 26m.",
+          "On Los Angeles–New York, one-stop fares averaged $269 round trip (via Las Vegas) against $422 for nonstops, so a stop can save money if you have time.",
+          "Budget airlines often show the lowest fare but charge for carry-on and checked bags. Add bag fees before you compare.",
+        ],
+      },
+      {
+        id: "tips",
+        heading: "How to get the cheapest flight to New York",
+        paragraphs: [],
+        bullets: [
+          "Fly in January or February, after the New Year rush.",
+          "Search all three airports (NYC), not just JFK.",
+          "Book 5 to 14 weeks ahead; about 6 months ahead from San Francisco.",
+          "Fly out midweek and avoid flying on Sunday.",
+          "Compare the total cost including bags, especially on budget airlines.",
+          "Need help with dates or a group booking? Call an agent to compare fares for you.",
+        ],
+      },
+      {
+        id: "method",
+        heading: "How we put this guide together",
+        paragraphs: [
+          "We read KAYAK's published route data for 7 busy routes to New York on November 18, 2026 and copied the figures as published. The cheapest-airport findings are KAYAK's comparison of JFK, LaGuardia and Newark for each route. We did not use FaresDream booking data. We will update the table as new data is published.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What is the cheapest month to fly to New York?",
+        a: "Usually January. In KAYAK's 12-month data, January was cheapest from Los Angeles ($247 round trip), San Francisco ($317), Chicago ($147), Dallas ($189) and Orlando ($103). February was cheapest from Atlanta ($126) and Miami ($152).",
+      },
+      {
+        q: "What is the most expensive month to fly to New York?",
+        a: "It depends on the route: June from Los Angeles ($484) and San Francisco ($569), October from Chicago ($324), Dallas ($380) and Atlanta ($295), August from Miami ($314) and July from Orlando ($299).",
+      },
+      {
+        q: "Is it cheaper to fly into JFK, LaGuardia or Newark?",
+        a: "No single airport is always cheapest. In KAYAK's route data LaGuardia was cheapest from Los Angeles, San Francisco, Dallas and Orlando, JFK from Chicago and Miami, and Newark from Atlanta. Search all New York airports at once.",
+      },
+      {
+        q: "What day of the week is cheapest to fly to New York?",
+        a: "Usually Wednesday (4 of 7 routes), then Thursday or Tuesday. Sunday was the most expensive day on every route we checked.",
+      },
+      {
+        q: "How far in advance should I book a flight to New York?",
+        a: "Between 5 and 14 weeks ahead from most US cities, and about 24 weeks from San Francisco. That saved 29% to 43% in KAYAK's data.",
+      },
+    ],
+    sources: [
+      kayak("Los Angeles to New York flights", "Los-Angeles-LAX/New-York-NYC"),
+      kayak("San Francisco to New York flights", "San-Francisco-SFO/New-York-NYC"),
+      kayak("Chicago O'Hare to New York flights", "Chicago-ORD/New-York-NYC"),
+      kayak("Dallas–Fort Worth to New York flights", "Dallas-Fort-Worth-DFW/New-York-NYC"),
+      kayak("Atlanta to New York flights", "Atlanta-ATL/New-York-NYC"),
+      kayak("Miami to New York flights", "Miami-MIA/New-York-NYC"),
+      kayak("Orlando to New York flights", "Orlando-MCO/New-York-NYC"),
+    ],
+    related: [
+      { label: "Cheapest time to fly to Orlando", href: "/guides/cheapest-time-to-fly-to-orlando" },
+      { label: "Cheapest time to fly to Las Vegas", href: "/guides/cheapest-time-to-fly-to-las-vegas" },
+      { label: "Cheapest time to fly to Hawaii", href: "/guides/cheapest-time-to-fly-to-hawaii" },
       { label: "Search flights", href: "/" },
     ],
   },
