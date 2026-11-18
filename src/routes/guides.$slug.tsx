@@ -119,7 +119,7 @@ function GuidePage() {
                       <th scope="col" className="py-2 pr-3 font-semibold">Route</th>
                       <th scope="col" className="py-2 pr-3 font-semibold">Cheapest month (avg)</th>
                       <th scope="col" className="py-2 pr-3 font-semibold">Priciest months</th>
-                      <th scope="col" className="py-2 pr-3 font-semibold">Typical fare</th>
+                      <th scope="col" className="py-2 pr-3 font-semibold">{g.table.typicalLabel ?? "Typical fare"}</th>
                       <th scope="col" className="py-2 pr-3 font-semibold">Book ahead</th>
                       <th scope="col" className="py-2 font-semibold">Cheapest day</th>
                     </tr>

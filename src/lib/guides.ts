@@ -3,6 +3,8 @@
  * listed in `sources`, and the page shows those sources. Update `updated` when the data changes.
  */
 
+import { usaGuides } from "@/lib/guides-usa";
+
 export type GuideSource = { label: string; url: string; checked: string };
 export type GuideRouteRow = {
   route: string;
@@ -16,6 +18,8 @@ export type GuideSection = { id: string; heading: string; paragraphs: string[]; 
 
 export type Guide = {
   slug: string;
+  /** Hub grouping on /guides. */
+  region: "USA" | "International";
   title: string;
   metaTitle: string;
   description: string;
@@ -25,16 +29,23 @@ export type Guide = {
   /** The 2–3 sentence direct answer shown in a box at the top. */
   answer: string;
   keyFacts: string[];
-  table?: { caption: string; rows: GuideRouteRow[]; note: string };
+  table?: {
+    caption: string;
+    rows: GuideRouteRow[];
+    note: string;
+    /** Header for the `typical` column (default "Typical fare"). */
+    typicalLabel?: string;
+  };
   sections: GuideSection[];
   faqs: { q: string; a: string }[];
   sources: GuideSource[];
   related: { label: string; href: string }[];
 };
 
-export const guides: Guide[] = [
+const internationalGuides: Guide[] = [
   {
     slug: "cheapest-time-to-fly-to-india-from-usa",
+    region: "International",
     title: "Cheapest Time to Fly to India from the USA",
     metaTitle: "Cheapest Time to Fly to India from the USA (2027) | FaresDream",
     description:
@@ -206,5 +217,8 @@ export const guides: Guide[] = [
     ],
   },
 ];
+
+/** USA guides first: the US is the main market. */
+export const guides: Guide[] = [...usaGuides, ...internationalGuides];
 
 export const guideBySlug = (slug: string) => guides.find((g) => g.slug === slug);
