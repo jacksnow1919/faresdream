@@ -13,6 +13,18 @@ export type Airline = {
 
 export const airlines: Airline[] = [
   {
+    slug: "air-india",
+    name: "Air India",
+    code: "AI",
+    cabin: "Business Class · A350-900",
+    seat: "Lie-flat suite, 1-2-1 layout with direct aisle access (A350)",
+    baggage: "2 x 32kg checked in business · 2 x 23kg in economy (USA routes)",
+    lounge: "Air India lounges in Delhi and Mumbai; Star Alliance partner lounges in the USA",
+    rating: 0,
+    review: "Nonstop flights from New York JFK and Newark to Delhi and Mumbai, and from San Francisco to Delhi, with two free checked bags in economy.",
+    fromPrice: 739,
+  },
+  {
     slug: "emirates",
     name: "Emirates",
     code: "EK",
