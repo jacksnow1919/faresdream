@@ -112,6 +112,7 @@ export const destinations: Destination[] = [
     country: "India",
     code: "DEL",
     region: "Asia",
+    photo: "1587474260584-136574528ed5",
     airports: [
       { code: "DEL", name: "Indira Gandhi International", note: "International flights use Terminal 3." },
     ],
@@ -137,6 +138,7 @@ export const destinations: Destination[] = [
     country: "India",
     code: "BOM",
     region: "Asia",
+    photo: "1595658658481-d53d3f999875",
     airports: [
       { code: "BOM", name: "Chhatrapati Shivaji Maharaj International", note: "International flights use Terminal 2." },
     ],
@@ -233,6 +235,7 @@ export const destinations: Destination[] = [
     country: "Nigeria",
     code: "LOS",
     region: "Africa",
+    photo: "1765475467677-579353b25ce0",
     airports: [{ code: "LOS", name: "Murtala Muhammed International", note: "Nigeria's busiest international airport." }],
     intro:
       "Lagos is the main gateway for travellers flying between the US and Nigeria. There are a few nonstop flights, and many one-stop options through Europe, the Gulf, Casablanca, Addis Ababa or Istanbul.",
