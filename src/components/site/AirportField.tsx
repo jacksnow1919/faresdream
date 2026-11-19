@@ -11,11 +11,14 @@ export function AirportField({
   value,
   onChange,
   compact = false,
+  afterSwap = false,
 }: {
   label: string;
   value: string;
   onChange: (code: string) => void;
   compact?: boolean;
+  /** Second field next to the swap button: extra left room so the button never covers the text. */
+  afterSwap?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -35,7 +38,7 @@ export function AirportField({
   return (
     <div className={`relative min-w-0 ${open ? "z-40" : "z-10"}`}>
       <label
-        className={`relative flex h-full w-full cursor-pointer flex-col justify-center text-left lg:min-h-0 lg:py-0 ${
+        className={`relative flex h-full w-full cursor-pointer flex-col justify-center text-left lg:min-h-0 lg:py-0 ${afterSwap ? "md:!pl-8" : ""} ${
           compact
             ? "min-h-[3.5rem] gap-0.5 px-3.5 py-2 lg:h-[3.75rem] xl:px-[1.125rem]"
             : "min-h-[4.25rem] gap-1 px-[1.125rem] py-3 lg:h-[5.25rem]"

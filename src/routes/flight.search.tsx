@@ -378,7 +378,7 @@ function SearchPage() {
             </div>
           </aside>
 
-          <main className="min-w-0 space-y-3">
+          <section aria-label="Flight results" className="min-w-0 space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
               <h1 className="font-display text-base font-semibold text-foreground sm:text-lg">
                 {fromCity} ({origin}) to {toCity} ({destination}) flights
@@ -478,7 +478,7 @@ function SearchPage() {
             ) : null}
 
             {showEmpty ? (
-              <div className="rounded-xl border border-border bg-card p-8 text-center shadow-card">
+              <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-card">
                 <p className="font-display text-lg font-semibold text-navy">
                   {isError
                     ? "We are currently checking live rates with our airline desk."
@@ -493,7 +493,7 @@ function SearchPage() {
             ) : null}
 
             {filteredOut ? (
-              <div className="rounded-xl border border-border bg-card p-6 text-center shadow-card">
+              <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-card">
                 <p className="font-display text-base font-semibold text-navy">
                   No flights match your filters.
                 </p>
@@ -529,7 +529,7 @@ function SearchPage() {
                 action={selectButton(f)}
               />
             ))}
-          </main>
+          </section>
         </div>
       </div>
 

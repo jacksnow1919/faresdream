@@ -17,7 +17,7 @@ import { shortcutDates, showFlightsTo } from "@/lib/focus-search";
 type FooterFlights = { to: string; from?: string };
 
 type FooterLink =
-  | { label: string; to: "/deals" | "/about" | "/contact" | "/privacy" | "/terms" | "/sitemap" }
+  | { label: string; to: "/deals" | "/about" | "/contact" | "/privacy" | "/terms" | "/sitemap" | "/guides" }
   | { label: string; flights: FooterFlights };
 
 const route = (label: string, from: string, to: string): FooterLink => ({
@@ -86,6 +86,7 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
       { label: "About Us", to: "/about" },
       { label: "Contact Us", to: "/contact" },
       { label: "Deals", to: "/deals" },
+      { label: "Travel Guides", to: "/guides" },
       { label: "Privacy Policy", to: "/privacy" },
       { label: "Terms of Use", to: "/terms" },
       { label: "Sitemap", to: "/sitemap" },
@@ -218,7 +219,7 @@ export function SiteFooter() {
         <div className="grid gap-6 border-t border-white/10 py-8 md:grid-cols-[auto_auto_1fr] md:gap-10">
           {BADGES.map((g) => (
             <div key={g.label}>
-              <p className="text-xs font-semibold uppercase tracking-wider text-white/50">
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/75">
                 {g.label}
               </p>
               <ul className="mt-3 flex flex-wrap gap-2">
@@ -239,7 +240,7 @@ export function SiteFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/75 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Faresdream. All rights reserved.</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <Link to="/privacy" className="hover:text-white">

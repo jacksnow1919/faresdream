@@ -5,11 +5,13 @@ import {
   Menu,
   X,
   User,
+  Globe,
   Compass,
   Briefcase,
   Star,
   HelpCircle,
   MessageSquare,
+  DollarSign,
 } from "lucide-react";
 import { useCurrency } from "@/components/site/CurrencyContext";
 import { RegionalSettingsDialog, RegionalSummary } from "@/components/site/RegionalSettings";
@@ -18,10 +20,22 @@ import { LOGO_ON_DARK, LOGO_ON_LIGHT, PHONE_DISPLAY, PHONE_TEL } from "@/lib/bra
 import { countryByCode } from "@/lib/regional";
 
 const drawerLinks = [
-  { to: "/destinations", label: "Explore Travel", icon: Compass },
+  { to: "/deals", label: "Flight Deals", icon: DollarSign },
+  { to: "/destinations", label: "Destinations", icon: Compass },
+  { to: "/airlines", label: "Airlines", icon: Globe },
+  { to: "/cabin-suites", label: "Business Class", icon: Star },
   { to: "/dashboard", label: "My Trips", icon: Briefcase },
-  { to: "/deals", label: "My Rewards", icon: Star },
   { to: "/contact", label: "Need Help?", icon: HelpCircle },
+] as const;
+
+const mainNav = [
+  { to: "/flights", label: "Flights" },
+  { to: "/deals", label: "Deals" },
+  { to: "/destinations", label: "Destinations" },
+  { to: "/airlines", label: "Airlines" },
+  { to: "/cabin-suites", label: "Business Class" },
+  { to: "/guides", label: "Guides" },
+  { to: "/contact", label: "Help" },
 ] as const;
 
 export function SiteHeader() {
@@ -43,6 +57,19 @@ export function SiteHeader() {
               height={LOGO_ON_DARK.height}
             />
           </Link>
+
+          <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+            {mainNav.map((l) => (
+              <Link
+                key={l.label}
+                to={l.to}
+                className="whitespace-nowrap rounded-full px-2.5 py-2 text-sm xl:px-3 font-semibold text-white/85 transition hover:bg-white/10 hover:text-white"
+                activeProps={{ className: "bg-white/15 text-white" }}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
 
           <div className="ml-auto flex shrink-0 items-center gap-2 whitespace-nowrap lg:gap-3">
             <a

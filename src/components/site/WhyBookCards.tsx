@@ -15,37 +15,37 @@ const REASONS: { title: string; text: string; icon: LucideIcon; bg: string }[] =
     title: "Wholesale fares",
     text: "compared across providers",
     icon: BadgeDollarSign,
-    bg: "from-blue-950 to-blue-700",
+    bg: "from-navy to-navy-soft",
   },
   {
     title: "24/7 support",
     text: "real agents, day & night",
     icon: Headphones,
-    bg: "from-teal-950 to-teal-700",
+    bg: "from-navy to-navy-soft",
   },
   {
     title: "Secure checkout",
     text: "256-bit encrypted payments",
     icon: ShieldCheck,
-    bg: "from-slate-800 to-sky-800",
+    bg: "from-navy to-navy-soft",
   },
   {
     title: "No hidden fees",
     text: "what you see is what you pay",
     icon: ReceiptText,
-    bg: "from-sky-900 to-sky-700",
+    bg: "from-navy to-navy-soft",
   },
   {
     title: "47+ airlines",
     text: "plus unpublished fares",
     icon: Plane,
-    bg: "from-blue-950 to-sky-700",
+    bg: "from-navy to-navy-soft",
   },
   {
     title: "Group savings",
     text: "extra discounts for groups",
     icon: Users,
-    bg: "from-cyan-950 to-cyan-700",
+    bg: "from-navy to-navy-soft",
   },
 ];
 

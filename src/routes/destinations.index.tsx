@@ -1,23 +1,28 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Price } from "@/components/site/CurrencyContext";
+import { ArrowRight } from "lucide-react";
 import { destinations } from "@/lib/travel-data";
-import { PageShell, Card } from "@/components/site/ui";
+import { PageShell } from "@/components/site/ui";
+import { breadcrumbLd, jsonLdScript } from "@/lib/structured-data";
+
+const photoUrl = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=640&h=360&q=65`;
 
 export const Route = createFileRoute("/destinations/")({
   head: () => ({
     meta: [
-      { title: "Luxury Destination Guides | FaresDream" },
+      { title: "Flight Destination Guides: Cheapest Months & Airports | FaresDream" },
       {
         name: "description",
         content:
-          "Destination guides for business class travellers: lounge access, airport transfers and the best booking windows for Dubai, London and Singapore.",
+          "Guides to flying from the US to London, Paris, Dubai, Delhi, Mumbai, Tokyo, Singapore, Cancún and Lagos: cheapest months, nonstop options, airports and transfers.",
       },
-      { property: "og:title", content: "Luxury Destination Guides" },
+      { property: "og:title", content: "Flight Destination Guides | FaresDream" },
       {
         property: "og:description",
-        content: "Lounge maps, transfers and travel guides for premium cabins.",
+        content: "Cheapest months, nonstop options and airport tips for popular destinations from the US.",
       },
     ],
+    scripts: [jsonLdScript(breadcrumbLd([{ name: "Destinations", path: "/destinations" }]))],
   }),
   component: DestinationsIndex,
 });
@@ -26,28 +31,44 @@ function DestinationsIndex() {
   return (
     <PageShell
       eyebrow="Destinations"
-      title="Where luxury travellers are heading"
-      subtitle="Travel guides, lounge access and airport transfer intel for every gateway we serve."
+      title="Flight guides for popular destinations"
+      subtitle="When fares are lowest, which airport to choose, nonstop options from the US and how to get into the city."
     >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {destinations.map((d) => (
-          <Card key={d.slug}>
-            <p className="font-display text-xl font-semibold text-navy">{d.city}</p>
-            <p className="text-xs text-muted-foreground">{d.airport}</p>
-            <p className="mt-3 line-clamp-3 text-sm text-muted-foreground">{d.guide}</p>
-            <div className="mt-4 flex items-center justify-between">
-              <span className="font-display text-lg font-semibold text-navy">
-                from <Price amount={d.fromPrice} />
-              </span>
-              <Link
-                to="/destinations/$slug"
-                params={{ slug: d.slug }}
-                className="rounded-xl bg-gold px-4 py-2 text-xs font-bold text-gold-foreground"
-              >
-                Explore
-              </Link>
+          <Link
+            key={d.slug}
+            to="/destinations/$slug"
+            params={{ slug: d.slug }}
+            className="group overflow-hidden rounded-2xl border border-border bg-card shadow-card transition hover:-translate-y-0.5 hover:shadow-lux"
+          >
+            <div className="relative aspect-[16/9] bg-linear-to-br from-navy to-navy-soft">
+              {d.photo ? (
+                <img
+                  src={photoUrl(d.photo)}
+                  alt={`${d.city}, ${d.country}`}
+                  loading="lazy"
+                  width={640}
+                  height={360}
+                  className="size-full object-cover"
+                />
+              ) : (
+                <span className="absolute inset-0 grid place-items-center font-display text-4xl font-bold text-white/90">
+                  {d.code}
+                </span>
+              )}
             </div>
-          </Card>
+            <div className="p-5">
+              <p className="font-display text-xl font-semibold text-navy">Flights to {d.city}</p>
+              <p className="text-xs text-muted-foreground">
+                {d.country} · {d.airports.map((a) => a.code).join(" · ")}
+              </p>
+              <p className="mt-3 line-clamp-3 text-sm text-foreground/80">{d.cheapest}</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                Read the guide <ArrowRight className="size-4 transition group-hover:translate-x-0.5" />
+              </span>
+            </div>
+          </Link>
         ))}
       </div>
     </PageShell>

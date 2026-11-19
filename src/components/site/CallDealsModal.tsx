@@ -20,7 +20,7 @@ const PERKS = [
 ];
 
 /**
- * Phone-deals popup: once per visit, 25 seconds in or when the pointer heads for the
+ * Phone-deals popup: once per visitor (desktop only), 45 seconds in or when the pointer heads for the
  * browser's tabs (leaving). Never in the admin console.
  */
 export function CallDealsModal() {
@@ -30,15 +30,17 @@ export function CallDealsModal() {
 
   useEffect(() => {
     if (typeof window === "undefined" || inAdmin) return;
-    if (window.sessionStorage.getItem(SEEN_KEY)) return;
+    if (window.localStorage.getItem(SEEN_KEY)) return;
+    // Phones: no pop-up at all (Google penalises intrusive mobile interstitials); the sticky call bar covers it.
+    if (window.matchMedia("(max-width: 1023px)").matches) return;
 
     const show = () => {
-      if (window.sessionStorage.getItem(SEEN_KEY)) return;
-      window.sessionStorage.setItem(SEEN_KEY, "1");
+      if (window.localStorage.getItem(SEEN_KEY)) return;
+      window.localStorage.setItem(SEEN_KEY, "1");
       setOpen(true);
     };
 
-    const timer = window.setTimeout(show, 25000);
+    const timer = window.setTimeout(show, 45000);
     const onLeave = (e: MouseEvent) => {
       if (e.clientY <= 0) show();
     };

@@ -36,7 +36,12 @@ import { Route as FlightConfirmationRouteImport } from './routes/flight.confirma
 import { Route as FlightFareDetailsRouteImport } from './routes/flight.fare-details'
 import { Route as FlightPaymentRouteImport } from './routes/flight.payment'
 import { Route as FlightSearchRouteImport } from './routes/flight.search'
+import { Route as FlightsIndexRouteImport } from './routes/flights.index'
+import { Route as FlightsSlugRouteImport } from './routes/flights.$slug'
+import { Route as GuidesIndexRouteImport } from './routes/guides.index'
+import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as RoutesRouteIdRouteImport } from './routes/routes.$routeId'
+import { Route as SitemapsFileRouteImport } from './routes/sitemaps.$file'
 import { Route as VerifyTokenRouteImport } from './routes/verify.$token'
 import { Route as ApiMetaSearchRouteImport } from './routes/api/meta/search'
 import { Route as ApiPublicFareCacheRouteImport } from './routes/api/public/fare-cache'
@@ -176,9 +181,34 @@ const FlightSearchRoute = FlightSearchRouteImport.update({
   path: '/flight/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FlightsIndexRoute = FlightsIndexRouteImport.update({
+  id: '/flights/',
+  path: '/flights/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlightsSlugRoute = FlightsSlugRouteImport.update({
+  id: '/flights/$slug',
+  path: '/flights/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesIndexRoute = GuidesIndexRouteImport.update({
+  id: '/guides/',
+  path: '/guides/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesSlugRoute = GuidesSlugRouteImport.update({
+  id: '/guides/$slug',
+  path: '/guides/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoutesRouteIdRoute = RoutesRouteIdRouteImport.update({
   id: '/routes/$routeId',
   path: '/routes/$routeId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapsFileRoute = SitemapsFileRouteImport.update({
+  id: '/sitemaps/$file',
+  path: '/sitemaps/$file',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VerifyTokenRoute = VerifyTokenRouteImport.update({
@@ -226,11 +256,16 @@ export interface FileRoutesByFullPath {
   '/flight/fare-details': typeof FlightFareDetailsRoute
   '/flight/payment': typeof FlightPaymentRoute
   '/flight/search': typeof FlightSearchRoute
+  '/flights/$slug': typeof FlightsSlugRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
+  '/sitemaps/$file': typeof SitemapsFileRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/admin/': typeof AdminIndexRoute
   '/airlines/': typeof AirlinesIndexRoute
   '/destinations/': typeof DestinationsIndexRoute
+  '/flights/': typeof FlightsIndexRoute
+  '/guides/': typeof GuidesIndexRoute
   '/api/meta/search': typeof ApiMetaSearchRoute
   '/api/public/fare-cache': typeof ApiPublicFareCacheRoute
   '/api/public/meta/search': typeof ApiPublicMetaSearchRoute
@@ -259,11 +294,16 @@ export interface FileRoutesByTo {
   '/flight/fare-details': typeof FlightFareDetailsRoute
   '/flight/payment': typeof FlightPaymentRoute
   '/flight/search': typeof FlightSearchRoute
+  '/flights/$slug': typeof FlightsSlugRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
+  '/sitemaps/$file': typeof SitemapsFileRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/admin': typeof AdminIndexRoute
   '/airlines': typeof AirlinesIndexRoute
   '/destinations': typeof DestinationsIndexRoute
+  '/flights': typeof FlightsIndexRoute
+  '/guides': typeof GuidesIndexRoute
   '/api/meta/search': typeof ApiMetaSearchRoute
   '/api/public/fare-cache': typeof ApiPublicFareCacheRoute
   '/api/public/meta/search': typeof ApiPublicMetaSearchRoute
@@ -294,11 +334,16 @@ export interface FileRoutesById {
   '/flight/fare-details': typeof FlightFareDetailsRoute
   '/flight/payment': typeof FlightPaymentRoute
   '/flight/search': typeof FlightSearchRoute
+  '/flights/$slug': typeof FlightsSlugRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/routes/$routeId': typeof RoutesRouteIdRoute
+  '/sitemaps/$file': typeof SitemapsFileRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/admin/': typeof AdminIndexRoute
   '/airlines/': typeof AirlinesIndexRoute
   '/destinations/': typeof DestinationsIndexRoute
+  '/flights/': typeof FlightsIndexRoute
+  '/guides/': typeof GuidesIndexRoute
   '/api/meta/search': typeof ApiMetaSearchRoute
   '/api/public/fare-cache': typeof ApiPublicFareCacheRoute
   '/api/public/meta/search': typeof ApiPublicMetaSearchRoute
@@ -329,11 +374,16 @@ export interface FileRouteTypes {
     | '/flight/fare-details'
     | '/flight/payment'
     | '/flight/search'
+    | '/flights/$slug'
+    | '/guides/$slug'
     | '/routes/$routeId'
+    | '/sitemaps/$file'
     | '/verify/$token'
     | '/admin/'
     | '/airlines/'
     | '/destinations/'
+    | '/flights/'
+    | '/guides/'
     | '/api/meta/search'
     | '/api/public/fare-cache'
     | '/api/public/meta/search'
@@ -362,11 +412,16 @@ export interface FileRouteTypes {
     | '/flight/fare-details'
     | '/flight/payment'
     | '/flight/search'
+    | '/flights/$slug'
+    | '/guides/$slug'
     | '/routes/$routeId'
+    | '/sitemaps/$file'
     | '/verify/$token'
     | '/admin'
     | '/airlines'
     | '/destinations'
+    | '/flights'
+    | '/guides'
     | '/api/meta/search'
     | '/api/public/fare-cache'
     | '/api/public/meta/search'
@@ -396,11 +451,16 @@ export interface FileRouteTypes {
     | '/flight/fare-details'
     | '/flight/payment'
     | '/flight/search'
+    | '/flights/$slug'
+    | '/guides/$slug'
     | '/routes/$routeId'
+    | '/sitemaps/$file'
     | '/verify/$token'
     | '/admin/'
     | '/airlines/'
     | '/destinations/'
+    | '/flights/'
+    | '/guides/'
     | '/api/meta/search'
     | '/api/public/fare-cache'
     | '/api/public/meta/search'
@@ -429,11 +489,16 @@ export interface RootRouteChildren {
   FlightFareDetailsRoute: typeof FlightFareDetailsRoute
   FlightPaymentRoute: typeof FlightPaymentRoute
   FlightSearchRoute: typeof FlightSearchRoute
+  FlightsSlugRoute: typeof FlightsSlugRoute
+  GuidesSlugRoute: typeof GuidesSlugRoute
   RoutesRouteIdRoute: typeof RoutesRouteIdRoute
+  SitemapsFileRoute: typeof SitemapsFileRoute
   VerifyTokenRoute: typeof VerifyTokenRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AirlinesIndexRoute: typeof AirlinesIndexRoute
   DestinationsIndexRoute: typeof DestinationsIndexRoute
+  FlightsIndexRoute: typeof FlightsIndexRoute
+  GuidesIndexRoute: typeof GuidesIndexRoute
   ApiMetaSearchRoute: typeof ApiMetaSearchRoute
   ApiPublicFareCacheRoute: typeof ApiPublicFareCacheRoute
   ApiPublicMetaSearchRoute: typeof ApiPublicMetaSearchRoute
@@ -630,11 +695,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FlightSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/flights/': {
+      id: '/flights/'
+      path: '/flights'
+      fullPath: '/flights/'
+      preLoaderRoute: typeof FlightsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flights/$slug': {
+      id: '/flights/$slug'
+      path: '/flights/$slug'
+      fullPath: '/flights/$slug'
+      preLoaderRoute: typeof FlightsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/': {
+      id: '/guides/'
+      path: '/guides'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof GuidesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/$slug': {
+      id: '/guides/$slug'
+      path: '/guides/$slug'
+      fullPath: '/guides/$slug'
+      preLoaderRoute: typeof GuidesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/routes/$routeId': {
       id: '/routes/$routeId'
       path: '/routes/$routeId'
       fullPath: '/routes/$routeId'
       preLoaderRoute: typeof RoutesRouteIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemaps/$file': {
+      id: '/sitemaps/$file'
+      path: '/sitemaps/$file'
+      fullPath: '/sitemaps/$file'
+      preLoaderRoute: typeof SitemapsFileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/verify/$token': {
@@ -704,11 +804,16 @@ const rootRouteChildren: RootRouteChildren = {
   FlightFareDetailsRoute: FlightFareDetailsRoute,
   FlightPaymentRoute: FlightPaymentRoute,
   FlightSearchRoute: FlightSearchRoute,
+  FlightsSlugRoute: FlightsSlugRoute,
+  GuidesSlugRoute: GuidesSlugRoute,
   RoutesRouteIdRoute: RoutesRouteIdRoute,
+  SitemapsFileRoute: SitemapsFileRoute,
   VerifyTokenRoute: VerifyTokenRoute,
   AdminIndexRoute: AdminIndexRoute,
   AirlinesIndexRoute: AirlinesIndexRoute,
   DestinationsIndexRoute: DestinationsIndexRoute,
+  FlightsIndexRoute: FlightsIndexRoute,
+  GuidesIndexRoute: GuidesIndexRoute,
   ApiMetaSearchRoute: ApiMetaSearchRoute,
   ApiPublicFareCacheRoute: ApiPublicFareCacheRoute,
   ApiPublicMetaSearchRoute: ApiPublicMetaSearchRoute,
