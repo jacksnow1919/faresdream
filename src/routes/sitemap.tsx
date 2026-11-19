@@ -1,109 +1,73 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Building2, FileText, Plane, User, type LucideIcon } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Building2, BookOpen, Globe2, Plane, type LucideIcon } from "lucide-react";
 import { PageShell } from "@/components/site/ui";
+import { sitemapGroups } from "@/lib/sitemap";
+import { breadcrumbLd, jsonLdScript } from "@/lib/structured-data";
 
 export const Route = createFileRoute("/sitemap")({
   head: () => ({
     meta: [
-      { title: "Sitemap | FaresDream Flight Deals" },
+      { title: "Sitemap: Flights, Destinations, Airlines & Guides | FaresDream" },
       {
         name: "description",
         content:
-          "Browse every page on FaresDream — flight search, deals, destinations, airlines, support and policy pages in one place.",
+          "Every FaresDream page in one place: cheap flights by destination, airlines, travel guides, deals and company pages.",
       },
-      { property: "og:title", content: "Sitemap | FaresDream" },
-      { property: "og:description", content: "All FaresDream pages in one simple index." },
     ],
+    scripts: [jsonLdScript(breadcrumbLd([{ name: "Sitemap", path: "/sitemap" }]))],
   }),
   component: SitemapPage,
 });
 
-const groups: {
-  title: string;
-  icon: LucideIcon;
-  links: {
-    label: string;
-    to:
-      | "/"
-      | "/deals"
-      | "/destinations"
-      | "/airlines"
-      | "/about"
-      | "/contact"
-      | "/auth"
-      | "/dashboard"
-      | "/privacy"
-      | "/terms"
-      | "/refund-policy";
-  }[];
-}[] = [
-  {
-    title: "Book flights",
-    icon: Plane,
-    links: [
-      { label: "Search flights", to: "/" },
-      { label: "Flight deals", to: "/deals" },
-      { label: "Destinations", to: "/destinations" },
-      { label: "Airlines", to: "/airlines" },
-    ],
-  },
-  {
-    title: "Company",
-    icon: Building2,
-    links: [
-      { label: "About us", to: "/about" },
-      { label: "Contact us", to: "/contact" },
-    ],
-  },
-  {
-    title: "Your account",
-    icon: User,
-    links: [
-      { label: "Sign in or join", to: "/auth" },
-      { label: "My trips", to: "/dashboard" },
-    ],
-  },
-  {
-    title: "Legal",
-    icon: FileText,
-    links: [
-      { label: "Privacy policy", to: "/privacy" },
-      { label: "Terms of use", to: "/terms" },
-      { label: "Refund & cancellation policy", to: "/refund-policy" },
-    ],
-  },
-];
+const icons: Record<string, LucideIcon> = {
+  pages: Building2,
+  destinations: Plane,
+  airlines: Globe2,
+  guides: BookOpen,
+};
 
 function SitemapPage() {
+  const groups = sitemapGroups();
   return (
-    <PageShell title="Sitemap" subtitle="Every FaresDream page in one place.">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <PageShell title="Sitemap" subtitle="Every FaresDream page, grouped by type.">
+      <nav aria-label="Sitemap sections" className="mb-6 flex flex-wrap gap-2">
         {groups.map((g) => (
-          <section
-            key={g.title}
-            className="rounded-2xl border border-border bg-card p-5 shadow-card"
+          <a
+            key={g.key}
+            href={`#${g.key}`}
+            className="rounded-full border border-border bg-card px-4 py-1.5 text-sm font-semibold text-navy hover:border-primary/40"
           >
-            <h2 className="flex items-center gap-3 font-display text-base font-bold text-navy">
-              <span className="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary">
-                <g.icon className="size-4" />
-              </span>
-              {g.title}
-            </h2>
-            <ul className="mt-3 divide-y divide-border">
-              {g.links.map((l) => (
-                <li key={l.label}>
-                  <Link
-                    to={l.to}
-                    className="group flex items-center justify-between gap-3 py-2.5 text-sm font-medium text-foreground transition hover:text-primary"
-                  >
-                    {l.label}
-                    <ArrowRight className="size-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-primary" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
+            {g.title} ({g.entries.length})
+          </a>
         ))}
+      </nav>
+      <div className="space-y-6">
+        {groups.map((g) => {
+          const Icon = icons[g.key] ?? Plane;
+          return (
+            <section
+              key={g.key}
+              id={g.key}
+              className="scroll-mt-24 rounded-2xl border border-border bg-card p-5 shadow-card sm:p-6"
+            >
+              <h2 className="flex items-center gap-3 font-display text-lg font-bold text-navy">
+                <span className="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary">
+                  <Icon className="size-4" />
+                </span>
+                {g.title}
+              </h2>
+              <ul className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
+                {g.entries.map((e) => (
+                  <li key={e.path}>
+                    <a href={e.path} className="text-sm font-medium text-foreground/85 hover:text-navy hover:underline">
+                      {e.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })}
       </div>
     </PageShell>
   );

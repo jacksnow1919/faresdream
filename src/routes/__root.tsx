@@ -7,7 +7,10 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
+import { canonicalUrl, isNoindexPath } from "../lib/seo";
+import { jsonLdScript, organizationLd, websiteLd } from "../lib/structured-data";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
@@ -19,7 +22,6 @@ import { SiteFooter } from "../components/site/SiteFooter";
 import { StickyCallBar } from "../components/site/StickyCallBar";
 import { CallDealsModal } from "../components/site/CallDealsModal";
 import { CurrencyProvider } from "../components/site/CurrencyContext";
-
 
 function NotFoundComponent() {
   return (
@@ -107,6 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "preconnect", href: "https://images.unsplash.com" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -115,6 +118,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
+    scripts: [jsonLdScript([organizationLd(), websiteLd()])],
   }),
 
   shellComponent: RootShell,
@@ -128,6 +132,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <CanonicalLink />
       </head>
       <body>
         {children}
@@ -135,6 +140,13 @@ function RootShell({ children }: { children: ReactNode }) {
       </body>
     </html>
   );
+}
+
+/** One canonical address per page, so Google never splits rankings between URL variants. */
+function CanonicalLink() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  if (isNoindexPath(pathname)) return null;
+  return <link rel="canonical" href={canonicalUrl(pathname)} />;
 }
 
 function RootComponent() {
@@ -156,7 +168,9 @@ function RootComponent() {
       <CurrencyProvider>
         <SiteHeader />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+        <main id="main-content">
+          <Outlet />
+        </main>
         <SiteFooter />
         <StickyCallBar />
         <CallDealsModal />
@@ -164,5 +178,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-
-

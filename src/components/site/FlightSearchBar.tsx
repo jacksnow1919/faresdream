@@ -428,6 +428,7 @@ export function FlightSearchBar({
                   <AirportField
                     compact={onBlue}
                     label="To"
+                    afterSwap
                     value={leg.to}
                     onChange={(v) => updateLeg(i, { to: v })}
                   />
@@ -525,6 +526,7 @@ export function FlightSearchBar({
             <AirportField
               compact={onBlue}
               label="To"
+                    afterSwap
               value={destination}
               onChange={setDestination}
             />

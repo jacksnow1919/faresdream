@@ -529,7 +529,7 @@ function AdminDashboard() {
         }}
       />
 
-      <main id="overview" className="min-w-0 px-4 py-6 pb-24 lg:px-6">
+      <div id="overview" className="min-w-0 px-4 py-6 pb-24 lg:px-6">
         <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-widest text-gold">Overview</p>
@@ -583,7 +583,7 @@ function AdminDashboard() {
         {canViewVisitors(role) ? <VisitorsSection /> : null}
         {canViewActivity(role) ? <ActivitySection /> : null}
         {role === "superadmin" ? <StaffSection /> : null}
-      </main>
+      </div>
 
       {openBooking ? (
         <DetailsPanel

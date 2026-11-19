@@ -94,7 +94,7 @@ export function AirportAutocomplete({
             className={`w-full border-0 bg-transparent p-0 text-sm font-semibold outline-none ${
               dark
                 ? "text-navy-foreground placeholder:text-navy-foreground/40"
-                : "text-foreground placeholder:text-muted-foreground/70"
+                : "text-foreground placeholder:text-muted-foreground"
             }`}
           />
         </span>
