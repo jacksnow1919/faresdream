@@ -17,7 +17,7 @@ import { shortcutDates, showFlightsTo } from "@/lib/focus-search";
 type FooterFlights = { to: string; from?: string };
 
 type FooterLink =
-  | { label: string; to: "/deals" | "/about" | "/contact" | "/privacy" | "/terms" | "/sitemap" | "/guides" }
+  | { label: string; to: "/flights" | "/destinations" | "/airlines" | "/cabin-suites" | "/deals" | "/about" | "/contact" | "/privacy" | "/terms" | "/sitemap" | "/guides" }
   | { label: string; flights: FooterFlights };
 
 const route = (label: string, from: string, to: string): FooterLink => ({
@@ -86,6 +86,10 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
       { label: "About Us", to: "/about" },
       { label: "Contact Us", to: "/contact" },
       { label: "Deals", to: "/deals" },
+      { label: "Flight Routes", to: "/flights" },
+      { label: "Destinations", to: "/destinations" },
+      { label: "Airlines", to: "/airlines" },
+      { label: "Business Class", to: "/cabin-suites" },
       { label: "Travel Guides", to: "/guides" },
       { label: "Privacy Policy", to: "/privacy" },
       { label: "Terms of Use", to: "/terms" },
