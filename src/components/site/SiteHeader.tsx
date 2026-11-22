@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Phone,
   Menu,
@@ -40,6 +40,8 @@ const mainNav = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  // Home page shows a clean header (logo, phone, settings); section links stay in the footer + mobile menu.
+  const isHome = useRouterState({ select: (st) => st.location.pathname }) === "/";
   const [regionalOpen, setRegionalOpen] = useState(false);
   const { country, currency } = useCurrency();
   const regionalLabel = `Regional settings: English, ${countryByCode(country)?.name ?? country}, ${currency}`;
@@ -58,6 +60,7 @@ export function SiteHeader() {
             />
           </Link>
 
+          {!isHome && (
           <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
             {mainNav.map((l) => (
               <Link
@@ -70,6 +73,7 @@ export function SiteHeader() {
               </Link>
             ))}
           </nav>
+          )}
 
           <div className="ml-auto flex shrink-0 items-center gap-2 whitespace-nowrap lg:gap-3">
             <a
