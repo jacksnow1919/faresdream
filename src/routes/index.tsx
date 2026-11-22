@@ -102,7 +102,7 @@ function Home() {
         {/* Carries the header's colour down behind the hero, so the two read as one. */}
         <div aria-hidden className="absolute inset-x-0 top-0 h-40 bg-blue-950" />
         <div className="page-container relative">
-          <div className="relative rounded-3xl px-4 pb-8 pt-8 sm:px-8 sm:pb-12 sm:pt-12 lg:min-h-[26rem] lg:pb-12 lg:pt-16">
+          <div className="relative rounded-3xl px-4 pb-8 pt-10 sm:px-8 sm:pb-12 sm:pt-16 lg:min-h-[28rem] lg:pb-12 lg:pt-24">
             <MovingSky />
             <div className="relative">
               <h1 className="mx-auto mb-4 max-w-[69.75rem] font-display text-xl font-bold leading-tight text-white [text-shadow:0_2px_12px_rgb(0_0_0/0.25)] sm:text-3xl lg:text-4xl">
