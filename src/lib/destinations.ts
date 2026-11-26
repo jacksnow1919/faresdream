@@ -70,7 +70,7 @@ export const destinations: Destination[] = [
     bestTime:
       "April to June and September to October usually mean pleasant weather. August is quieter in the city because many locals are on holiday.",
     cheapest:
-      "January to March (outside February school breaks) and November are often the cheapest months. Summer and the Christmas period are usually the most expensive.",
+      "In KAYAK's fare data, January and February are the cheapest months from every US city we checked, and November is good value too. June is usually the most expensive month, followed by the Christmas period.",
     fromUs:
       "Air France, Delta, United and American fly nonstop to Charles de Gaulle from cities including New York, Atlanta, Boston, Washington, Chicago, Miami and Los Angeles. New York–Paris takes about 7 to 7.5 hours.",
     transfer:
@@ -194,9 +194,9 @@ export const destinations: Destination[] = [
     bestTime:
       "Singapore is warm and humid all year. February to April tends to be a little drier.",
     cheapest:
-      "Fares usually rise around the December holidays and Lunar New Year (January or February). Other months are often cheaper.",
+      "In KAYAK's fare data, August and September are the cheapest months from most US cities and December is by far the most expensive. June and July are also expensive because of US summer holidays.",
     fromUs:
-      "Singapore Airlines flies nonstop from Newark, New York JFK, Los Angeles, San Francisco and Seattle, and United flies nonstop from San Francisco. Newark–Singapore is about 18 hours, one of the longest flights in the world.",
+      "Singapore Airlines flies nonstop from Newark, New York JFK, Los Angeles, San Francisco and Seattle, and United flies nonstop from San Francisco. Newark–Singapore takes about 19 hours, one of the longest flights in the world.",
     transfer:
       "The MRT (metro) runs from Changi Airport station to the city in about 30–40 minutes, changing at Tanah Merah. Taxis take roughly 20–30 minutes to the centre.",
     tips: [
