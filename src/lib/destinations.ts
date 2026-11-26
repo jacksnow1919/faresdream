@@ -141,13 +141,13 @@ export const destinations: Destination[] = [
       { code: "BOM", name: "Chhatrapati Shivaji Maharaj International", note: "International flights use Terminal 2." },
     ],
     intro:
-      "Mumbai is India's financial capital and the main gateway to West India. Most travellers from the US either fly nonstop from the New York area or San Francisco, or connect in Europe or the Gulf.",
+      "Mumbai is India's financial capital and the main gateway to West India. Travellers from the US either fly nonstop from the New York area or connect in Europe or the Gulf.",
     bestTime:
       "November to February brings the driest, most comfortable weather. June to September is heavy monsoon season.",
     cheapest:
-      "Fares rise around Diwali and the December holidays. The monsoon months are often cheaper if you don't mind the rain.",
+      "February to April is cheapest from most US cities. December is the most expensive month, and June and July are also expensive because of US summer holidays.",
     fromUs:
-      "Air India and United have flown nonstop between the New York area and Mumbai, and Air India also from San Francisco. One-stop options through Europe, Dubai, Doha or Abu Dhabi are widely available.",
+      "In KAYAK's route data, Air India is the only nonstop option from the US, from the New York area (JFK and Newark), at about 14h 45m. From every other US city you connect, usually in Europe (Copenhagen, Paris, Amsterdam, Istanbul) or the Gulf (Dubai, Doha, Abu Dhabi). The cheapest fares are often on one-stop carriers such as Scandinavian Airlines, Emirates, Qatar Airways and Royal Jordanian.",
     transfer:
       "Prepaid taxis and app cabs run from Terminal 2. Allow extra time at rush hour; traffic into South Mumbai can be heavy.",
     tips: [
