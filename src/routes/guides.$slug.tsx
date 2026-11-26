@@ -213,6 +213,7 @@ function GuidePage() {
             <div className="flex shrink-0 flex-wrap gap-2">
               <Link
                 to="/"
+                search={g.searchTo ? { to: g.searchTo } : {}}
                 className="inline-flex items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-bold text-gold-foreground transition hover:brightness-110"
               >
                 <Search className="size-4" aria-hidden="true" /> Search flights
@@ -311,6 +312,7 @@ function GuidePage() {
               </p>
               <Link
                 to="/"
+                search={g.searchTo ? { to: g.searchTo } : {}}
                 className="mt-4 flex items-center justify-center gap-2 rounded-full bg-gold px-4 py-2.5 text-sm font-bold text-gold-foreground transition hover:brightness-110"
               >
                 <Search className="size-4" aria-hidden="true" /> Search flights

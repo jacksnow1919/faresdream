@@ -4,6 +4,7 @@
  */
 
 import { usaGuides } from "@/lib/guides-usa";
+import { cancunGuide } from "@/lib/guides-cancun";
 
 export type GuideSource = { label: string; url: string; checked: string };
 export type GuideRouteRow = {
@@ -25,6 +26,8 @@ export type Guide = {
   /** Header photo URL (free-licence stock) and its alt text. */
   photo?: string;
   photoAlt?: string;
+  /** Destination IATA code: the page's "Search flights" buttons open the search with it filled in. */
+  searchTo?: string;
   title: string;
   metaTitle: string;
   description: string;
@@ -230,6 +233,6 @@ const internationalGuides: Guide[] = [
 ];
 
 /** USA guides first: the US is the main market. */
-export const guides: Guide[] = [...usaGuides, ...internationalGuides];
+export const guides: Guide[] = [...usaGuides, cancunGuide, ...internationalGuides];
 
 export const guideBySlug = (slug: string) => guides.find((g) => g.slug === slug);
