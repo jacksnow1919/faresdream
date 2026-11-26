@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   ChevronRight,
   Clock,
-  ExternalLink,
   HelpCircle,
   Lightbulb,
   ListChecks,
@@ -275,32 +274,6 @@ function GuidePage() {
             </div>
           </Card>
 
-          <Card>
-            <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-xl bg-secondary text-navy">
-                <ShieldCheck className="size-5" aria-hidden="true" />
-              </span>
-              <div>
-                <h2 className="font-display text-lg font-bold text-navy">Sources</h2>
-                <p className="text-xs text-muted-foreground">Every fare on this page comes from these pages.</p>
-              </div>
-            </div>
-            <ul className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
-              {g.sources.map((s) => (
-                <li key={s.url} className="rounded-xl bg-secondary/60 px-3 py-2">
-                  <a
-                    href={s.url}
-                    rel="nofollow noopener"
-                    target="_blank"
-                    className="inline-flex items-center gap-1 font-medium text-navy underline underline-offset-2"
-                  >
-                    {s.label} <ExternalLink className="size-3.5" aria-hidden="true" />
-                  </a>
-                  <span className="block text-xs text-muted-foreground">Checked {longDate(s.checked)}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
           {g.authorBio ? (
             <Card>
               <div className="flex items-start gap-3">

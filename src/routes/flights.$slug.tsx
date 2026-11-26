@@ -4,7 +4,6 @@ import {
   CalendarCheck,
   CalendarDays,
   Clock,
-  ExternalLink,
   HelpCircle,
   Lightbulb,
   MapPin,
@@ -366,31 +365,6 @@ function RoutePage() {
             </div>
           </Card>
 
-          <Card>
-            <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-xl bg-secondary text-navy">
-                <ShieldCheck className="size-5" aria-hidden="true" />
-              </span>
-              <div>
-                <h2 className="font-display text-lg font-bold text-navy">Where this data comes from</h2>
-                <p className="text-xs text-muted-foreground">Checked {longDate(d.checked)} by the FaresDream Travel Desk.</p>
-              </div>
-            </div>
-            <p className="mt-3 text-sm leading-relaxed text-foreground/85">
-              Prices, booking-window, weekday, airline, on-time and delay figures are KAYAK's published averages for this
-              route, based on searches over the past 12 months, in US dollars for a round trip. They show typical fares, not
-              a quote: today's price for your dates may be higher or lower. Distance and time difference are calculated from
-              airport coordinates and time zones.
-            </p>
-            <a
-              href={d.source}
-              rel="nofollow noopener"
-              target="_blank"
-              className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-navy underline underline-offset-2"
-            >
-              KAYAK: {p.from.city} to {p.to.city} flights <ExternalLink className="size-3.5" aria-hidden="true" />
-            </a>
-          </Card>
         </article>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">

@@ -310,21 +310,6 @@ function AirlineFactsBottom({ a, f }: { a: Airline; f: Facts }) {
         </Card>
       ) : null}
 
-      <Card>
-        <SectionTitle>Sources</SectionTitle>
-        <p className="mt-2 text-xs text-muted-foreground">
-          Checked on {f.checked}. Routes and baggage rules change, so confirm on your fare before you pay.
-        </p>
-        <ul className="mt-2 space-y-1 text-sm">
-          {f.sources.map((src) => (
-            <li key={src.url}>
-              <a href={src.url} rel="nofollow noopener" target="_blank" className="text-primary hover:underline">
-                {src.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </Card>
     </>
   );
 }
