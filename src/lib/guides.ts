@@ -5,6 +5,8 @@
 
 import { usaGuides } from "@/lib/guides-usa";
 import { cancunGuide } from "@/lib/guides-cancun";
+import { puertoRicoGuide } from "@/lib/guides-puerto-rico";
+import { miamiGuide } from "@/lib/guides-miami";
 
 export type GuideSource = { label: string; url: string; checked: string };
 export type GuideRouteRow = {
@@ -233,6 +235,6 @@ const internationalGuides: Guide[] = [
 ];
 
 /** USA guides first: the US is the main market. */
-export const guides: Guide[] = [...usaGuides, cancunGuide, ...internationalGuides];
+export const guides: Guide[] = [...usaGuides, miamiGuide, puertoRicoGuide, cancunGuide, ...internationalGuides];
 
 export const guideBySlug = (slug: string) => guides.find((g) => g.slug === slug);
