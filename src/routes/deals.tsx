@@ -97,7 +97,8 @@ function DealsPage() {
     initialData: loaded.deals,
   });
 
-  const deals: FallbackDeal[] = data && data.length > 0 ? data : FALLBACK_DEALS;
+  const hasLive = Boolean(data && data.length > 0);
+  const deals: FallbackDeal[] = hasLive ? data! : FALLBACK_DEALS;
   const airlineList = ["All", ...Array.from(new Set(deals.map((d) => d.airline)))];
   const filtered = airline === "All" ? deals : deals.filter((d) => d.airline === airline);
 
@@ -105,7 +106,7 @@ function DealsPage() {
     <PageShell
       crumb="Deals"
       title="Flight deals"
-      subtitle="Cheap fares we've found recently on popular routes."
+      subtitle={hasLive ? "Cheap fares we've found recently on popular routes." : "Popular routes from the US. Tap one to compare today's live fares."}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div
@@ -114,7 +115,7 @@ function DealsPage() {
           className="page-bleed flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0 [&::-webkit-scrollbar]:hidden"
         >
           {/* Just "All" until the deals load, so the backup list doesn't flash up first. */}
-          {(isLoading ? ["All"] : airlineList).map((a) => {
+          {(isLoading || !hasLive ? [] : airlineList).map((a) => {
             const active = airline === a;
             return (
               <button
@@ -133,7 +134,7 @@ function DealsPage() {
             );
           })}
         </div>
-        {isLoading ? null : (
+        {isLoading || !hasLive ? null : (
           <p className="shrink-0 text-sm text-muted-foreground">
             {filtered.length} {filtered.length === 1 ? "deal" : "deals"}
           </p>
@@ -142,8 +143,9 @@ function DealsPage() {
 
       <p className="mt-4 flex items-start gap-2 rounded-xl border border-primary/15 bg-sky-50 px-4 py-3 text-sm text-navy">
         <Info className="mt-0.5 size-4 shrink-0 text-primary" />
-        Prices are per person and can change. Tap a deal to see today&apos;s live fares, then change
-        the dates if you like.
+        {hasLive
+          ? "Prices are per person and can change. Tap a deal to see today's live fares, then change the dates if you like."
+          : "Fares change many times a day, so we don't show old prices. Tap a route to see today's live fares, then change the dates if you like."}
       </p>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -172,7 +174,7 @@ function DealCard({ d }: { d: FallbackDeal }) {
     <Link
       to="/flight/search"
       search={dealSearch(d)}
-      aria-label={`${d.airline} ${d.cabin_class} from ${from} to ${to}, from ${money(d.price, d.currency)}`}
+      aria-label={d.price != null ? `${d.airline} ${d.cabin_class} from ${from} to ${to}, from ${money(d.price, d.currency)}` : `Compare today's fares from ${from} to ${to}`}
       className="group flex flex-col rounded-2xl border border-border bg-card shadow-card transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lux"
     >
       <div className="flex items-center justify-between gap-3 px-5 pt-5">
@@ -201,10 +203,16 @@ function DealCard({ d }: { d: FallbackDeal }) {
 
       <div className="mt-auto flex items-end justify-between gap-3 border-t border-dashed border-border px-5 py-4">
         <div>
-          <p className="text-xs text-muted-foreground">One way from</p>
-          <p className="font-display text-2xl font-bold leading-tight text-gold">
-            {money(d.price, d.currency)}
-          </p>
+          {d.price != null ? (
+            <>
+              <p className="text-xs text-muted-foreground">One way from</p>
+              <p className="font-display text-2xl font-bold leading-tight text-gold">
+                {money(d.price, d.currency)}
+              </p>
+            </>
+          ) : (
+            <p className="text-sm font-semibold text-navy">Check today&apos;s fare</p>
+          )}
           {d.expires_at ? (
             <p className="text-[11px] text-muted-foreground">
               Ends {format(parseISO(newYorkYmd(d.expires_at)), "d MMM yyyy")}
@@ -212,7 +220,7 @@ function DealCard({ d }: { d: FallbackDeal }) {
           ) : null}
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition group-hover:brightness-110">
-          View deal <ArrowRight className="size-4 transition group-hover:translate-x-0.5" />
+          {d.price != null ? "View deal" : "Compare fares"} <ArrowRight className="size-4 transition group-hover:translate-x-0.5" />
         </span>
       </div>
     </Link>
