@@ -508,11 +508,11 @@ export const usaGuides: Guide[] = [
     photo: "https://images.unsplash.com/photo-1588384153148-ebd739ac430c?auto=format&fit=crop&w=1600&h=640&q=65",
     photoAlt: "The New York City skyline",
     title: "Cheapest Time to Fly to New York",
-    metaTitle: "Cheapest Time to Fly to New York (2027 Fare Data) | FaresDream",
+    metaTitle: "Cheapest Time to Fly to New York: Best Month, Day & Airport (2027) | FaresDream",
     description:
       "January is the cheapest month to fly to New York from most US cities, and Sunday is the priciest day. Fares from 7 cities and the cheapest NYC airport (JFK, LGA or EWR) for each.",
     published: "2026-11-18",
-    updated: "2026-11-18",
+    updated: "2026-11-26",
     author: "FaresDream Travel Desk",
     answer:
       "January is the cheapest month to fly to New York from most US cities, and February from Atlanta and Miami. Los Angeles–New York averaged $247 round trip in January against $484 in June in KAYAK's 12-month data. Wednesday was usually the cheapest day and Sunday the most expensive on all 7 routes we checked. Booking 5 to 24 weeks ahead saved 29% to 43% compared with booking in the last two weeks.",
@@ -698,6 +698,10 @@ export const usaGuides: Guide[] = [
       kayak("Orlando to New York flights", "Orlando-MCO/New-York-NYC"),
     ],
     related: [
+      { label: "Los Angeles to New York (LAX–JFK) fares by month", href: "/flights/lax-to-jfk" },
+      { label: "Miami to New York (MIA–JFK) fares by month", href: "/flights/mia-to-jfk" },
+      { label: "New York to Orlando (JFK–MCO) fares by month", href: "/flights/jfk-to-mco" },
+      { label: "Cheapest time to fly to Miami", href: "/guides/cheapest-time-to-fly-to-miami" },
       { label: "Cheapest time to fly to Orlando", href: "/guides/cheapest-time-to-fly-to-orlando" },
       { label: "Cheapest time to fly to Las Vegas", href: "/guides/cheapest-time-to-fly-to-las-vegas" },
       { label: "Cheapest time to fly to Hawaii", href: "/guides/cheapest-time-to-fly-to-hawaii" },

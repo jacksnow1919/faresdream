@@ -10,22 +10,54 @@ import { cityOf, useAirports } from "@/lib/airports";
 import { shortcutDates } from "@/lib/focus-search";
 import { newYorkYmd } from "@/lib/admin-logic";
 import { FALLBACK_DEALS, type FallbackDeal } from "@/lib/fallback-deals";
+import { MONTHS_LONG, routeInsights, routePages, usd } from "@/lib/route-pages";
+import { destinationFares } from "@/lib/destination-fares";
+import { destinations } from "@/lib/travel-data";
+import { FaqAccordion } from "@/components/site/FaqAccordion";
+import { breadcrumbLd, faqLd, jsonLdScript } from "@/lib/structured-data";
+
+async function fetchDeals(): Promise<FallbackDeal[]> {
+  try {
+    const { data, error } = await supabase.from("deals").select("*").order("price", { ascending: true });
+    if (error || !data) return [];
+    return data as FallbackDeal[];
+  } catch {
+    return [];
+  }
+}
+
+const DEAL_FAQS = [
+  {
+    q: "Are the deal prices guaranteed?",
+    a: "No. Deal prices are fares we found recently, per person and one way. Airline prices change many times a day, so tap a deal to see today's live fare for your dates before you book.",
+  },
+  {
+    q: "When are flights usually cheapest?",
+    a: "It depends on the route. In KAYAK's 12-month fare data for the routes we track, January and February were the cheapest months on most routes, and December, June and July were usually the most expensive. Each route and destination page below shows the cheapest month for that trip.",
+  },
+  {
+    q: "Can I get a fare that isn't shown online?",
+    a: "Call our travel agents 24/7. They can compare published fares and some fares that are not shown online, especially for long-haul and business class trips.",
+  },
+];
 
 export const Route = createFileRoute("/deals")({
+  loader: async () => ({ deals: await fetchDeals() }),
   head: () => ({
     meta: [
-      { title: "Cheap Flight Deals | FaresDream" },
+      { title: "Cheap Flight Deals from the USA & Cheapest Months by Route | FaresDream" },
       {
         name: "description",
         content:
-          "Recently found cheap flight deals on popular routes. Filter by airline and see today's live fares for your dates.",
+          "Recently found cheap flight deals on popular routes, plus the cheapest month and typical round-trip fare for popular US and international routes, from KAYAK data.",
       },
       { property: "og:title", content: "Cheap Flight Deals | FaresDream" },
       {
         property: "og:description",
-        content: "Recently found fares on popular routes, filterable by airline.",
+        content: "Recently found fares on popular routes, plus the cheapest month to fly on each route.",
       },
     ],
+    scripts: [jsonLdScript([breadcrumbLd([{ name: "Deals", path: "/deals" }]), faqLd(DEAL_FAQS)])],
   }),
   component: DealsPage,
 });
@@ -57,16 +89,12 @@ function dealSearch(d: FallbackDeal) {
 function DealsPage() {
   useAirports();
   const [airline, setAirline] = useState("All");
+  const loaded = Route.useLoaderData();
   const { data, isLoading } = useQuery({
     queryKey: ["deals"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("deals")
-        .select("*")
-        .order("price", { ascending: true });
-      if (error) return [];
-      return data ?? [];
-    },
+    queryFn: fetchDeals,
+    // Server-rendered so search engines see the deals; refreshed in the browser.
+    initialData: loaded.deals,
   });
 
   const deals: FallbackDeal[] = data && data.length > 0 ? data : FALLBACK_DEALS;
@@ -125,6 +153,13 @@ function DealsPage() {
             ))
           : filtered.map((d) => <DealCard key={d.id} d={d} />)}
       </div>
+
+      <CheapestMonths />
+
+      <section className="mt-12">
+        <h2 className="mb-4 font-display text-2xl font-bold text-navy">Flight deals: common questions</h2>
+        <FaqAccordion items={DEAL_FAQS} initialCount={DEAL_FAQS.length} />
+      </section>
     </PageShell>
   );
 }
@@ -181,5 +216,68 @@ function DealCard({ d }: { d: FallbackDeal }) {
         </span>
       </div>
     </Link>
+  );
+}
+
+/** Server-rendered fare data (KAYAK, 12-month medians) so the page is useful before live deals load. */
+function CheapestMonths() {
+  const routeRows = routePages.map((r) => ({ r, x: routeInsights(r) }));
+  const destRows = destinations
+    .map((d) => ({ d, f: destinationFares[d.slug] }))
+    .filter((x): x is { d: (typeof destinations)[number]; f: NonNullable<(typeof destinationFares)[string]> } => Boolean(x.f));
+  return (
+    <>
+      <section className="mt-12">
+        <h2 className="font-display text-2xl font-bold text-navy">Cheapest month to fly on popular US routes</h2>
+        <p className="mt-2 max-w-3xl text-sm text-foreground/80">
+          The best deal is often a cheaper month. These are KAYAK&apos;s median round-trip economy fares
+          over the past 12 months for the routes we track. Tap a route for prices by month, the
+          cheapest day and when to book.
+        </p>
+        <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-card">
+          <table className="w-full min-w-[560px] text-left text-sm">
+            <thead>
+              <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
+                <th className="px-4 py-3">Route</th>
+                <th className="px-4 py-3">Cheapest month</th>
+                <th className="px-4 py-3">Typical round trip</th>
+              </tr>
+            </thead>
+            <tbody>
+              {routeRows.map(({ r, x }) => (
+                <tr key={r.slug} className="border-b border-border/60">
+                  <td className="px-4 py-2">
+                    <Link to="/flights/$slug" params={{ slug: r.slug }} className="font-semibold text-primary hover:underline">
+                      {r.from.city} ({r.from.code}) to {r.to.city} ({r.to.code})
+                    </Link>
+                  </td>
+                  <td className="px-4 py-2">
+                    {MONTHS_LONG[x.cheapIdx]} · {usd(x.cheapPrice)}
+                  </td>
+                  <td className="px-4 py-2">{r.data.range ? usd(r.data.range[2]!) : "–"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="font-display text-2xl font-bold text-navy">Cheapest time to fly from the US to popular destinations</h2>
+        <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {destRows.map(({ d, f }) => (
+            <li key={d.slug} className="rounded-2xl border border-border bg-card p-4 shadow-card">
+              <Link to="/destinations/$slug" params={{ slug: d.slug }} className="font-semibold text-navy hover:text-primary">
+                Flights to {d.city}
+              </Link>
+              <p className="mt-1 text-sm text-foreground/80">{f.summary.split(". ")[0]}.</p>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Source: KAYAK public route pages, 12-month median round-trip fares. Prices change daily.
+        </p>
+      </section>
+    </>
   );
 }
