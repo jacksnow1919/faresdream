@@ -25,7 +25,9 @@ export const miamiGuide: Guide = {
     "January is the cheapest month to fly to Miami from most big US cities, even in peak beach season. Monthly fares, the best day to fly and when to book, city by city.",
   published: "2026-11-26",
   updated: "2026-11-26",
-  author: "FaresDream Travel Desk",
+  author: "FaresDream Travel Team",
+  authorBio:
+    "The FaresDream Travel Team is the group of travel agents and editors behind FaresDream. We write our guides from public fare data (sources listed on every page), check the numbers by hand, and update each guide when the fares change. Our agents answer calls 24/7, so the questions in our guides are the ones US travellers ask us most.",
   answer:
     "January is the cheapest time to fly to Miami from most US cities. In KAYAK's 12-month data, the cheapest month to fly to Miami (MIA) was January on 5 of the 8 routes we checked, from $105 round trip out of Atlanta. Summer and the fall are the most expensive: June, July, October and November top the list on most routes. Friday is the most expensive day to fly on every route.",
   keyFacts: [
