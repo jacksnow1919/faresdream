@@ -96,9 +96,9 @@ export const destinations: Destination[] = [
     bestTime:
       "November to March is the most comfortable time to visit, with warm days and cool evenings.",
     cheapest:
-      "June to August is very hot, and fares and hotel rates are often lower then. Christmas, New Year and big events push prices up.",
+      "In KAYAK's fare data, January–February and September–October are the cheapest times to fly from the US. Summer is very hot but flights are not cheap then, and December is the most expensive month from most US cities.",
     fromUs:
-      "Emirates flies nonstop to Dubai from many US cities, including New York, Newark, Boston, Washington Dulles, Chicago, Houston, Dallas, Miami, Orlando, Seattle, San Francisco and Los Angeles. From the East Coast the flight is about 12–13 hours.",
+      "In KAYAK's route data, Emirates flies nonstop to Dubai from New York, Washington Dulles, Chicago, Dallas, San Francisco and Los Angeles, among others. The flight takes about 12h 45m from Washington and 14h 45m from Dallas.",
     transfer:
       "The Dubai Metro Red Line stops at Terminals 1 and 3 and reaches Downtown Dubai in roughly 20–30 minutes. Taxis are metered and wait outside every terminal.",
     tips: [
@@ -120,9 +120,9 @@ export const destinations: Destination[] = [
     bestTime:
       "October to March has the most comfortable weather. April to June is very hot, and July to September is monsoon season.",
     cheapest:
-      "Demand peaks around Diwali and from mid-December to early January, when fares rise sharply. Booking those dates well in advance helps; spring and the monsoon months are often cheaper.",
+      "In KAYAK's fare data, February to April is the cheapest time to fly from the US. December is the most expensive month from most US cities, and June and July (the monsoon, but also US summer holidays) are expensive too.",
     fromUs:
-      "Air India flies nonstop to Delhi from several US cities, and American and United also run nonstop flights from the New York area. Many travellers connect through London, Frankfurt, Dubai, Doha or Istanbul instead. Nonstop flights take roughly 14–16 hours.",
+      "In KAYAK's route data, nonstop flights to Delhi leave from the New York area: Air India, United and American, about 14h 55m. From other US cities you connect, often through London, Frankfurt, Dubai, Doha or Istanbul.",
     transfer:
       "The Airport Express metro line runs from Terminal 3 to New Delhi railway station in about 20 minutes. Prepaid taxis and app cabs are available outside arrivals.",
     tips: [
@@ -171,7 +171,7 @@ export const destinations: Destination[] = [
     bestTime:
       "Late March to May and October to November are the most popular times, for cherry blossoms and autumn leaves.",
     cheapest:
-      "January and February (after New Year) and June are often cheaper. Cherry-blossom season and Golden Week (late April to early May) are usually the most expensive.",
+      "In KAYAK's fare data, January and February are the cheapest months from most US cities (late summer from Los Angeles). December is the most expensive month from every city we checked, and March (cherry-blossom season) and June are also expensive.",
     fromUs:
       "ANA, Japan Airlines, United, American and Delta fly nonstop to Tokyo from cities such as Los Angeles, San Francisco, Seattle, Chicago, Dallas, Houston, New York and Honolulu. West Coast flights take about 11–12 hours.",
     transfer:
@@ -217,7 +217,7 @@ export const destinations: Destination[] = [
     bestTime:
       "December to April is dry and sunny, which is why it's peak season.",
     cheapest:
-      "Late August to early December (outside Thanksgiving) is usually cheaper. This overlaps with hurricane season (June–November), so consider travel insurance.",
+      "In KAYAK's fare data, January to April is the cheapest time to fly from most US cities. September to November, during hurricane season (June 1 to November 30), is usually more expensive for flights, not cheaper.",
     fromUs:
       "American, United, Delta, Southwest, JetBlue, Spirit and others fly nonstop to Cancún from many US cities. Miami–Cancún is under 1.5 hours; New York–Cancún about 4 hours.",
     transfer:
@@ -239,9 +239,9 @@ export const destinations: Destination[] = [
     bestTime:
       "November to March is the dry season; December is the busiest month, with many people travelling home for Christmas.",
     cheapest:
-      "December fares are usually the highest of the year, so book holiday trips early. Late January to May is often cheaper.",
+      "In KAYAK's fare data, February is the cheapest month from most US cities, and December is the most expensive from every city we checked, often 70% or more above the cheapest month.",
     fromUs:
-      "Delta (from Atlanta) and United (from Washington Dulles) have operated nonstop flights to Lagos; schedules change, so search for current options. One-stop flights on European, Gulf and African airlines are widely available.",
+      "In KAYAK's route data, Delta flies nonstop to Lagos from New York (JFK, about 10h 04m) and Atlanta, and United from Washington Dulles, though not every day. From other US cities you connect, usually in Europe, the Gulf, Casablanca, Addis Ababa or Istanbul. Schedules change, so search for current options.",
     transfer:
       "Use a pre-arranged pickup or a ride-hailing app from the airport. Allow plenty of time; Lagos traffic can be very heavy.",
     tips: [
