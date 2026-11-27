@@ -1,10 +1,10 @@
-/** Free Unsplash photo: deep blue sky above a carpet of clouds. */
-const SKY_BASE =
-  "https://images.unsplash.com/photo-1637446857758-edf6fe04d67a?auto=format&fit=crop&q=65";
-const SKY_WIDTHS = [640, 960, 1280, 1600, 2000];
-/** Phones download a ~640px photo instead of the full 2000px one (the home page's LCP image). */
-export const SKY_SRCSET = SKY_WIDTHS.map((w) => `${SKY_BASE}&w=${w} ${w}w`).join(", ");
-export const SKY_SRC = `${SKY_BASE}&w=1280`;
+/**
+ * Free Unsplash photo (deep blue sky above a carpet of clouds), saved as WebP in
+ * /public/hero so the home page's LCP image loads from our own domain (no extra connection).
+ */
+const SKY_WIDTHS = [640, 960, 1280, 1920];
+export const SKY_SRCSET = SKY_WIDTHS.map((w) => `/hero/sky-${w}.webp ${w}w`).join(", ");
+export const SKY_SRC = "/hero/sky-1280.webp";
 
 /** Soft cloud wisps drifting across the sky: vertical position, size, speed and start offset. */
 const PUFFS = [
@@ -32,7 +32,8 @@ export function MovingSky() {
         sizes="100vw"
         alt=""
         fetchPriority="high"
-        decoding="async"
+        width={1920}
+        height={1280}
         className="sky-pan absolute -inset-[6%] h-[112%] w-[112%] max-w-none object-cover object-[center_35%]"
       />
       {PUFFS.map((p) => (
