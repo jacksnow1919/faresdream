@@ -147,7 +147,7 @@ export const destinations: Destination[] = [
     cheapest:
       "February to April is cheapest from most US cities. December is the most expensive month, and June and July are also expensive because of US summer holidays.",
     fromUs:
-      "In KAYAK's route data, Air India is the only nonstop option from the US, from the New York area (JFK and Newark), at about 14h 45m. From every other US city you connect, usually in Europe (Copenhagen, Paris, Amsterdam, Istanbul) or the Gulf (Dubai, Doha, Abu Dhabi). The cheapest fares are often on one-stop carriers such as Scandinavian Airlines, Emirates, Qatar Airways and Royal Jordanian.",
+      "In KAYAK's route data, nonstop flights to Mumbai leave from the New York area (JFK and Newark), including Air India, at about 14h 45m. Airline schedules change, so your search shows the nonstops operating on your dates. From every other US city you connect, usually in Europe (Copenhagen, Paris, Amsterdam, Istanbul) or the Gulf (Dubai, Doha, Abu Dhabi). The cheapest fares are often on one-stop carriers such as Scandinavian Airlines, Emirates, Qatar Airways and Royal Jordanian.",
     transfer:
       "Prepaid taxis and app cabs run from Terminal 2. Allow extra time at rush hour; traffic into South Mumbai can be heavy.",
     tips: [
