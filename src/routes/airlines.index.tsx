@@ -9,7 +9,7 @@ import { breadcrumbLd, jsonLdScript } from "@/lib/structured-data";
 
 const TITLE = "Cheap Airline Tickets: Compare Top Airlines from the USA | FaresDream";
 const DESCRIPTION =
-  "Compare flights on Emirates, Qatar Airways, Lufthansa, Turkish Airlines and Singapore Airlines from the US: cabins, baggage, US airports and where they fly. Free quotes 24/7.";
+  "Compare 11 airlines from the US, including Emirates, Qatar Airways, Air India, British Airways and Cathay Pacific: cabins, baggage, US airports and routes. Free quotes 24/7.";
 
 export const Route = createFileRoute("/airlines/")({
   head: () => ({
