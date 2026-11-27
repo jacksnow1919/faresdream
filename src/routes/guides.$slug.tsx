@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   ChevronRight,
   Clock,
-  ExternalLink,
   HelpCircle,
   Lightbulb,
   ListChecks,
@@ -275,32 +274,27 @@ function GuidePage() {
             </div>
           </Card>
 
-          <Card>
-            <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-xl bg-secondary text-navy">
-                <ShieldCheck className="size-5" aria-hidden="true" />
-              </span>
-              <div>
-                <h2 className="font-display text-lg font-bold text-navy">Sources</h2>
-                <p className="text-xs text-muted-foreground">Every fare on this page comes from these pages.</p>
+          {g.authorBio ? (
+            <Card>
+              <div className="flex items-start gap-3">
+                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-navy">
+                  <UserRound className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">About the author</p>
+                  <h2 className="font-display text-lg font-bold text-navy">{g.author}</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">{g.authorBio}</p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Published <time dateTime={g.published}>{longDate(g.published)}</time> · Last checked{" "}
+                    <time dateTime={g.updated}>{longDate(g.updated)}</time> ·{" "}
+                    <Link to="/about" className="font-semibold text-navy underline underline-offset-2">
+                      About FaresDream
+                    </Link>
+                  </p>
+                </div>
               </div>
-            </div>
-            <ul className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
-              {g.sources.map((s) => (
-                <li key={s.url} className="rounded-xl bg-secondary/60 px-3 py-2">
-                  <a
-                    href={s.url}
-                    rel="nofollow noopener"
-                    target="_blank"
-                    className="inline-flex items-center gap-1 font-medium text-navy underline underline-offset-2"
-                  >
-                    {s.label} <ExternalLink className="size-3.5" aria-hidden="true" />
-                  </a>
-                  <span className="block text-xs text-muted-foreground">Checked {longDate(s.checked)}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
+            </Card>
+          ) : null}
         </article>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">

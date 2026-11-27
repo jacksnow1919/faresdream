@@ -387,22 +387,6 @@ function FareData({ d, fares }: { d: Destination; fares: DestinationFares }) {
         </div>
       </Card>
 
-      <Card>
-        <SectionTitle>How we made this page</SectionTitle>
-        <p className="mt-2 text-sm leading-relaxed text-foreground/80">
-          Fares are KAYAK's published median round-trip economy prices for each route over the last 12 months, read on {checked}.
-          Percentages and comparisons are our own calculations from those figures. We refresh this data every one to three months.
-        </p>
-        <ul className="mt-2 grid gap-1 text-xs sm:grid-cols-2">
-          {fares.rows.map((r) => (
-            <li key={r.kayak}>
-              <a href={`https://www.kayak.com/flight-routes/${r.kayak}`} rel="nofollow noopener" target="_blank" className="text-primary hover:underline">
-                KAYAK: {r.from} to {d.city}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </Card>
     </>
   );
 }

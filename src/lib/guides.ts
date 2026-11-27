@@ -36,6 +36,8 @@ export type Guide = {
   published: string; // yyyy-mm-dd
   updated: string; // yyyy-mm-dd
   author: string;
+  /** Optional short "About the author" box shown under the guide. */
+  authorBio?: string;
   /** The 2–3 sentence direct answer shown in a box at the top. */
   answer: string;
   keyFacts: string[];
