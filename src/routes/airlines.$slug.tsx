@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { BedDouble, Briefcase, Phone, Plane, Search, Sofa } from "lucide-react";
 import { airlines, routes } from "@/lib/travel-data";
@@ -7,6 +8,8 @@ import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
 import { breadcrumbLd, faqLd, jsonLdScript } from "@/lib/structured-data";
 import { airlineFacts } from "@/lib/airline-facts";
 import { destinations } from "@/lib/travel-data";
+import { airlineProfiles, CABIN_LABEL, type AirlineProfile, type CabinKey } from "@/lib/airline-profiles";
+import { AirlineQuoteForm } from "@/components/site/AirlineQuoteForm";
 
 type Airline = (typeof airlines)[number];
 
@@ -82,31 +85,63 @@ export const Route = createFileRoute("/airlines/$slug")({
 function AirlinePage() {
   const { airline: a } = Route.useLoaderData();
   const faqs = airlineFaqs(a);
-  const flownRoutes = routes.filter((r) => r.fares.some((f) => f.airline === a.name));
+  const flownRoutes = routes.filter((r) => r.fares.some((fr) => fr.airline === a.name));
   const others = airlines.filter((o) => o.slug !== a.slug);
   const f = airlineFacts[a.slug];
+  const p = airlineProfiles[a.slug];
+  const cabinKeys = p ? (Object.keys(CABIN_LABEL) as CabinKey[]).filter((k) => p.cabins[k]) : [];
 
   return (
     <PageShell
-      eyebrow={`${a.code} · ${a.cabin}`}
-      title={`${a.name} Flights & Business Class Guide`}
+      eyebrow={`${a.code} · ${f ? f.alliance : a.cabin}`}
+      title={`Cheap ${a.name} Flights`}
       crumb={a.name}
       parents={[{ label: "Airlines", href: "/airlines" }]}
-      subtitle={`Seats, baggage and lounges on ${a.name}, and how to compare its fares with other airlines on your route.`}
-      action={
-        <a
-          href={`tel:${PHONE_TEL}`}
-          className="inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-bold text-gold-foreground transition hover:brightness-110"
-        >
-          <Phone className="size-4" /> Call for {a.name} fares
-        </a>
+      photo="/hero/sky-960.webp"
+      subtitle={
+        <span className="flex flex-wrap items-center gap-3">
+          {p ? (
+            <span className="grid size-12 place-items-center rounded-xl bg-white p-1.5 shadow">
+              <img src={p.logo} alt={`${a.name} logo`} width={40} height={40} className="size-10" />
+            </span>
+          ) : null}
+          <span>
+            Compare {a.name} fares from the US with other airlines, or get a free quote from a
+            24/7 agent.
+          </span>
+        </span>
       }
     >
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div className="space-y-6">
           {f ? <AirlineFactsTop a={a} f={f} /> : null}
+
+          {p && cabinKeys.length > 0 ? <CabinTabs airline={a.name} cabins={p.cabins} keys={cabinKeys} /> : null}
+
+          {p ? <NetworkTabs airline={a.name} network={p.network} /> : null}
+
+          {p ? (
+            <section>
+              <h2 className="mb-4 font-display text-xl font-semibold text-navy">Fly with {a.name}</h2>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {p.highlights.map((h, i) => {
+                  const Icon = [Plane, BedDouble, Sofa][i] ?? Plane;
+                  return (
+                    <Card key={h.title}>
+                      <span className="grid size-10 place-items-center rounded-xl bg-secondary">
+                        <Icon className="size-5 text-gold" aria-hidden="true" />
+                      </span>
+                      <h3 className="mt-3 font-display text-base font-semibold text-navy">{h.title}</h3>
+                      <p className="mt-1 text-sm leading-relaxed text-foreground/80">{h.text}</p>
+                    </Card>
+                  );
+                })}
+              </div>
+            </section>
+          ) : null}
+
           <Card>
-            <SectionTitle>Business class at a glance</SectionTitle>
+            <SectionTitle>{a.name} business class at a glance</SectionTitle>
             <dl className="mt-4 grid gap-4 sm:grid-cols-3">
               <div className="rounded-xl bg-secondary p-4">
                 <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -133,11 +168,6 @@ function AirlinePage() {
             </p>
           </Card>
 
-          <Card>
-            <SectionTitle>Our take</SectionTitle>
-            <p className="mt-3 text-sm leading-relaxed text-foreground/80">{a.review}</p>
-          </Card>
-
           {flownRoutes.length > 0 ? (
             <Card>
               <SectionTitle>Popular routes with {a.name}</SectionTitle>
@@ -159,6 +189,32 @@ function AirlinePage() {
 
           {f ? <AirlineFactsBottom a={a} f={f} /> : null}
 
+          {p ? (
+            <Card>
+              <SectionTitle>About {a.name}</SectionTitle>
+              <p className="mt-3 text-sm leading-relaxed text-foreground/80">{p.about}</p>
+              <p className="mt-3 text-sm leading-relaxed text-foreground/80">{a.review}</p>
+            </Card>
+          ) : null}
+
+          <Card>
+            <SectionTitle>Why book {a.name} with FaresDream</SectionTitle>
+            <ul className="mt-3 grid gap-3 sm:grid-cols-3">
+              <li className="rounded-xl bg-secondary p-4 text-sm">
+                <strong className="block text-navy">Compare, don&apos;t guess</strong>
+                See {a.name} next to other airlines on your route before you choose.
+              </li>
+              <li className="rounded-xl bg-secondary p-4 text-sm">
+                <strong className="block text-navy">Real people, 24/7</strong>
+                Call {PHONE_DISPLAY} any time for fares that aren&apos;t shown online.
+              </li>
+              <li className="rounded-xl bg-secondary p-4 text-sm">
+                <strong className="block text-navy">Fare rules up front</strong>
+                Baggage and change rules are confirmed before you pay.
+              </li>
+            </ul>
+          </Card>
+
           <section>
             <h2 className="mb-4 font-display text-xl font-semibold text-navy">
               {a.name}: common questions
@@ -168,27 +224,7 @@ function AirlinePage() {
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-40 lg:self-start">
-          <Card>
-            <h2 className="text-sm font-semibold text-navy">Compare {a.name} fares</h2>
-            <p className="mt-2 text-sm text-foreground/80">
-              Search your route to see {a.name} next to other airlines, or call for fares that
-              aren&apos;t published online.
-            </p>
-            <Link
-              to="/"
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3 text-sm font-bold text-gold-foreground transition hover:brightness-110"
-            >
-              <Search className="size-4" /> Search flights
-            </Link>
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-bold text-navy transition hover:border-primary"
-            >
-              <Phone className="size-4" /> {PHONE_DISPLAY}
-            </a>
-            <p className="mt-2 text-center text-xs text-muted-foreground">Agents available 24/7</p>
-          </Card>
-
+          <AirlineQuoteForm airline={a.name} />
           <Card>
             <h2 className="text-sm font-semibold text-navy">Other airlines</h2>
             <ul className="mt-2 space-y-1 text-sm">
@@ -200,10 +236,103 @@ function AirlinePage() {
                 </li>
               ))}
             </ul>
+            <Link
+              to="/"
+              className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-navy underline"
+            >
+              <Search className="size-4" /> Search all flights
+            </Link>
           </Card>
         </aside>
       </div>
     </PageShell>
+  );
+}
+
+/** Cabin tabs: every panel is in the HTML (search engines read all of it); tabs only hide/show. */
+function CabinTabs({ airline, cabins, keys }: { airline: string; cabins: Partial<Record<CabinKey, string>>; keys: CabinKey[] }) {
+  const [active, setActive] = useState<CabinKey>(keys[0]!);
+  return (
+    <Card>
+      <SectionTitle>{airline} cabins from the US</SectionTitle>
+      <div role="tablist" aria-label={`${airline} cabins`} className="mt-4 flex flex-wrap gap-2">
+        {keys.map((k) => (
+          <button
+            key={k}
+            type="button"
+            role="tab"
+            aria-selected={active === k}
+            onClick={() => setActive(k)}
+            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+              active === k ? "bg-navy text-navy-foreground" : "bg-secondary text-navy hover:bg-secondary/70"
+            }`}
+          >
+            {CABIN_LABEL[k]}
+          </button>
+        ))}
+      </div>
+      {keys.map((k) => (
+        <div key={k} role="tabpanel" hidden={active !== k} className="mt-4">
+          <h3 className="font-display text-base font-semibold text-navy">
+            {airline} {CABIN_LABEL[k]}
+          </h3>
+          <p className="mt-1 text-sm leading-relaxed text-foreground/80">{cabins[k]}</p>
+        </div>
+      ))}
+      {!keys.includes("premium") ? (
+        <p className="mt-3 text-xs text-muted-foreground">{airline} doesn&apos;t sell Premium Economy on most routes from the US.</p>
+      ) : null}
+    </Card>
+  );
+}
+
+/** Destinations by region, ASAP-style. Cities we have a guide for link to it; others go to a quote. */
+function NetworkTabs({ airline, network }: { airline: string; network: AirlineProfile["network"] }) {
+  const [active, setActive] = useState(network[0]?.region ?? "");
+  return (
+    <Card>
+      <SectionTitle>Where {airline} flies: select a region</SectionTitle>
+      <div role="tablist" aria-label="Regions" className="mt-4 flex flex-wrap gap-2">
+        {network.map((n) => (
+          <button
+            key={n.region}
+            type="button"
+            role="tab"
+            aria-selected={active === n.region}
+            onClick={() => setActive(n.region)}
+            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+              active === n.region ? "bg-navy text-navy-foreground" : "bg-secondary text-navy hover:bg-secondary/70"
+            }`}
+          >
+            {n.region}
+          </button>
+        ))}
+      </div>
+      {network.map((n) => (
+        <ul key={n.region} role="tabpanel" hidden={active !== n.region} className="mt-4 grid gap-2 sm:grid-cols-2">
+          {n.cities.map((c) => (
+            <li key={c.city} className="flex items-center justify-between gap-2 rounded-xl border border-border px-4 py-3 text-sm">
+              <span className="flex items-center gap-2 font-semibold text-navy">
+                <Plane className="size-4 text-gold" aria-hidden="true" /> {c.city}
+              </span>
+              {c.slug ? (
+                <Link to="/destinations/$slug" params={{ slug: c.slug }} className="text-xs font-semibold text-primary hover:underline">
+                  Flights to {c.city}
+                </Link>
+              ) : (
+                <a href={`tel:${PHONE_TEL}`} className="text-xs font-semibold text-primary hover:underline">
+                  Check today&apos;s fare
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      ))}
+      <p className="mt-3 text-xs text-muted-foreground">
+        Selected destinations, usually with one connection from the US. Routes change; your agent
+        confirms the schedule before you book.
+      </p>
+    </Card>
   );
 }
 

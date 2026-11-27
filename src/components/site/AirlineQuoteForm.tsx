@@ -1,0 +1,131 @@
+import { useState, type FormEvent } from "react";
+import { CheckCircle2, Loader2, Phone } from "lucide-react";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
+
+/**
+ * Free-quote form for airline pages. Saves to fare_leads (admin CRM inbox).
+ * The Supabase client is imported only on submit, so the form adds no JS weight on page load.
+ */
+export function AirlineQuoteForm({ airline }: { airline: string }) {
+  const [form, setForm] = useState({ name: "", email: "", phone: "", from: "", to: "", month: "", cabin: "Economy" });
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
+  const set = (k: keyof typeof form) => (e: { target: { value: string } }) => {
+    setError(null);
+    setForm((p) => ({ ...p, [k]: e.target.value }));
+  };
+
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    if (!form.email.trim() || !form.phone.trim()) {
+      setError("Please add your email and phone so an agent can send your quote.");
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { error: insertError } = await supabase.from("fare_leads").insert({
+        lead_type: "unpublished",
+        full_name: form.name.trim() || null,
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        origin: form.from.trim() || null,
+        destination: form.to.trim() || null,
+        travel_month: form.month || null,
+        cabin: form.cabin,
+        notes: `Airline page quote request: ${airline}`,
+      });
+      if (insertError) throw insertError;
+      setDone(true);
+    } catch {
+      setError(`Something went wrong. Please call ${PHONE_DISPLAY} and we'll quote you by phone.`);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const input =
+    "w-full rounded-xl border border-border bg-white px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary";
+
+  if (done) {
+    return (
+      <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
+        <p className="flex items-center gap-2 font-display text-lg font-semibold text-navy">
+          <CheckCircle2 className="size-5 text-emerald-600" /> Request received
+        </p>
+        <p className="mt-2 text-sm text-foreground/80">
+          An agent will contact you with {airline} fares. For urgent trips call{" "}
+          <a href={`tel:${PHONE_TEL}`} className="font-semibold text-navy underline">
+            {PHONE_DISPLAY}
+          </a>
+          .
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={submit} className="rounded-2xl border border-border bg-white p-5 shadow-sm" aria-label={`Get a free ${airline} quote`}>
+      <h2 className="font-display text-lg font-semibold text-navy">Get a free {airline} quote</h2>
+      <p className="mt-1 text-xs text-muted-foreground">An agent compares {airline} with other airlines and calls or emails you back.</p>
+      <div className="mt-4 grid grid-cols-2 gap-2">
+        <label className="col-span-1 text-xs font-semibold text-navy">
+          From
+          <input className={`${input} mt-1`} value={form.from} onChange={set("from")} placeholder="City or airport" autoComplete="off" />
+        </label>
+        <label className="col-span-1 text-xs font-semibold text-navy">
+          To
+          <input className={`${input} mt-1`} value={form.to} onChange={set("to")} placeholder="City or airport" autoComplete="off" />
+        </label>
+        <label className="col-span-1 text-xs font-semibold text-navy">
+          Month
+          <input type="month" className={`${input} mt-1`} value={form.month} onChange={set("month")} />
+        </label>
+        <label className="col-span-1 text-xs font-semibold text-navy">
+          Cabin
+          <select className={`${input} mt-1`} value={form.cabin} onChange={set("cabin")}>
+            <option>Economy</option>
+            <option>Premium Economy</option>
+            <option>Business</option>
+            <option>First</option>
+          </select>
+        </label>
+        <label className="col-span-2 text-xs font-semibold text-navy">
+          Name
+          <input className={`${input} mt-1`} value={form.name} onChange={set("name")} autoComplete="name" />
+        </label>
+        <label className="col-span-1 text-xs font-semibold text-navy">
+          Email
+          <input type="email" required className={`${input} mt-1`} value={form.email} onChange={set("email")} autoComplete="email" />
+        </label>
+        <label className="col-span-1 text-xs font-semibold text-navy">
+          Phone
+          <input type="tel" required className={`${input} mt-1`} value={form.phone} onChange={set("phone")} autoComplete="tel" />
+        </label>
+      </div>
+      {error ? <p className="mt-3 text-xs font-semibold text-red-700">{error}</p> : null}
+      <button
+        type="submit"
+        disabled={busy}
+        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3 text-sm font-bold text-gold-foreground transition hover:brightness-110 disabled:opacity-70"
+      >
+        {busy ? <Loader2 className="size-4 animate-spin" /> : null} Get my free quote
+      </button>
+      <a
+        href={`tel:${PHONE_TEL}`}
+        className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-bold text-navy transition hover:border-primary"
+      >
+        <Phone className="size-4" /> Call 24/7: {PHONE_DISPLAY}
+      </a>
+      <p className="mt-2 text-center text-[11px] text-muted-foreground">
+        We use your details only to send this quote. See our{" "}
+        <a href="/privacy" className="underline">
+          privacy policy
+        </a>
+        .
+      </p>
+    </form>
+  );
+}
