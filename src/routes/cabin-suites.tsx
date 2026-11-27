@@ -126,7 +126,7 @@ const suites: Suite[] = [
   {
     airline: "Delta",
     code: "DL",
-    product: "Delta One Suite",
+    product: "One Suite",
     cabin: "Business",
     bed: "Fully flat bed with bedding and amenity kit",
     privacy: "Sliding door on every suite",
