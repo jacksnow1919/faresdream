@@ -4,6 +4,28 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Self-hosted fonts (latin subset, variable weight). Replaces the render-blocking Google Fonts stylesheet. */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/Inter-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 500 800;
+  font-display: swap;
+  src: url("/fonts/PlusJakartaSans-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /*
  * Design system definition.
  *
@@ -133,7 +155,9 @@
   --navy: oklch(0.424 0.184 265.6);
   --navy-foreground: oklch(0.985 0.005 250);
   --navy-soft: oklch(0.49 0.19 264);
-  --gold: oklch(0.575 0.175 39); /* burnt orange: white button text passes WCAG AA (4.5:1); was 0.702 (2.9:1) */
+  --gold: oklch(
+    0.575 0.175 39
+  ); /* burnt orange: white button text passes WCAG AA (4.5:1); was 0.702 (2.9:1) */
   --gold-foreground: oklch(1 0 0);
   --gold-soft: oklch(0.955 0.045 60);
   --mutedblue: oklch(0.546 0.215 262.9);
@@ -237,8 +261,14 @@
 
 /* Homepage hero sky (MovingSky): a slowly panning cloud photo plus drifting wisps. */
 @layer components {
+  /* Phones keep the sky still: the pan only adds work while the page is loading. */
   .sky-pan {
-    animation: sky-pan 40s ease-in-out infinite alternate;
+    animation: none;
+  }
+  @media (min-width: 768px) {
+    .sky-pan {
+      animation: sky-pan 40s ease-in-out infinite alternate;
+    }
   }
 
   .cloud-puff {

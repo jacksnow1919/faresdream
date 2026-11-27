@@ -55,12 +55,14 @@ function DestinationCard({ d }: { d: Destination }) {
     <button
       type="button"
       onClick={() => showFlightsTo(d.code)}
-      aria-label={`Search flights to ${d.city} (${d.code})`}
       className={`group relative block aspect-[2/3] overflow-hidden rounded-full bg-muted text-white shadow-card transition hover:-translate-y-1 hover:shadow-lux ${ITEM_CLS}`}
     >
       <img
         src={photoUrl(d.photo, 300)}
-        srcSet={`${photoUrl(d.photo, 300)} 1x, ${photoUrl(d.photo, 600)} 2x`}
+        width={300}
+        height={450}
+        srcSet={[200, 300, 400, 600].map((w) => `${photoUrl(d.photo, w)} ${w}w`).join(", ")}
+        sizes="(min-width: 1280px) 190px, (min-width: 1024px) 18vw, (min-width: 768px) 22vw, (min-width: 640px) 30vw, 40vw"
         alt=""
         loading="lazy"
         decoding="async"
@@ -109,7 +111,7 @@ export function TrendingDestinations({ heading }: { heading: ReactNode }) {
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition sm:px-5 ${
                   active
                     ? "bg-navy text-navy-foreground shadow-card"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-foreground/80 hover:text-foreground"
                 }`}
               >
                 {t.label}

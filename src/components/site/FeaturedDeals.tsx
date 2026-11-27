@@ -71,7 +71,10 @@ export function FeaturedDeals({ onPick }: { onPick?: (deal: FeaturedDealPick) =>
           >
             <img
               src={photoUrl(d.photo, 480)}
-              srcSet={`${photoUrl(d.photo, 480)} 1x, ${photoUrl(d.photo, 960)} 2x`}
+              width={480}
+              height={300}
+              srcSet={[320, 480, 640, 960].map((w) => `${photoUrl(d.photo, w)} ${w}w`).join(", ")}
+              sizes="(min-width: 1024px) 400px, (min-width: 768px) 45vw, (min-width: 640px) 60vw, 82vw"
               alt=""
               loading="lazy"
               decoding="async"
