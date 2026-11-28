@@ -58,9 +58,9 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
       },
       {
         region: "Africa",
-        cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi" }, { city: "Johannesburg" }, { city: "Cairo" }, { city: "Accra", slug: "accra" }],
+        cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi", slug: "nairobi" }, { city: "Johannesburg" }, { city: "Cairo", slug: "cairo" }, { city: "Accra", slug: "accra" }],
       },
-      { region: "Europe", cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens" }] },
+      { region: "Europe", cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens", slug: "athens" }] },
       { region: "Oceania", cities: [{ city: "Sydney" }, { city: "Melbourne" }] },
     ],
     highlights: [
@@ -81,7 +81,7 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
         "Business Class on many long-haul flights is the Qsuite: a lie-flat suite with a closing door. Business tickets include lounge access at Hamad International in Doha.",
     },
     network: [
-      { region: "Middle East", cities: [{ city: "Doha" }, { city: "Dubai", slug: "dubai" }] },
+      { region: "Middle East", cities: [{ city: "Doha", slug: "doha" }, { city: "Dubai", slug: "dubai" }] },
       {
         region: "Asia",
         cities: [
@@ -95,8 +95,8 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
           { city: "Tokyo", slug: "tokyo" },
         ],
       },
-      { region: "Africa", cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi" }, { city: "Johannesburg" }, { city: "Addis Ababa" }] },
-      { region: "Europe", cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens" }] },
+      { region: "Africa", cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi", slug: "nairobi" }, { city: "Johannesburg" }, { city: "Addis Ababa", slug: "addis-ababa" }] },
+      { region: "Europe", cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens", slug: "athens" }] },
       { region: "Oceania", cities: [{ city: "Sydney" }, { city: "Melbourne" }] },
     ],
     highlights: [
@@ -123,14 +123,14 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
     network: [
       {
         region: "Europe",
-        cities: [{ city: "Frankfurt" }, { city: "Munich" }, { city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens" }, { city: "Berlin" }],
+        cities: [{ city: "Frankfurt" }, { city: "Munich" }, { city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens", slug: "athens" }, { city: "Berlin" }],
       },
       {
         region: "Asia",
         cities: [{ city: "Delhi", slug: "delhi" }, { city: "Mumbai", slug: "mumbai" }, { city: "Bengaluru" }, { city: "Tokyo", slug: "tokyo" }, { city: "Singapore", slug: "singapore" }, { city: "Bangkok" }],
       },
       { region: "Middle East", cities: [{ city: "Dubai", slug: "dubai" }] },
-      { region: "Africa", cities: [{ city: "Lagos", slug: "lagos" }, { city: "Johannesburg" }, { city: "Cairo" }] },
+      { region: "Africa", cities: [{ city: "Lagos", slug: "lagos" }, { city: "Johannesburg" }, { city: "Cairo", slug: "cairo" }] },
     ],
     highlights: [
       { title: "Two big hubs", text: "Connect in Frankfurt or Munich to cities across Europe, India and Africa." },
@@ -150,7 +150,7 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
         "Business Class on long-haul aircraft has lie-flat seats, and tickets include the Turkish Airlines lounge at Istanbul Airport.",
     },
     network: [
-      { region: "Europe", cities: [{ city: "Istanbul", slug: "istanbul" }, { city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens" }] },
+      { region: "Europe", cities: [{ city: "Istanbul", slug: "istanbul" }, { city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens", slug: "athens" }] },
       {
         region: "Asia",
         cities: [{ city: "Delhi", slug: "delhi" }, { city: "Mumbai", slug: "mumbai" }, { city: "Tokyo", slug: "tokyo" }, { city: "Singapore", slug: "singapore" }, { city: "Bangkok" }, { city: "Manila", slug: "manila" }],
@@ -158,7 +158,7 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
       { region: "Middle East", cities: [{ city: "Dubai", slug: "dubai" }] },
       {
         region: "Africa",
-        cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi" }, { city: "Johannesburg" }, { city: "Cairo" }, { city: "Accra", slug: "accra" }, { city: "Addis Ababa" }],
+        cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi", slug: "nairobi" }, { city: "Johannesburg" }, { city: "Cairo", slug: "cairo" }, { city: "Accra", slug: "accra" }, { city: "Addis Ababa", slug: "addis-ababa" }],
       },
     ],
     highlights: [
@@ -262,7 +262,7 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
     network: [
       {
         region: "Europe",
-        cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Milan" }, { city: "Athens" }, { city: "Nice" }, { city: "Berlin" }],
+        cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Milan" }, { city: "Athens", slug: "athens" }, { city: "Nice" }, { city: "Berlin" }],
       },
       { region: "India", cities: [{ city: "Delhi", slug: "delhi" }, { city: "Mumbai", slug: "mumbai" }, { city: "Hyderabad" }] },
       { region: "Africa", cities: [{ city: "Lagos", slug: "lagos" }, { city: "Johannesburg" }, { city: "Cape Town" }] },
@@ -286,13 +286,13 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
         "On the A350-1000 (New York and Atlanta), Business Studio is a forward-facing suite with a sliding door and a 79-inch flat bed. The 787-9 used on other US routes also has flat-bed business seats with direct aisle access.",
     },
     network: [
-      { region: "Middle East", cities: [{ city: "Abu Dhabi" }, { city: "Riyadh" }, { city: "Amman" }, { city: "Beirut" }] },
+      { region: "Middle East", cities: [{ city: "Abu Dhabi" }, { city: "Riyadh" }, { city: "Amman", slug: "amman" }, { city: "Beirut" }] },
       {
         region: "India and Pakistan",
         cities: [{ city: "Mumbai", slug: "mumbai" }, { city: "Delhi", slug: "delhi" }, { city: "Hyderabad" }, { city: "Bengaluru" }, { city: "Chennai" }, { city: "Lahore" }],
       },
       { region: "Asia", cities: [{ city: "Bangkok" }, { city: "Shanghai" }, { city: "Beijing" }] },
-      { region: "Africa", cities: [{ city: "Cairo" }, { city: "Nairobi" }, { city: "Addis Ababa" }, { city: "Johannesburg" }] },
+      { region: "Africa", cities: [{ city: "Cairo", slug: "cairo" }, { city: "Nairobi", slug: "nairobi" }, { city: "Addis Ababa", slug: "addis-ababa" }, { city: "Johannesburg" }] },
     ],
     highlights: [
       { title: "US preclearance in Abu Dhabi", text: "You clear US immigration and customs at Zayed International before boarding, so you land in the US as a domestic arrival." },
