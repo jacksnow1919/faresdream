@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { BedDouble, Briefcase, Phone, Plane, Search, Sofa } from "lucide-react";
 import { airlines, routes } from "@/lib/travel-data";
+import { FlightSearchBar } from "@/components/site/FlightSearchBar";
 import { PageShell, Card, SectionTitle } from "@/components/site/ui";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
@@ -98,6 +99,7 @@ function AirlinePage() {
       crumb={a.name}
       parents={[{ label: "Airlines", href: "/airlines" }]}
       photo="/hero/sky-960.webp"
+      search={<FlightSearchBar defaults={{ to: f?.hub.match(/\(([A-Z]{3})\)/)?.[1] }} />}
       subtitle={
         <span className="flex flex-wrap items-center gap-3">
           {p ? (

@@ -115,9 +115,12 @@ export type SearchStart = {
 export function FlightSearchBar({
   prefill,
   initial,
+  defaults,
   variant = "home",
 }: {
   prefill?: { to?: string | undefined; from?: string | undefined } | undefined;
+  /** Content pages: fill From/To quietly (no scroll, no calendar pop-up). */
+  defaults?: { to?: string | undefined; from?: string | undefined } | undefined;
   initial?: SearchStart | undefined;
   variant?: "home" | "results";
 }) {
@@ -132,13 +135,18 @@ export function FlightSearchBar({
   );
   const [fare, setFare] = useState<(typeof FARES)[number]["id"]>("regular");
   const [origin, setOrigin] = useState(
-    initial?.origin ?? prefill?.from ?? (prefill?.to === "JFK" ? "MIA" : "JFK"),
+    initial?.origin ??
+      prefill?.from ??
+      defaults?.from ??
+      ((prefill?.to ?? defaults?.to) === "JFK" ? "MIA" : "JFK"),
   );
-  const [destination, setDestination] = useState(initial?.destination ?? prefill?.to ?? "MIA");
+  const [destination, setDestination] = useState(
+    initial?.destination ?? prefill?.to ?? defaults?.to ?? "MIA",
+  );
 
   // A new search starts from the main airport of the visitor's country.
   useEffect(() => {
-    if (initial || prefill?.from) return;
+    if (initial || prefill?.from || defaults?.from) return;
     const airport = countryByCode(country)?.airport;
     if (airport && airport !== destination) setOrigin(airport);
     // Only when the country changes, so a route the visitor picked isn't overwritten.
@@ -352,7 +360,7 @@ export function FlightSearchBar({
         <label
           key={f.id}
           className={`flex cursor-pointer items-center gap-2 font-medium ${onBlue ? "text-sm" : "text-base"} ${
-            onBlue ? "text-white" : "text-navy [text-shadow:0_0_10px_rgb(255_255_255/0.9)]"
+            onBlue || defaults ? "text-white" : "text-navy [text-shadow:0_0_10px_rgb(255_255_255/0.9)]"
           }`}
         >
           <input

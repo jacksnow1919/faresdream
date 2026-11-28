@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { FareCalendar, GuideStatTiles, MonthlyFareChart } from "@/components/site/GuideVisuals";
 import { guideBySlug, guides } from "@/lib/guides";
+import { BottomSearchCta } from "@/components/site/BottomSearchCta";
+import { FlightSearchBar } from "@/components/site/FlightSearchBar";
 import { PageShell, Card, SectionTitle } from "@/components/site/ui";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
@@ -93,6 +95,7 @@ function GuidePage() {
 
   return (
     <PageShell
+      search={<FlightSearchBar defaults={{ to: g.searchTo }} />}
       eyebrow="Travel guide"
       title={g.title}
       crumb={g.title}
@@ -295,31 +298,10 @@ function GuidePage() {
               </div>
             </Card>
           ) : null}
+          <BottomSearchCta title="Ready to compare fares?" to={g.searchTo} />
         </article>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <div className="overflow-hidden rounded-2xl bg-navy text-white shadow-card">
-            <div className="p-5">
-              <p className="font-display text-lg font-bold">Ready to compare fares?</p>
-              <p className="mt-1 text-sm text-white/80">
-                Search every airline at once, or talk to an agent about fares that aren't online.
-              </p>
-              <Link
-                to="/"
-                search={g.searchTo ? { to: g.searchTo } : {}}
-                className="mt-4 flex items-center justify-center gap-2 rounded-full bg-gold px-4 py-2.5 text-sm font-bold text-gold-foreground transition hover:brightness-110"
-              >
-                <Search className="size-4" aria-hidden="true" /> Search flights
-              </Link>
-              <a
-                href={`tel:${PHONE_TEL}`}
-                className="mt-2 flex items-center justify-center gap-2 rounded-full border border-white/30 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-white/10"
-              >
-                <Phone className="size-4" aria-hidden="true" /> {PHONE_DISPLAY}
-              </a>
-            </div>
-            <p className="bg-white/10 px-5 py-2 text-center text-xs text-white/80">24/7 travel agents</p>
-          </div>
           <Card>
             <p className="flex items-center gap-2 font-display text-base font-bold text-navy">
               <ListChecks className="size-4 text-gold" aria-hidden="true" /> In this guide
