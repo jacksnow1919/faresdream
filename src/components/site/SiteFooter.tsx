@@ -99,8 +99,6 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
 ];
 
 const BADGES = [
-  { label: "Accredited by", items: ["IATAN", "ARC", "ASTA"] },
-  { label: "Secure payments", items: ["Norton Secured", "Trustwave"] },
   {
     label: "We accept",
     items: ["VISA", "Mastercard", "American Express", "Discover", "PayPal", "Affirm"],
@@ -220,7 +218,7 @@ export function SiteFooter() {
         </div>
 
         {/* Trust and payment badges */}
-        <div className="grid gap-6 border-t border-white/10 py-8 md:grid-cols-[auto_auto_1fr] md:gap-10">
+        <div className="grid gap-6 border-t border-white/10 py-8 md:gap-10">
           {BADGES.map((g) => (
             <div key={g.label}>
               <p className="text-xs font-semibold uppercase tracking-wider text-white/75">
