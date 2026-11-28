@@ -11,6 +11,7 @@ import {
   TrendingDown,
 } from "lucide-react";
 import { destinations, routes, type Destination } from "@/lib/travel-data";
+import { AirlineQuoteForm } from "@/components/site/AirlineQuoteForm";
 import { BottomSearchCta } from "@/components/site/BottomSearchCta";
 import { FlightSearchBar } from "@/components/site/FlightSearchBar";
 import { PageShell, Card, SectionTitle } from "@/components/site/ui";
@@ -103,7 +104,7 @@ function DestinationPage() {
   const airportCodes = new Set(d.airports.map((a) => a.code));
   const cityRoutes = routes.filter((r) => airportCodes.has(r.destination));
   const sameRegion = destinations.filter((o) => o.slug !== d.slug && o.region === d.region);
-  const others = [...sameRegion, ...destinations.filter((o) => o.slug !== d.slug && o.region !== d.region)].slice(0, 6);
+  const others = [...sameRegion, ...destinations.filter((o) => o.slug !== d.slug && o.region !== d.region)].slice(0, 12);
 
   return (
     <PageShell
@@ -234,6 +235,28 @@ function DestinationPage() {
             <FaqAccordion items={faqs} initialCount={faqs.length} />
           </section>
 
+          {others.length > 0 ? (
+            <section>
+              <h2 className="mb-4 font-display text-xl font-semibold text-navy">More destinations</h2>
+              <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                {others.map((o) => (
+                  <li key={o.slug}>
+                    <Link
+                      to="/destinations/$slug"
+                      params={{ slug: o.slug }}
+                      className="block h-full rounded-2xl border border-border bg-white p-4 shadow-sm transition hover:border-primary hover:shadow-card"
+                    >
+                      <span className="block font-semibold text-navy">Flights to {o.city}</span>
+                      <span className="mt-1 block text-xs text-muted-foreground">
+                        {o.country} · {o.code}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
           <BottomSearchCta
             title={`Ready to compare fares to ${d.city}?`}
             text="Fares change many times a day. Search live prices on your dates, or call for fares that aren't shown online."
@@ -243,20 +266,12 @@ function DestinationPage() {
 
         <aside className="space-y-4 lg:sticky lg:top-40 lg:self-start">
 
-          {others.length > 0 ? (
-            <Card>
-              <h2 className="text-sm font-semibold text-navy">More destinations</h2>
-              <ul className="mt-2 space-y-1 text-sm">
-                {others.map((o) => (
-                  <li key={o.slug}>
-                    <Link to="/destinations/$slug" params={{ slug: o.slug }} className="text-primary hover:underline">
-                      Flights to {o.city}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          ) : null}
+          <AirlineQuoteForm
+            airline={d.city}
+            to={`${d.city} (${d.code})`}
+            title={`Get a free quote to ${d.city}`}
+            note={`Destination page quote request: ${d.city} (${d.code})`}
+          />
         </aside>
       </div>
     </PageShell>

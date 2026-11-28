@@ -6,8 +6,8 @@ import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
  * Free-quote form for airline pages. Saves to fare_leads (admin CRM inbox).
  * The Supabase client is imported only on submit, so the form adds no JS weight on page load.
  */
-export function AirlineQuoteForm({ airline }: { airline: string }) {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", from: "", to: "", month: "", cabin: "Economy" });
+export function AirlineQuoteForm({ airline, to = "", title, note }: { airline: string; to?: string; title?: string; note?: string }) {
+  const [form, setForm] = useState({ name: "", email: "", phone: "", from: "", to, month: "", cabin: "Economy" });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
@@ -35,7 +35,7 @@ export function AirlineQuoteForm({ airline }: { airline: string }) {
         destination: form.to.trim() || null,
         travel_month: form.month || null,
         cabin: form.cabin,
-        notes: `Airline page quote request: ${airline}`,
+        notes: note ?? `Airline page quote request: ${airline}`,
       });
       if (insertError) throw insertError;
       setDone(true);
@@ -68,8 +68,23 @@ export function AirlineQuoteForm({ airline }: { airline: string }) {
 
   return (
     <form onSubmit={submit} className="rounded-2xl border border-border bg-white p-5 shadow-sm" aria-label={`Get a free ${airline} quote`}>
-      <h2 className="font-display text-lg font-semibold text-navy">Get a free {airline} quote</h2>
-      <p className="mt-1 text-xs text-muted-foreground">An agent compares {airline} with other airlines and calls or emails you back.</p>
+      <a
+        href={`tel:${PHONE_TEL}`}
+        className="flex items-center gap-3 rounded-xl bg-emerald-50 p-3 text-emerald-800 transition hover:bg-emerald-100"
+      >
+        <span className="grid size-10 shrink-0 place-items-center rounded-full bg-emerald-600 text-white">
+          <Phone className="size-5" aria-hidden="true" />
+        </span>
+        <span>
+          <span className="block font-display text-xl font-bold leading-tight">Call {PHONE_DISPLAY}</span>
+          <span className="block text-xs font-semibold">24/7 travel agents, fares not shown online</span>
+        </span>
+      </a>
+      <p className="my-4 flex items-center gap-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+        <span className="h-px flex-1 bg-border" /> or submit a request <span className="h-px flex-1 bg-border" />
+      </p>
+      <h2 className="font-display text-lg font-semibold text-navy">{title ?? `Get a free ${airline} quote`}</h2>
+      <p className="mt-1 text-xs text-muted-foreground">An agent compares airlines and calls or emails you back.</p>
       <div className="mt-4 grid grid-cols-2 gap-2">
         <label className="col-span-1 text-xs font-semibold text-navy">
           From
