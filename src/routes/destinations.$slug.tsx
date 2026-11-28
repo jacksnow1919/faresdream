@@ -268,7 +268,7 @@ function DestinationPage() {
 
           <AirlineQuoteForm
             airline={d.city}
-            to={`${d.city} (${d.code})`}
+            to={d.code}
             title={`Get a free quote to ${d.city}`}
             note={`Destination page quote request: ${d.city} (${d.code})`}
           />

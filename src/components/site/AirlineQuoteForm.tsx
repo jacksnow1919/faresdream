@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { CheckCircle2, Loader2, Phone } from "lucide-react";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
+import { AirportAutocomplete } from "@/components/site/AirportAutocomplete";
+import { MonthPicker } from "@/components/site/DatePicker";
 
 /**
  * Free-quote form for airline pages. Saves to fare_leads (admin CRM inbox).
@@ -86,18 +88,24 @@ export function AirlineQuoteForm({ airline, to = "", title, note }: { airline: s
       <h2 className="font-display text-lg font-semibold text-navy">{title ?? `Get a free ${airline} quote`}</h2>
       <p className="mt-1 text-xs text-muted-foreground">An agent compares airlines and calls or emails you back.</p>
       <div className="mt-4 grid grid-cols-2 gap-2">
-        <label className="col-span-1 text-xs font-semibold text-navy">
-          From
-          <input className={`${input} mt-1`} value={form.from} onChange={set("from")} placeholder="City or airport" autoComplete="off" />
-        </label>
-        <label className="col-span-1 text-xs font-semibold text-navy">
-          To
-          <input className={`${input} mt-1`} value={form.to} onChange={set("to")} placeholder="City or airport" autoComplete="off" />
-        </label>
-        <label className="col-span-1 text-xs font-semibold text-navy">
+        <div className="col-span-2">
+          <AirportAutocomplete label="From" value={form.from} onChange={(v) => set("from")({ target: { value: v } })} placeholder="City or airport" />
+        </div>
+        <div className="col-span-2">
+          <AirportAutocomplete label="To" value={form.to} onChange={(v) => set("to")({ target: { value: v } })} placeholder="City or airport" />
+        </div>
+        <div className="col-span-1 text-xs font-semibold text-navy">
           Month
-          <input type="month" className={`${input} mt-1`} value={form.month} onChange={set("month")} />
-        </label>
+          <div className="mt-1">
+            <MonthPicker
+              ariaLabel="Travel month"
+              value={form.month}
+              onChange={(v) => set("month")({ target: { value: v } })}
+              min={new Date().toISOString().slice(0, 7)}
+              className={input}
+            />
+          </div>
+        </div>
         <label className="col-span-1 text-xs font-semibold text-navy">
           Cabin
           <select className={`${input} mt-1`} value={form.cabin} onChange={set("cabin")}>
