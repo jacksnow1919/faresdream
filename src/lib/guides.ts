@@ -57,6 +57,7 @@ export type Guide = {
 const internationalGuides: Guide[] = [
   {
     slug: "cheapest-time-to-fly-to-india-from-usa",
+    searchTo: "DEL",
     region: "International",
     photo: "https://images.pexels.com/photos/1603650/pexels-photo-1603650.jpeg?auto=compress&cs=tinysrgb&w=1600&h=640&fit=crop",
     photoAlt: "The Taj Mahal in Agra, India",

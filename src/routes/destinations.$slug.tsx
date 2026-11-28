@@ -11,6 +11,9 @@ import {
   TrendingDown,
 } from "lucide-react";
 import { destinations, routes, type Destination } from "@/lib/travel-data";
+import { AirlineQuoteForm } from "@/components/site/AirlineQuoteForm";
+import { BottomSearchCta } from "@/components/site/BottomSearchCta";
+import { FlightSearchBar } from "@/components/site/FlightSearchBar";
 import { PageShell, Card, SectionTitle } from "@/components/site/ui";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
@@ -101,7 +104,7 @@ function DestinationPage() {
   const airportCodes = new Set(d.airports.map((a) => a.code));
   const cityRoutes = routes.filter((r) => airportCodes.has(r.destination));
   const sameRegion = destinations.filter((o) => o.slug !== d.slug && o.region === d.region);
-  const others = [...sameRegion, ...destinations.filter((o) => o.slug !== d.slug && o.region !== d.region)].slice(0, 6);
+  const others = [...sameRegion, ...destinations.filter((o) => o.slug !== d.slug && o.region !== d.region)].slice(0, 12);
 
   return (
     <PageShell
@@ -111,15 +114,7 @@ function DestinationPage() {
       parents={[{ label: "Destinations", href: "/destinations" }]}
       photo={d.photo ? photoUrl(d.photo, 1600) : undefined}
       subtitle={`Compare fares to ${d.city} from airlines and travel providers in one search, or call us 24/7 for fares that aren't published online.`}
-      action={
-        <Link
-          to="/"
-          search={{ to: d.code }}
-          className="inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-bold text-gold-foreground transition hover:brightness-110"
-        >
-          <Search className="size-4" /> Search flights to {d.city}
-        </Link>
-      }
+      search={<FlightSearchBar defaults={{ to: d.code }} />}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="space-y-6">
@@ -239,46 +234,44 @@ function DestinationPage() {
             </h2>
             <FaqAccordion items={faqs} initialCount={faqs.length} />
           </section>
-        </div>
-
-        <aside className="space-y-4 lg:sticky lg:top-40 lg:self-start">
-          <Card>
-            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              <MapPin className="size-3.5" /> {d.city} · {d.code}
-            </p>
-            <p className="mt-2 text-sm text-foreground/80">
-              Fares change many times a day. Search for live prices on your dates.
-            </p>
-            <Link
-              to="/"
-              search={{ to: d.code }}
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3 text-sm font-bold text-gold-foreground transition hover:brightness-110"
-            >
-              <Search className="size-4" /> Compare fares to {d.city}
-            </Link>
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-bold text-navy transition hover:border-primary"
-            >
-              <Phone className="size-4" /> Call {PHONE_DISPLAY}
-            </a>
-            <p className="mt-2 text-center text-xs text-muted-foreground">24/7 · unpublished fares by phone</p>
-          </Card>
 
           {others.length > 0 ? (
-            <Card>
-              <h2 className="text-sm font-semibold text-navy">More destinations</h2>
-              <ul className="mt-2 space-y-1 text-sm">
+            <section>
+              <h2 className="mb-4 font-display text-xl font-semibold text-navy">More destinations</h2>
+              <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {others.map((o) => (
                   <li key={o.slug}>
-                    <Link to="/destinations/$slug" params={{ slug: o.slug }} className="text-primary hover:underline">
-                      Flights to {o.city}
+                    <Link
+                      to="/destinations/$slug"
+                      params={{ slug: o.slug }}
+                      className="block h-full rounded-2xl border border-border bg-white p-4 shadow-sm transition hover:border-primary hover:shadow-card"
+                    >
+                      <span className="block font-semibold text-navy">Flights to {o.city}</span>
+                      <span className="mt-1 block text-xs text-muted-foreground">
+                        {o.country} · {o.code}
+                      </span>
                     </Link>
                   </li>
                 ))}
               </ul>
-            </Card>
+            </section>
           ) : null}
+
+          <BottomSearchCta
+            title={`Ready to compare fares to ${d.city}?`}
+            text="Fares change many times a day. Search live prices on your dates, or call for fares that aren't shown online."
+            to={d.code}
+          />
+        </div>
+
+        <aside className="space-y-4 lg:sticky lg:top-40 lg:self-start">
+
+          <AirlineQuoteForm
+            airline={d.city}
+            to={d.code}
+            title={`Get a free quote to ${d.city}`}
+            note={`Destination page quote request: ${d.city} (${d.code})`}
+          />
         </aside>
       </div>
     </PageShell>

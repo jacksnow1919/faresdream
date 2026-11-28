@@ -503,6 +503,9 @@ export const airports: Airport[] = [
   },
   { code: "ABV", name: "Nnamdi Azikiwe Intl", city: "Abuja", country: "Nigeria", cityCode: "ABV" },
   { code: "ACC", name: "Kotoka Intl", city: "Accra", country: "Ghana", cityCode: "ACC" },
+  { code: "SJO", name: "Juan Santamaria Intl", city: "San Jose", country: "Costa Rica", cityCode: "SJO" },
+  { code: "GUA", name: "La Aurora Intl", city: "Guatemala City", country: "Guatemala", cityCode: "GUA" },
+  { code: "MBJ", name: "Sangster Intl", city: "Montego Bay", country: "Jamaica", cityCode: "MBJ" },
   { code: "NBO", name: "Jomo Kenyatta Intl", city: "Nairobi", country: "Kenya", cityCode: "NBO" },
   { code: "ADD", name: "Bole Intl", city: "Addis Ababa", country: "Ethiopia", cityCode: "ADD" },
   {

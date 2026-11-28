@@ -34,6 +34,7 @@ export function PageShell({
   photo,
   subtitle,
   action,
+  search,
   children,
 }: {
   title: string;
@@ -45,6 +46,8 @@ export function PageShell({
   crumb?: string | undefined;
   subtitle?: ReactNode;
   action?: ReactNode;
+  /** Optional full-width search box under the title (the homepage flight search). */
+  search?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -97,6 +100,7 @@ export function PageShell({
             </div>
             {action}
           </div>
+          {search ? <div className="mt-6">{search}</div> : null}
         </div>
       </div>
       <div className="page-container py-6 sm:py-8">{children}</div>

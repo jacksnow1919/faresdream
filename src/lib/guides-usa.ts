@@ -15,6 +15,7 @@ const kayak = (label: string, path: string) => ({
 export const usaGuides: Guide[] = [
   {
     slug: "cheapest-time-to-fly-to-hawaii",
+    searchTo: "HNL",
     region: "USA",
     photo: "https://images.unsplash.com/photo-1524565308556-b777381b2f73?auto=format&fit=crop&w=1600&h=640&q=65",
     photoAlt: "Honolulu, Hawaii",
@@ -182,6 +183,7 @@ export const usaGuides: Guide[] = [
   },
   {
     slug: "cheapest-time-to-fly-to-orlando",
+    searchTo: "MCO",
     region: "USA",
     photo: "https://images.pexels.com/photos/20486251/pexels-photo-20486251.jpeg?auto=compress&cs=tinysrgb&w=1600&h=640&fit=crop",
     photoAlt: "Lake Eola and the downtown Orlando skyline",
@@ -344,6 +346,7 @@ export const usaGuides: Guide[] = [
   },
   {
     slug: "cheapest-time-to-fly-to-las-vegas",
+    searchTo: "LAS",
     region: "USA",
     photo: "https://images.unsplash.com/photo-1634400139456-292e44ca5327?auto=format&fit=crop&w=1600&h=640&q=65",
     photoAlt: "The Las Vegas Strip",
@@ -504,6 +507,7 @@ export const usaGuides: Guide[] = [
   },
   {
     slug: "cheapest-time-to-fly-to-new-york",
+    searchTo: "JFK",
     region: "USA",
     photo: "https://images.unsplash.com/photo-1588384153148-ebd739ac430c?auto=format&fit=crop&w=1600&h=640&q=65",
     photoAlt: "The New York City skyline",

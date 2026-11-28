@@ -1,13 +1,15 @@
 import { useState, type FormEvent } from "react";
 import { CheckCircle2, Loader2, Phone } from "lucide-react";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
+import { AirportAutocomplete } from "@/components/site/AirportAutocomplete";
+import { DatePicker } from "@/components/site/DatePicker";
 
 /**
  * Free-quote form for airline pages. Saves to fare_leads (admin CRM inbox).
  * The Supabase client is imported only on submit, so the form adds no JS weight on page load.
  */
-export function AirlineQuoteForm({ airline }: { airline: string }) {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", from: "", to: "", month: "", cabin: "Economy" });
+export function AirlineQuoteForm({ airline, to = "", title, note }: { airline: string; to?: string; title?: string; note?: string }) {
+  const [form, setForm] = useState({ name: "", email: "", phone: "", from: "", to, depart: "", ret: "", cabin: "Economy" });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
@@ -33,9 +35,9 @@ export function AirlineQuoteForm({ airline }: { airline: string }) {
         phone: form.phone.trim(),
         origin: form.from.trim() || null,
         destination: form.to.trim() || null,
-        travel_month: form.month || null,
+        travel_month: form.depart ? form.depart.slice(0, 7) : null,
         cabin: form.cabin,
-        notes: `Airline page quote request: ${airline}`,
+        notes: [note ?? `Airline page quote request: ${airline}`, form.depart && `Depart ${form.depart}`, form.ret && `Return ${form.ret}`].filter(Boolean).join(" | "),
       });
       if (insertError) throw insertError;
       setDone(true);
@@ -68,22 +70,58 @@ export function AirlineQuoteForm({ airline }: { airline: string }) {
 
   return (
     <form onSubmit={submit} className="rounded-2xl border border-border bg-white p-5 shadow-sm" aria-label={`Get a free ${airline} quote`}>
-      <h2 className="font-display text-lg font-semibold text-navy">Get a free {airline} quote</h2>
-      <p className="mt-1 text-xs text-muted-foreground">An agent compares {airline} with other airlines and calls or emails you back.</p>
+      <a
+        href={`tel:${PHONE_TEL}`}
+        className="flex items-center gap-3 rounded-xl bg-emerald-50 p-3 text-emerald-800 transition hover:bg-emerald-100"
+      >
+        <span className="grid size-10 shrink-0 place-items-center rounded-full bg-emerald-600 text-white">
+          <Phone className="size-5" aria-hidden="true" />
+        </span>
+        <span>
+          <span className="block font-display text-xl font-bold leading-tight">Call {PHONE_DISPLAY}</span>
+          <span className="block text-xs font-semibold">24/7 travel agents, fares not shown online</span>
+        </span>
+      </a>
+      <p className="my-4 flex items-center gap-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+        <span className="h-px flex-1 bg-border" /> or submit a request <span className="h-px flex-1 bg-border" />
+      </p>
+      <h2 className="font-display text-lg font-semibold text-navy">{title ?? `Get a free ${airline} quote`}</h2>
+      <p className="mt-1 text-xs text-muted-foreground">An agent compares airlines and calls or emails you back.</p>
       <div className="mt-4 grid grid-cols-2 gap-2">
-        <label className="col-span-1 text-xs font-semibold text-navy">
-          From
-          <input className={`${input} mt-1`} value={form.from} onChange={set("from")} placeholder="City or airport" autoComplete="off" />
-        </label>
-        <label className="col-span-1 text-xs font-semibold text-navy">
-          To
-          <input className={`${input} mt-1`} value={form.to} onChange={set("to")} placeholder="City or airport" autoComplete="off" />
-        </label>
-        <label className="col-span-1 text-xs font-semibold text-navy">
-          Month
-          <input type="month" className={`${input} mt-1`} value={form.month} onChange={set("month")} />
-        </label>
-        <label className="col-span-1 text-xs font-semibold text-navy">
+        <div className="col-span-2">
+          <AirportAutocomplete label="From" value={form.from} onChange={(v) => set("from")({ target: { value: v } })} placeholder="City or airport" />
+        </div>
+        <div className="col-span-2">
+          <AirportAutocomplete label="To" value={form.to} onChange={(v) => set("to")({ target: { value: v } })} placeholder="City or airport" />
+        </div>
+        <div className="col-span-1 text-xs font-semibold text-navy">
+          Depart
+          <div className="mt-1">
+            <DatePicker
+              ariaLabel="Departure date"
+              placeholder="Pick a date"
+              value={form.depart}
+              onChange={(v) => setForm((f) => ({ ...f, depart: v, ret: f.ret && v && f.ret < v ? "" : f.ret }))}
+              min={new Date().toISOString().slice(0, 10)}
+              className={input}
+            />
+          </div>
+        </div>
+        <div className="col-span-1 text-xs font-semibold text-navy">
+          Return
+          <div className="mt-1">
+            <DatePicker
+              ariaLabel="Return date"
+              placeholder="One way"
+              value={form.ret}
+              onChange={(v) => setForm((f) => ({ ...f, ret: v }))}
+              min={form.depart || new Date().toISOString().slice(0, 10)}
+              defaultMonth={form.depart || undefined}
+              className={input}
+            />
+          </div>
+        </div>
+        <label className="col-span-2 text-xs font-semibold text-navy">
           Cabin
           <select className={`${input} mt-1`} value={form.cabin} onChange={set("cabin")}>
             <option>Economy</option>

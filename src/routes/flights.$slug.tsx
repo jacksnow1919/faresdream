@@ -16,6 +16,8 @@ import {
   TrendingDown,
   Wallet,
 } from "lucide-react";
+import { BottomSearchCta } from "@/components/site/BottomSearchCta";
+import { FlightSearchBar } from "@/components/site/FlightSearchBar";
 import { PageShell, Card } from "@/components/site/ui";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import {
@@ -150,6 +152,7 @@ function RoutePage() {
       crumb={`${p.from.city} to ${p.to.city}`}
       photo={p.to.photo}
       parents={[{ label: "Flights", href: "/flights" }]}
+      search={<FlightSearchBar defaults={{ from: p.from.code, to: p.to.code }} />}
       subtitle={
         <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <span className="inline-flex items-center gap-1.5">
@@ -287,30 +290,6 @@ function RoutePage() {
             </Card>
           </div>
 
-          <section className="flex flex-col items-start gap-4 rounded-2xl bg-linear-to-r from-gold/15 via-gold/5 to-transparent p-5 ring-1 ring-gold/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-            <div>
-              <p className="font-display text-lg font-bold text-navy">
-                Ready to fly {p.from.code} → {p.to.code}?
-              </p>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                Compare airlines in seconds, or call for fares that aren't shown online.
-              </p>
-            </div>
-            <div className="flex shrink-0 flex-wrap gap-2">
-              <Link
-                to={searchHref}
-                className="inline-flex items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-bold text-gold-foreground transition hover:brightness-110"
-              >
-                <Search className="size-4" aria-hidden="true" /> Search flights
-              </Link>
-              <a
-                href={`tel:${PHONE_TEL}`}
-                className="inline-flex items-center gap-2 rounded-full border border-navy/20 bg-card px-5 py-2.5 text-sm font-bold text-navy transition hover:bg-navy/5"
-              >
-                <Phone className="size-4" aria-hidden="true" /> {PHONE_DISPLAY}
-              </a>
-            </div>
-          </section>
 
           {d.cheapestAirlines.length ? (
             <Card>
@@ -365,6 +344,7 @@ function RoutePage() {
             </div>
           </Card>
 
+          <BottomSearchCta title={"Ready to fly "+p.from.code+" to "+p.to.code+"?"} to={p.to.code} from={p.from.code} />
         </article>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
