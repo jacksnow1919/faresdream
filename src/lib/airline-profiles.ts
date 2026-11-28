@@ -50,7 +50,7 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
           { city: "Delhi", slug: "delhi" },
           { city: "Bangkok" },
           { city: "Singapore", slug: "singapore" },
-          { city: "Manila" },
+          { city: "Manila", slug: "manila" },
           { city: "Tokyo", slug: "tokyo" },
           { city: "Colombo" },
           { city: "Dhaka" },
@@ -58,9 +58,9 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
       },
       {
         region: "Africa",
-        cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi" }, { city: "Johannesburg" }, { city: "Cairo" }, { city: "Accra" }],
+        cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi" }, { city: "Johannesburg" }, { city: "Cairo" }, { city: "Accra", slug: "accra" }],
       },
-      { region: "Europe", cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome" }, { city: "Athens" }] },
+      { region: "Europe", cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens" }] },
       { region: "Oceania", cities: [{ city: "Sydney" }, { city: "Melbourne" }] },
     ],
     highlights: [
@@ -89,14 +89,14 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
           { city: "Mumbai", slug: "mumbai" },
           { city: "Bengaluru" },
           { city: "Kathmandu" },
-          { city: "Manila" },
+          { city: "Manila", slug: "manila" },
           { city: "Bangkok" },
           { city: "Singapore", slug: "singapore" },
           { city: "Tokyo", slug: "tokyo" },
         ],
       },
       { region: "Africa", cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi" }, { city: "Johannesburg" }, { city: "Addis Ababa" }] },
-      { region: "Europe", cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome" }, { city: "Athens" }] },
+      { region: "Europe", cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens" }] },
       { region: "Oceania", cities: [{ city: "Sydney" }, { city: "Melbourne" }] },
     ],
     highlights: [
@@ -123,7 +123,7 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
     network: [
       {
         region: "Europe",
-        cities: [{ city: "Frankfurt" }, { city: "Munich" }, { city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome" }, { city: "Athens" }, { city: "Berlin" }],
+        cities: [{ city: "Frankfurt" }, { city: "Munich" }, { city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens" }, { city: "Berlin" }],
       },
       {
         region: "Asia",
@@ -150,15 +150,15 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
         "Business Class on long-haul aircraft has lie-flat seats, and tickets include the Turkish Airlines lounge at Istanbul Airport.",
     },
     network: [
-      { region: "Europe", cities: [{ city: "Istanbul" }, { city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome" }, { city: "Athens" }] },
+      { region: "Europe", cities: [{ city: "Istanbul", slug: "istanbul" }, { city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Athens" }] },
       {
         region: "Asia",
-        cities: [{ city: "Delhi", slug: "delhi" }, { city: "Mumbai", slug: "mumbai" }, { city: "Tokyo", slug: "tokyo" }, { city: "Singapore", slug: "singapore" }, { city: "Bangkok" }, { city: "Manila" }],
+        cities: [{ city: "Delhi", slug: "delhi" }, { city: "Mumbai", slug: "mumbai" }, { city: "Tokyo", slug: "tokyo" }, { city: "Singapore", slug: "singapore" }, { city: "Bangkok" }, { city: "Manila", slug: "manila" }],
       },
       { region: "Middle East", cities: [{ city: "Dubai", slug: "dubai" }] },
       {
         region: "Africa",
-        cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi" }, { city: "Johannesburg" }, { city: "Cairo" }, { city: "Accra" }, { city: "Addis Ababa" }],
+        cities: [{ city: "Lagos", slug: "lagos" }, { city: "Nairobi" }, { city: "Johannesburg" }, { city: "Cairo" }, { city: "Accra", slug: "accra" }, { city: "Addis Ababa" }],
       },
     ],
     highlights: [
@@ -190,10 +190,10 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
           { city: "Delhi", slug: "delhi" },
           { city: "Mumbai", slug: "mumbai" },
           { city: "Bangkok" },
-          { city: "Manila" },
+          { city: "Manila", slug: "manila" },
           { city: "Tokyo", slug: "tokyo" },
           { city: "Bali (Denpasar)" },
-          { city: "Ho Chi Minh City" },
+          { city: "Ho Chi Minh City", slug: "ho-chi-minh-city" },
         ],
       },
       { region: "Oceania", cities: [{ city: "Sydney" }, { city: "Melbourne" }] },
@@ -262,7 +262,7 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
     network: [
       {
         region: "Europe",
-        cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome" }, { city: "Milan" }, { city: "Athens" }, { city: "Nice" }, { city: "Berlin" }],
+        cities: [{ city: "London", slug: "london" }, { city: "Paris", slug: "paris" }, { city: "Rome", slug: "rome" }, { city: "Milan" }, { city: "Athens" }, { city: "Nice" }, { city: "Berlin" }],
       },
       { region: "India", cities: [{ city: "Delhi", slug: "delhi" }, { city: "Mumbai", slug: "mumbai" }, { city: "Hyderabad" }] },
       { region: "Africa", cities: [{ city: "Lagos", slug: "lagos" }, { city: "Johannesburg" }, { city: "Cape Town" }] },
@@ -318,7 +318,7 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
     network: [
       { region: "Greater China", cities: [{ city: "Hong Kong" }, { city: "Taipei" }, { city: "Shanghai" }] },
       { region: "Japan", cities: [{ city: "Tokyo", slug: "tokyo" }, { city: "Sapporo" }] },
-      { region: "Southeast Asia", cities: [{ city: "Bangkok" }, { city: "Manila" }, { city: "Singapore", slug: "singapore" }, { city: "Ho Chi Minh City" }, { city: "Kuala Lumpur" }] },
+      { region: "Southeast Asia", cities: [{ city: "Bangkok" }, { city: "Manila", slug: "manila" }, { city: "Singapore", slug: "singapore" }, { city: "Ho Chi Minh City", slug: "ho-chi-minh-city" }, { city: "Kuala Lumpur" }] },
       { region: "India", cities: [{ city: "Delhi", slug: "delhi" }, { city: "Mumbai", slug: "mumbai" }] },
       { region: "Oceania", cities: [{ city: "Sydney" }, { city: "Melbourne" }, { city: "Perth" }] },
     ],
@@ -346,7 +346,7 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
       { region: "Japan and Korea", cities: [{ city: "Tokyo", slug: "tokyo" }, { city: "Osaka" }, { city: "Sapporo" }, { city: "Okinawa" }, { city: "Seoul" }] },
       {
         region: "Southeast Asia",
-        cities: [{ city: "Bangkok" }, { city: "Singapore", slug: "singapore" }, { city: "Manila" }, { city: "Ho Chi Minh City" }, { city: "Hanoi" }, { city: "Bali" }],
+        cities: [{ city: "Bangkok" }, { city: "Singapore", slug: "singapore" }, { city: "Manila", slug: "manila" }, { city: "Ho Chi Minh City", slug: "ho-chi-minh-city" }, { city: "Hanoi" }, { city: "Bali" }],
       },
       { region: "India", cities: [{ city: "Delhi", slug: "delhi" }] },
     ],
@@ -372,9 +372,9 @@ export const airlineProfiles: Record<string, AirlineProfile> = {
     network: [
       {
         region: "Philippines",
-        cities: [{ city: "Manila" }, { city: "Cebu" }, { city: "Davao" }, { city: "Iloilo" }, { city: "Bacolod" }, { city: "Puerto Princesa" }, { city: "Boracay" }],
+        cities: [{ city: "Manila", slug: "manila" }, { city: "Cebu" }, { city: "Davao" }, { city: "Iloilo" }, { city: "Bacolod" }, { city: "Puerto Princesa" }, { city: "Boracay" }],
       },
-      { region: "Asia", cities: [{ city: "Tokyo", slug: "tokyo" }, { city: "Hong Kong" }, { city: "Singapore", slug: "singapore" }, { city: "Bangkok" }, { city: "Ho Chi Minh City" }] },
+      { region: "Asia", cities: [{ city: "Tokyo", slug: "tokyo" }, { city: "Hong Kong" }, { city: "Singapore", slug: "singapore" }, { city: "Bangkok" }, { city: "Ho Chi Minh City", slug: "ho-chi-minh-city" }] },
       { region: "Pacific", cities: [{ city: "Honolulu" }, { city: "Guam" }, { city: "Saipan" }] },
     ],
     highlights: [

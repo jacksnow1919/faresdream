@@ -182,7 +182,7 @@ export const airlineFacts: Record<string, AirlineFacts> = {
         text: "Lufthansa's new Allegris seats are on some A350s from Munich and 787s from Frankfurt, including some Chicago, New York, Newark, San Diego, Austin and Los Angeles flights. Look for \"Allegris\" when you choose a flight; many business seats cost extra to select.",
       },
     ],
-    destinations: ["london", "paris", "delhi", "mumbai"],
+    destinations: ["london", "paris", "rome", "istanbul", "delhi", "mumbai"],
     extraFaqs: [
       {
         q: "Does Lufthansa Economy include a checked bag from the US?",
@@ -238,7 +238,7 @@ export const airlineFacts: Record<string, AirlineFacts> = {
         text: "Turkey is on UTC+3 all year: 7 hours ahead of New York in summer and 8 hours in winter.",
       },
     ],
-    destinations: ["lagos", "dubai", "london", "delhi"],
+    destinations: ["istanbul", "lagos", "accra", "london", "rome", "delhi"],
     extraFaqs: [
       {
         q: "Which US cities does Turkish Airlines fly from?",
@@ -285,7 +285,7 @@ export const airlineFacts: Record<string, AirlineFacts> = {
         text: "In KAYAK's fare data, typical round trips to Singapore were about $840–$920 from San Francisco and Los Angeles versus about $1,250 from New York. See our Singapore page for the month-by-month fares.",
       },
     ],
-    destinations: ["singapore", "tokyo"],
+    destinations: ["singapore", "tokyo", "manila", "ho-chi-minh-city"],
     extraFaqs: [
       {
         q: "Does Singapore Airlines have Economy on the New York to Singapore nonstop?",
@@ -410,7 +410,7 @@ export const airlineFacts: Record<string, AirlineFacts> = {
         text: "BA's minimum connection time at Heathrow is 75 minutes. US citizens need a UK Electronic Travel Authorisation (ETA) to enter the UK; check gov.uk for the current rules if you're only connecting.",
       },
     ],
-    destinations: ["london", "paris", "delhi", "mumbai", "lagos"],
+    destinations: ["london", "rome", "paris", "lagos", "accra", "delhi", "mumbai"],
     extraFaqs: [
       {
         q: "Which US cities have nonstop British Airways flights to London?",
@@ -520,7 +520,7 @@ export const airlineFacts: Record<string, AirlineFacts> = {
         text: "US passport holders can usually visit Hong Kong visa-free for up to 90 days, so a stopover is easy to add.",
       },
     ],
-    destinations: ["tokyo", "singapore", "delhi", "mumbai"],
+    destinations: ["manila", "ho-chi-minh-city", "tokyo", "singapore", "delhi", "mumbai"],
     extraFaqs: [
       {
         q: "Which US cities does Cathay Pacific fly nonstop from?",
@@ -577,7 +577,7 @@ export const airlineFacts: Record<string, AirlineFacts> = {
         text: "Baggage and change rules depend on the fare family (Discount, Basic, Standard or Up), not only the cabin. Discount Economy includes just 1 checked bag.",
       },
     ],
-    destinations: ["tokyo", "singapore", "delhi"],
+    destinations: ["ho-chi-minh-city", "manila", "tokyo", "singapore", "delhi"],
     extraFaqs: [
       {
         q: "Which US cities does EVA Air fly nonstop from?",
@@ -632,7 +632,7 @@ export const airlineFacts: Record<string, AirlineFacts> = {
         text: "PAL asks international passengers to arrive at Manila airport at least 4 hours before departure. All PAL international flights use Terminal 1.",
       },
     ],
-    destinations: ["tokyo", "singapore"],
+    destinations: ["manila", "tokyo", "singapore", "ho-chi-minh-city"],
     extraFaqs: [
       {
         q: "Which US cities have nonstop Philippine Airlines flights?",

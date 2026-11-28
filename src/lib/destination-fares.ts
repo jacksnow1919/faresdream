@@ -32,7 +32,7 @@ export const destinationFares: Record<string, DestinationFares> = {
   mumbai: {
     checked: "2026-11-26",
     summary:
-      "February to April is the cheapest time to fly from the US to Mumbai. On all 7 US routes we checked, the cheapest month fell in that window, with median round-trip fares from $707 (Atlanta, April) to $869 (Dallas, April). December is the most expensive month on every route, costing 76–95% more than the cheapest month. Only the New York area has nonstop flights, on Air India.",
+      "February to April is the cheapest time to fly from the US to Mumbai. On all 7 US routes we checked, the cheapest month fell in that window, with median round-trip fares from $707 (Atlanta, April) to $869 (Dallas, April). December is the most expensive month on every route, costing 76–95% more than the cheapest month. Only the New York area has nonstop flights in this data.",
     keyFacts: [
       "Cheapest months: February–April on all 7 routes",
       "Priciest month: December on all 7 routes ($1,309–$1,629 median round trip)",
@@ -372,6 +372,253 @@ export const destinationFares: Record<string, DestinationFares> = {
       {
         q: "Which US city has the cheapest flights to Cancun?",
         a: "Miami had the lowest typical fare ($428). Dallas ($329) and Atlanta ($332) had the lowest single-month medians, both in February.",
+      },
+    ],
+  },
+  manila: {
+    checked: "2026-11-27",
+    summary:
+      "March–April or September is the cheapest time to fly from the US to Manila. On all 7 US routes we checked, the cheapest month fell in one of those windows, with median round-trip fares from $790 (Los Angeles, September) to $916 (New York, September). December is the most expensive month on every route, costing 69–86% more than the cheapest month, and June is the second most expensive.",
+    keyFacts: [
+      "Cheapest months: March–April or September on all 7 routes",
+      "Priciest month: December on all 7 routes ($1,345–$1,668 median round trip)",
+      "Lowest monthly median: $790, Los Angeles in September",
+      "West Coast is cheaper: 12-month averages of $947–$970 from Los Angeles, Seattle and San Francisco vs $1,111–$1,122 from New York and Chicago (our calculation)",
+      "Nonstop: Philippine Airlines from Los Angeles, San Francisco, Seattle, New York and Chicago; United from San Francisco",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Manila-MNL", monthly: [975, 970, 1087, 969, 1222, 1376, 1275, 1062, 916, 946, 956, 1575], cheapestMonth: "September · $916", priciestMonth: "December · $1,575", typical: "$927–$1,398", cheapestDay: "Tuesday", cheapestAirlines: ["Korean Air", "Singapore Airlines", "ANA"], nonstop: "Philippine Airlines, about 16h 50m" },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Manila-MNL", monthly: [853, 803, 883, 829, 973, 1234, 1121, 835, 790, 812, 809, 1425], cheapestMonth: "September · $790", priciestMonth: "December · $1,425", typical: "$770–$1,235", cheapestDay: "Tuesday", cheapestAirlines: ["Philippine Airlines", "Singapore Airlines", "China Eastern"], nonstop: "Philippine Airlines" },
+      { from: "San Francisco (SFO)", kayak: "San-Francisco-SFO/Manila-MNL", monthly: [860, 865, 841, 811, 957, 1307, 1110, 850, 885, 874, 908, 1373], cheapestMonth: "April · $811", priciestMonth: "December · $1,373", typical: "$795–$1,207", cheapestDay: "Wednesday", cheapestAirlines: ["ANA", "Korean Air", "United Airlines"], nonstop: "United Airlines and Philippine Airlines, about 15h 01m" },
+      { from: "Seattle (SEA)", kayak: "Seattle-SEA/Manila-MNL", monthly: [869, 832, 832, 797, 1023, 1278, 1078, 888, 823, 857, 960, 1345], cheapestMonth: "April · $797", priciestMonth: "December · $1,345", typical: null, cheapestDay: "Sunday", cheapestAirlines: ["Philippine Airlines", "Cathay Pacific", "Singapore Airlines"], nonstop: "Philippine Airlines (not daily)" },
+      { from: "Chicago", kayak: "Chicago-CHI/Manila-MNL", monthly: [1023, 904, 986, 905, 1273, 1436, 1336, 1016, 897, 996, 1024, 1668], cheapestMonth: "September · $897", priciestMonth: "December · $1,668", typical: "$917–$1,393", cheapestDay: "Tuesday", cheapestAirlines: ["United Airlines", "ANA", "Cathay Pacific"], nonstop: "Philippine Airlines, about 16h 40m" },
+      { from: "Dallas (DFW)", kayak: "Dallas-DFW/Manila-MNL", monthly: [924, 842, 806, 890, 1196, 1424, 1144, 814, 893, 927, 869, 1482], cheapestMonth: "March · $806", priciestMonth: "December · $1,482", typical: "$837–$1,304", cheapestDay: "Thursday", cheapestAirlines: ["ANA", "Korean Air", "Asiana Airlines"], nonstop: null },
+      { from: "Las Vegas (LAS)", kayak: "Las-Vegas-LAS/Manila-MNL", monthly: [944, 878, 907, 866, 1078, 1304, 1185, 937, 919, 888, 920, 1474], cheapestMonth: "April · $866", priciestMonth: "December · $1,474", typical: "$870–$1,193", cheapestDay: "Tuesday", cheapestAirlines: ["Air Canada", "Korean Air", "ANA"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "How much more do Christmas flights to Manila cost?",
+        a: "December's median round-trip fare was 69–86% above each route's cheapest month in KAYAK's data: $1,425 vs $790 from Los Angeles, and $1,668 vs $897 from Chicago. If you must fly in December, book early and compare one-stop fares via Seoul, Tokyo or Taipei with the nonstops.",
+      },
+      {
+        q: "Is summer a cheap time to fly to Manila?",
+        a: "No. June was the second most expensive month on all 7 routes we checked. August to November was much cheaper, with September the cheapest month from New York, Los Angeles and Chicago.",
+      },
+      {
+        q: "Which US city has the cheapest flights to Manila?",
+        a: "Los Angeles: its 12-month average median was $947 and its September median $790, the lowest in our data. Seattle ($965) and San Francisco ($970) were close behind.",
+      },
+    ],
+  },
+  "ho-chi-minh-city": {
+    checked: "2026-11-27",
+    summary:
+      "March and April are the cheapest months to fly from the US to Ho Chi Minh City. On 6 of the 8 US routes we checked, the cheapest month was March or April, with median round-trip fares from $741 (Seattle, April) to $1,104 (Washington, April). June or December was the most expensive month on 7 of the 8 routes. West Coast cities were the cheapest gateways, and only San Francisco has a nonstop.",
+    keyFacts: [
+      "Cheapest months: March or April on 6 of 8 routes (Chicago September, New York November)",
+      "Priciest month: June or December on 7 of 8 routes",
+      "Lowest monthly medians: $741 from Seattle (April) and $742 from Los Angeles (March)",
+      "12-month averages: $889 from Los Angeles vs $1,372 from Atlanta (our calculation)",
+      "Nonstop: Vietnam Airlines from San Francisco only; other cities connect in Asia",
+    ],
+    rows: [
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Ho-Chi-Minh-City-SGN", monthly: [808, 798, 742, 748, 949, 1193, 1071, 750, 776, 796, 796, 1242], cheapestMonth: "March · $742", priciestMonth: "December · $1,242", typical: "$727–$1,067", cheapestDay: "Monday", cheapestAirlines: ["Philippine Airlines", "China Eastern", "Air Premia"], nonstop: null },
+      { from: "San Francisco (SFO)", kayak: "San-Francisco-SFO/Ho-Chi-Minh-City-SGN", monthly: [829, 863, 758, 778, 1059, 1254, 1185, 903, 805, 875, 902, 1263], cheapestMonth: "March · $758", priciestMonth: "December · $1,263", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["Singapore Airlines", "China Eastern", "Cathay Pacific"], nonstop: "Vietnam Airlines (not daily)" },
+      { from: "Seattle (SEA)", kayak: "Seattle-SEA/Ho-Chi-Minh-City-SGN", monthly: [886, 860, 781, 741, 850, 1333, 1189, 821, 775, 811, 840, 1217], cheapestMonth: "April · $741", priciestMonth: "June · $1,333", typical: "$762–$1,132", cheapestDay: "Monday", cheapestAirlines: ["Singapore Airlines", "Philippine Airlines", "Cathay Pacific"], nonstop: null },
+      { from: "New York (all airports)", kayak: "New-York-NYC/Ho-Chi-Minh-City-SGN", monthly: [937, 955, 939, 898, 1331, 1449, 1238, 1015, 920, 968, 894, 1506], cheapestMonth: "November · $894", priciestMonth: "December · $1,506", typical: "$871–$1,327", cheapestDay: "Tuesday", cheapestAirlines: ["Air Premia", "Air India", "Korean Air"], nonstop: null },
+      { from: "Dallas (DFW)", kayak: "Dallas-DFW/Ho-Chi-Minh-City-SGN", monthly: [1048, 1002, 866, 797, 1297, 1484, 1368, 968, 922, 926, 992, 1329], cheapestMonth: "April · $797", priciestMonth: "June · $1,484", typical: "$901–$1,358", cheapestDay: "Sunday", cheapestAirlines: ["Delta", "ANA", "Korean Air"], nonstop: null },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Ho-Chi-Minh-City-SGN", monthly: [1229, 1243, 1273, 1087, 1457, 1775, 1697, 1219, 1152, 1153, 1351, 1831], cheapestMonth: "April · $1,087", priciestMonth: "December · $1,831", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["Alaska Airlines", "Qatar Airways", "Starlux"], nonstop: null },
+      { from: "Chicago", kayak: "Chicago-CHI/Ho-Chi-Minh-City-SGN", monthly: [1054, 1070, 1035, 943, 1181, 1463, 1295, 979, 925, 953, 971, 1408], cheapestMonth: "September · $925", priciestMonth: "June · $1,463", typical: "$947–$1,301", cheapestDay: "Thursday", cheapestAirlines: ["ANA", "United Airlines", "Cathay Pacific"], nonstop: null },
+      { from: "Washington, DC", kayak: "Washington-WAS/Ho-Chi-Minh-City-SGN", monthly: [1207, 1225, 1156, 1104, 1441, 1431, 1360, 1164, 1157, 1126, 1126, 1386], cheapestMonth: "April · $1,104", priciestMonth: "May · $1,441", typical: "$1,090–$1,436", cheapestDay: "Tuesday", cheapestAirlines: ["Korean Air", "Qatar Airways", "Cathay Pacific"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "Are flights to Vietnam expensive around Tet?",
+        a: "In KAYAK's monthly data, February medians were within about 16% of March on every route, but a monthly median hides the peak week. Fares for the days just before Tet (February 6, 2027) usually sell out early, so book those dates as soon as you can.",
+      },
+      {
+        q: "Is summer a cheap time to fly to Ho Chi Minh City?",
+        a: "No. June was the most expensive or second most expensive month on all 8 routes, up to 86% above the cheapest month (Dallas: $1,484 in June vs $797 in April).",
+      },
+      {
+        q: "Which US city has the cheapest flights to Ho Chi Minh City?",
+        a: "Los Angeles had the lowest 12-month average median ($889), followed by Seattle ($925) and San Francisco ($956). Atlanta ($1,372) and Washington ($1,240) were the most expensive.",
+      },
+    ],
+  },
+  accra: {
+    checked: "2026-11-27",
+    summary:
+      "February is the cheapest month to fly from the US to Accra. On 6 of the 7 US routes we checked, February was cheapest, with median round-trip fares from $993 (Dallas) to $1,303 (Atlanta); Chicago was cheapest in January ($1,098). December is the most expensive month on 5 of the 7 routes, at 45–100% above the cheapest month, and July on the other 2.",
+    keyFacts: [
+      "Cheapest month: February on 6 of 7 routes",
+      "Priciest month: December on 5 of 7 routes ($1,685–$2,103 median round trip); July from Chicago and Los Angeles",
+      "Lowest monthly median: $993, Dallas in February",
+      "New York had the lowest 12-month average ($1,381); Atlanta the highest ($1,596) (our calculation)",
+      "Nonstop: Delta from New York JFK and United from Washington Dulles",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Accra-ACC", monthly: [1250, 1165, 1321, 1278, 1427, 1551, 1619, 1429, 1295, 1218, 1331, 1685], cheapestMonth: "February · $1,165", priciestMonth: "December · $1,685", typical: "$1,182–$1,762", cheapestDay: "Tuesday", cheapestAirlines: ["Kenya Airways", "Royal Air Maroc", "Ethiopian Air"], nonstop: "Delta, about 11h" },
+      { from: "Washington, DC", kayak: "Washington-WAS/Accra-ACC", monthly: [1316, 1161, 1210, 1189, 1432, 1738, 1712, 1486, 1404, 1603, 1352, 1776], cheapestMonth: "February · $1,161", priciestMonth: "December · $1,776", typical: "$1,204–$1,794", cheapestDay: "Wednesday", cheapestAirlines: ["Royal Air Maroc", "Turkish Airlines", "Egyptair"], nonstop: "United (Dulles)" },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Accra-ACC", monthly: [1310, 1303, 1560, 1489, 1683, 1857, 1624, 1401, 1499, 1762, 1561, 2103], cheapestMonth: "February · $1,303", priciestMonth: "December · $2,103", typical: null, cheapestDay: "Monday", cheapestAirlines: ["Ethiopian Air", "Qatar Airways", "Turkish Airlines"], nonstop: "Delta, seasonal" },
+      { from: "Chicago", kayak: "Chicago-CHI/Accra-ACC", monthly: [1098, 1295, 1273, 1315, 1572, 1664, 1798, 1611, 1384, 1524, 1677, 1720], cheapestMonth: "January · $1,098", priciestMonth: "July · $1,798", typical: "$1,299–$1,781", cheapestDay: "Wednesday", cheapestAirlines: ["Ethiopian Air", "Turkish Airlines", "British Airways"], nonstop: null },
+      { from: "Dallas (DFW)", kayak: "Dallas-DFW/Accra-ACC", monthly: [1423, 993, 1378, 1428, 1528, 1768, 1953, 1633, 1484, 1637, 1463, 1988], cheapestMonth: "February · $993", priciestMonth: "December · $1,988", typical: "$1,349–$1,830", cheapestDay: "Friday", cheapestAirlines: ["Qatar Airways", "Turkish Airlines", "United Airlines"], nonstop: null },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Accra-ACC", monthly: [1280, 1165, 1219, 1297, 1359, 1828, 2178, 1615, 1412, 1374, 1181, 1636], cheapestMonth: "February · $1,165", priciestMonth: "July · $2,178", typical: null, cheapestDay: "Saturday", cheapestAirlines: ["ITA Airways", "Royal Air Maroc", "Turkish Airlines"], nonstop: null },
+      { from: "Boston (BOS)", kayak: "Boston-BOS/Accra-ACC", monthly: [1395, 1107, 1351, 1485, 1546, 1764, 1690, 1561, 1471, 1595, 1571, 1878], cheapestMonth: "February · $1,107", priciestMonth: "December · $1,878", typical: "$1,355–$1,805", cheapestDay: "Tuesday", cheapestAirlines: ["TAP Air Portugal", "Kenya Airways", "United Airlines"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "How much more do December flights to Accra cost?",
+        a: "December's median was 45% above February from New York ($1,685 vs $1,165) and 100% above it from Dallas ($1,988 vs $993) in KAYAK's data. For Christmas and 'Detty December' trips, book early and compare one-stop routes through Casablanca, Addis Ababa, Istanbul and Europe.",
+      },
+      {
+        q: "Are summer flights to Accra expensive?",
+        a: "Yes. July was the most expensive month from Chicago and Los Angeles, and June–July were well above the cheapest month on every route we checked.",
+      },
+      {
+        q: "Which US city has the cheapest flights to Accra?",
+        a: "New York (12-month average $1,381) and Washington ($1,448), the two cities with nonstops. Dallas had the lowest single-month median, $993 in February.",
+      },
+    ],
+  },
+  "punta-cana": {
+    checked: "2026-11-27",
+    summary:
+      "January and February are the cheapest months to fly from the US to Punta Cana from most cities. On 5 of the 8 US routes we checked, the cheapest month was January or February, with median round-trip fares from $299 (Miami, February) to $498 (Atlanta, January). Hurricane season is not cheaper for flights: the most expensive month fell between June and November on 7 of the 8 routes.",
+    keyFacts: [
+      "Cheapest month: January or February on 5 of 8 routes",
+      "Priciest month: between June and November on 7 of 8 routes (Boston: December)",
+      "Lowest monthly median: $299, Miami in February",
+      "Miami had the lowest 12-month average ($373); Charlotte the highest ($786) despite its nonstop (our calculation)",
+      "Nonstop from all 8 cities we checked (New York about 4h 05m, Charlotte about 3h 31m)",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Punta-Cana-PUJ", monthly: [459, 492, 497, 556, 459, 554, 618, 639, 523, 540, 565, 596], cheapestMonth: "January · $459", priciestMonth: "August · $639", typical: "$417–$709", cheapestDay: "Tuesday", cheapestAirlines: ["JetBlue", "American Airlines", "United Airlines"], nonstop: "JetBlue, United Airlines and others, about 4h 05m" },
+      { from: "Boston (BOS)", kayak: "Boston-BOS/Punta-Cana-PUJ", monthly: [516, 589, 565, 659, 481, 614, 597, 606, 578, 638, 618, 685], cheapestMonth: "May · $481", priciestMonth: "December · $685", typical: "$480–$761", cheapestDay: "Monday", cheapestAirlines: ["American Airlines", "United Airlines", "JetBlue"], nonstop: "JetBlue, Delta and American Airlines, about 4h 13m" },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/Punta-Cana-PUJ", monthly: [327, 299, 314, 318, 342, 451, 442, 382, 462, 356, 343, 438], cheapestMonth: "February · $299", priciestMonth: "September · $462", typical: "$306–$496", cheapestDay: "Tuesday", cheapestAirlines: ["Frontier", "Arajet", "LATAM Airlines"], nonstop: "American and Arajet" },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Punta-Cana-PUJ", monthly: [498, 512, 535, 604, 570, 585, 544, 517, 590, 714, 686, 650], cheapestMonth: "January · $498", priciestMonth: "October · $714", typical: "$459–$730", cheapestDay: "Monday", cheapestAirlines: ["Frontier", "Air Canada", "JetBlue"], nonstop: "Delta and Frontier" },
+      { from: "Chicago", kayak: "Chicago-CHI/Punta-Cana-PUJ", monthly: [441, 467, 617, 548, 544, 661, 599, 522, 434, 534, 619, 597], cheapestMonth: "September · $434", priciestMonth: "June · $661", typical: "$417–$752", cheapestDay: "Monday", cheapestAirlines: ["JetBlue", "American Airlines", "United Airlines"], nonstop: "American, United and others" },
+      { from: "Philadelphia (PHL)", kayak: "Philadelphia-PHL/Punta-Cana-PUJ", monthly: [559, 490, 606, 582, 577, 619, 603, 549, 561, 611, 698, 606], cheapestMonth: "February · $490", priciestMonth: "November · $698", typical: "$484–$741", cheapestDay: "Tuesday", cheapestAirlines: ["Air Canada", "Frontier", "American Airlines"], nonstop: "American and Frontier" },
+      { from: "Dallas (DFW)", kayak: "Dallas-DFW/Punta-Cana-PUJ", monthly: [741, 452, 728, 707, 675, 681, 656, 629, 545, 814, 1079, 786], cheapestMonth: "February · $452", priciestMonth: "November · $1,079", typical: null, cheapestDay: "Saturday", cheapestAirlines: ["Frontier", "Air Canada", "Avianca"], nonstop: "American" },
+      { from: "Charlotte (CLT)", kayak: "Charlotte-CLT/Punta-Cana-PUJ", monthly: [739, 738, 740, 734, 779, 754, 748, 855, 845, 839, 852, 808], cheapestMonth: "April · $734", priciestMonth: "August · $855", typical: "$637–$959", cheapestDay: "Monday", cheapestAirlines: ["Air Canada", "Frontier", "JetBlue"], nonstop: "American Airlines, about 3h 31m" },
+    ],
+    faqs: [
+      {
+        q: "Is hurricane season a cheap time to fly to Punta Cana?",
+        a: "Not for flights. In KAYAK's data the most expensive month fell between June and November on 7 of the 8 routes we checked, while January–February was cheapest on 5. Resort rates may drop in the low season, but airfares usually don't.",
+      },
+      {
+        q: "What's the cheapest month to fly to Punta Cana from New York?",
+        a: "January and May, both $459 median round trip in KAYAK's data. August was the most expensive at $639.",
+      },
+      {
+        q: "Which US city has the cheapest flights to Punta Cana?",
+        a: "Miami, with a 12-month average median of $373 and $299 in February. Dallas had the widest swing: $452 in February vs $1,079 in November.",
+      },
+    ],
+  },
+  "san-jose-costa-rica": {
+    checked: "2026-11-27",
+    summary:
+      "January and February are the cheapest months to fly from the US to Costa Rica's San José airport. On 6 of the 7 US routes we checked, the cheapest month was January or February, with median round-trip fares from $264 (Miami, February) to $494 (Chicago, February); New York was cheapest in May ($461). The most expensive month was in July–October on 4 routes and December on 3.",
+    keyFacts: [
+      "Cheapest month: January or February on 6 of 7 routes",
+      "Priciest month: July–October on 4 routes, December on 3",
+      "Lowest monthly median: $264, Miami in February",
+      "Miami had the lowest 12-month average ($389); Dallas the highest ($649) (our calculation)",
+      "Nonstop from all 7 cities we checked (Miami about 3h 05m, Los Angeles about 5h 44m); some are seasonal",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/San-Jose-SJO", monthly: [466, 508, 519, 499, 461, 585, 656, 676, 581, 548, 510, 668], cheapestMonth: "May · $461", priciestMonth: "August · $676", typical: "$419–$762", cheapestDay: "Tuesday", cheapestAirlines: ["Avianca", "Copa Airlines", "American Airlines"], nonstop: "United Airlines and JetBlue, about 5h 28m" },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/San-Jose-SJO", monthly: [318, 264, 350, 315, 338, 375, 462, 390, 435, 420, 483, 515], cheapestMonth: "February · $264", priciestMonth: "December · $515", typical: "$299–$505", cheapestDay: "Friday", cheapestAirlines: ["Avianca", "GOL", "Delta"], nonstop: "American Airlines and Avianca, about 3h 05m" },
+      { from: "Houston", kayak: "Houston-HOU/San-Jose-SJO", monthly: [492, 585, 623, 575, 575, 655, 832, 566, 575, 615, 753, 643], cheapestMonth: "January · $492", priciestMonth: "July · $832", typical: "$539–$733", cheapestDay: "Sunday", cheapestAirlines: ["American Airlines", "Southwest", "GOL"], nonstop: "United and Southwest" },
+      { from: "Dallas (DFW)", kayak: "Dallas-DFW/San-Jose-SJO", monthly: [435, 439, 577, 449, 599, 684, 689, 744, 665, 869, 791, 850], cheapestMonth: "January · $435", priciestMonth: "October · $869", typical: "$414–$873", cheapestDay: "Wednesday", cheapestAirlines: ["Avianca", "Frontier", "Air Canada"], nonstop: "American Airlines and Frontier, about 4h 10m" },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/San-Jose-SJO", monthly: [484, 436, 549, 505, 484, 607, 627, 608, 621, 672, 639, 778], cheapestMonth: "February · $436", priciestMonth: "December · $778", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["Southwest", "Avianca", "JetBlue"], nonstop: "Alaska Airlines, United Airlines and Delta, about 5h 44m" },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/San-Jose-SJO", monthly: [375, 442, 439, 530, 575, 617, 675, 634, 648, 564, 620, 647], cheapestMonth: "January · $375", priciestMonth: "July · $675", typical: null, cheapestDay: "Thursday", cheapestAirlines: ["Frontier", "JetBlue", "Southwest"], nonstop: "Delta" },
+      { from: "Chicago", kayak: "Chicago-CHI/San-Jose-SJO", monthly: [498, 494, 650, 528, 538, 610, 627, 591, 550, 512, 562, 719], cheapestMonth: "February · $494", priciestMonth: "December · $719", typical: "$472–$755", cheapestDay: "Thursday", cheapestAirlines: ["Avianca", "Delta", "American Airlines"], nonstop: "Seasonal" },
+    ],
+    faqs: [
+      {
+        q: "Is the green season cheaper for flights to Costa Rica?",
+        a: "Not usually. In KAYAK's data the cheapest months were January–February, in the dry season, on 6 of the 7 routes. July to October was the most expensive period on 4 routes.",
+      },
+      {
+        q: "Is it cheaper to fly into San José or Liberia?",
+        a: "It depends on your city and dates, so compare both. Choose by where you're staying: the drive between SJO and Liberia (LIR) can take over 5 hours.",
+      },
+      {
+        q: "Which US city has the cheapest flights to San José, Costa Rica?",
+        a: "Miami, with a 12-month average median of $389 and $264 in February. Atlanta had the next-lowest single month, $375 in January.",
+      },
+    ],
+  },
+  rome: {
+    checked: "2026-11-27",
+    summary:
+      "January and February are the cheapest months to fly from the US to Rome. On all 8 US routes we checked, the cheapest month was January or February, with median round-trip fares from $539 (New York, February) to $842 (Atlanta, February). June is the most expensive month on 6 of the 8 routes, costing 85–168% more than the cheapest month.",
+    keyFacts: [
+      "Cheapest month: January or February on all 8 routes",
+      "Priciest month: June on 6 of 8 routes (New York: December; Chicago: September)",
+      "Lowest monthly median: $539, New York in February",
+      "New York had the lowest 12-month average ($737); Philadelphia the highest ($1,160) (our calculation)",
+      "Nonstop: ITA Airways, Delta and United from New York (about 8h 22m); ITA from Miami and Los Angeles",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Rome-ROM", monthly: [543, 539, 669, 647, 764, 967, 862, 723, 757, 713, 656, 1007], cheapestMonth: "February · $539", priciestMonth: "December · $1,007", typical: "$601–$999", cheapestDay: "Monday", cheapestAirlines: ["Iberia", "Icelandair", "TAP Air Portugal"], nonstop: "ITA Airways, Delta and United Airlines, about 8h 22m" },
+      { from: "Boston (BOS)", kayak: "Boston-BOS/Rome-ROM", monthly: [608, 604, 643, 726, 852, 1130, 885, 759, 770, 766, 709, 845], cheapestMonth: "February · $604", priciestMonth: "June · $1,130", typical: "$643–$1,016", cheapestDay: "Monday", cheapestAirlines: ["TAP Air Portugal", "Scandinavian Airlines", "Icelandair"], nonstop: "ITA Airways and Delta" },
+      { from: "Chicago", kayak: "Chicago-CHI/Rome-ROM", monthly: [596, 635, 787, 791, 953, 981, 917, 771, 1021, 915, 770, 890], cheapestMonth: "January · $596", priciestMonth: "September · $1,021", typical: "$726–$1,106", cheapestDay: "Sunday", cheapestAirlines: ["Iberia", "British Airways", "Aer Lingus"], nonstop: "United (plus seasonal flights)" },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Rome-ROM", monthly: [648, 637, 717, 706, 894, 1180, 1040, 783, 870, 826, 784, 1002], cheapestMonth: "February · $637", priciestMonth: "June · $1,180", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["TAP Air Portugal", "British Airways", "Royal Air Maroc"], nonstop: "ITA Airways, about 12h" },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/Rome-ROM", monthly: [589, 589, 699, 667, 896, 1181, 1082, 789, 868, 822, 742, 980], cheapestMonth: "January · $589", priciestMonth: "June · $1,181", typical: "$693–$1,119", cheapestDay: "Monday", cheapestAirlines: ["Air Canada", "British Airways", "Iberia"], nonstop: "ITA Airways, about 9h 54m" },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Rome-ROM", monthly: [965, 842, 949, 1145, 1514, 1563, 1203, 1052, 1180, 1022, 972, 1275], cheapestMonth: "February · $842", priciestMonth: "June · $1,563", typical: "$858–$1,562", cheapestDay: "Monday", cheapestAirlines: ["Scandinavian Airlines", "TAP Air Portugal", "Turkish Airlines"], nonstop: "Delta" },
+      { from: "Dallas (DFW)", kayak: "Dallas-DFW/Rome-ROM", monthly: [676, 709, 922, 982, 1417, 1813, 1449, 972, 1190, 1129, 1045, 1258], cheapestMonth: "January · $676", priciestMonth: "June · $1,813", typical: "$847–$1,478", cheapestDay: "Monday", cheapestAirlines: ["British Airways", "Finnair", "Iberia"], nonstop: "American" },
+      { from: "Philadelphia (PHL)", kayak: "Philadelphia-PHL/Rome-ROM", monthly: [796, 793, 1027, 956, 1320, 1750, 1436, 936, 1225, 1244, 949, 1490], cheapestMonth: "February · $793", priciestMonth: "June · $1,750", typical: "$911–$1,488", cheapestDay: "Tuesday", cheapestAirlines: ["American Airlines", "British Airways", "United Airlines"], nonstop: "American" },
+    ],
+    faqs: [
+      {
+        q: "How much more does summer cost for flights to Rome?",
+        a: "June's median was 85–168% above the cheapest month on the 6 routes where June was priciest, for example $1,180 vs $637 from Los Angeles and $1,813 vs $676 from Dallas (KAYAK data, our calculation).",
+      },
+      {
+        q: "Is autumn a cheap time to fly to Rome?",
+        a: "Cheaper than summer, not cheapest. October medians were 21–67% above each route's cheapest month, but well below June on most routes.",
+      },
+      {
+        q: "Which US city has the cheapest flights to Rome?",
+        a: "New York (12-month average $737, $539 in February), then Boston ($775). Atlanta and Philadelphia were the most expensive gateways in this data.",
+      },
+    ],
+  },
+  istanbul: {
+    checked: "2026-11-27",
+    summary:
+      "February is the cheapest month to fly from the US to Istanbul. On 5 of the 6 US routes we checked, February was cheapest, with median round-trip fares from $686 (New York) to $818 (San Francisco); Chicago was cheapest in March ($857). June is the most expensive month on all 6 routes, at 72–99% above the cheapest month.",
+    keyFacts: [
+      "Cheapest month: February on 5 of 6 routes",
+      "Priciest month: June on all 6 routes ($1,292–$1,480 median round trip)",
+      "Lowest monthly median: $686, New York in February",
+      "New York had the lowest 12-month average ($942); San Francisco the highest ($1,105) (our calculation)",
+      "Nonstop: Turkish Airlines from about 14 US airports (Washington about 9h 51m, Los Angeles about 13h 18m)",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Istanbul-IST", monthly: [754, 686, 759, 794, 1048, 1292, 1222, 1051, 890, 869, 852, 1081], cheapestMonth: "February · $686", priciestMonth: "June · $1,292", typical: null, cheapestDay: "Sunday", cheapestAirlines: ["British Airways", "Lufthansa", "Qatar Airways"], nonstop: "Turkish Airlines" },
+      { from: "Chicago", kayak: "Chicago-CHI/Istanbul-IST", monthly: [939, 864, 857, 945, 1320, 1474, 1410, 1062, 1007, 1023, 1005, 1261], cheapestMonth: "March · $857", priciestMonth: "June · $1,474", typical: "$885–$1,362", cheapestDay: "Wednesday", cheapestAirlines: ["LOT", "United Airlines", "Turkish Airlines"], nonstop: "Turkish Airlines" },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Istanbul-IST", monthly: [737, 702, 758, 785, 1195, 1397, 1342, 1121, 1101, 1025, 958, 1281], cheapestMonth: "February · $702", priciestMonth: "June · $1,397", typical: "$787–$1,321", cheapestDay: "Tuesday", cheapestAirlines: ["Lufthansa", "Royal Air Maroc", "British Airways"], nonstop: "Turkish Airlines, about 13h 18m" },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/Istanbul-IST", monthly: [808, 760, 937, 942, 1208, 1442, 1347, 1093, 1061, 1019, 982, 1151], cheapestMonth: "February · $760", priciestMonth: "June · $1,442", typical: "$880–$1,339", cheapestDay: "Tuesday", cheapestAirlines: ["Air France", "Lufthansa", "British Airways"], nonstop: "Turkish Airlines, about 11h 26m" },
+      { from: "Washington, DC", kayak: "Washington-WAS/Istanbul-IST", monthly: [785, 736, 877, 860, 1096, 1343, 1231, 1038, 954, 999, 980, 1205], cheapestMonth: "February · $736", priciestMonth: "June · $1,343", typical: "$827–$1,266", cheapestDay: "Wednesday", cheapestAirlines: ["Lufthansa", "United Airlines", "British Airways"], nonstop: "Turkish Airlines, about 9h 51m" },
+      { from: "San Francisco (SFO)", kayak: "San-Francisco-SFO/Istanbul-IST", monthly: [918, 818, 943, 882, 1214, 1480, 1374, 1140, 1112, 1076, 1146, 1160], cheapestMonth: "February · $818", priciestMonth: "June · $1,480", typical: null, cheapestDay: "Wednesday", cheapestAirlines: ["Lufthansa", "United Airlines", "British Airways"], nonstop: "Turkish Airlines" },
+    ],
+    faqs: [
+      {
+        q: "How much more do summer flights to Istanbul cost?",
+        a: "June was the priciest month on every route we checked, 72–99% above the cheapest month: for example $1,397 vs $702 from Los Angeles (KAYAK data, our calculation).",
+      },
+      {
+        q: "Is autumn a good time to fly to Istanbul?",
+        a: "For value, yes. September–November medians were well below June on all 6 routes, and the weather is usually mild.",
+      },
+      {
+        q: "Which US city has the cheapest flights to Istanbul?",
+        a: "New York (12-month average $942, $686 in February), then Washington ($1,009) and Los Angeles ($1,034).",
       },
     ],
   },
