@@ -147,7 +147,7 @@ export const destinations: Destination[] = [
     cheapest:
       "February to April is cheapest from most US cities. December is the most expensive month, and June and July are also expensive because of US summer holidays.",
     fromUs:
-      "In KAYAK's route data, Air India is the only nonstop option from the US, from the New York area (JFK and Newark), at about 14h 45m. From every other US city you connect, usually in Europe (Copenhagen, Paris, Amsterdam, Istanbul) or the Gulf (Dubai, Doha, Abu Dhabi). The cheapest fares are often on one-stop carriers such as Scandinavian Airlines, Emirates, Qatar Airways and Royal Jordanian.",
+      "In KAYAK's route data, nonstop flights to Mumbai leave from the New York area (JFK and Newark), including Air India, at about 14h 45m. Airline schedules change, so your search shows the nonstops operating on your dates. From every other US city you connect, usually in Europe (Copenhagen, Paris, Amsterdam, Istanbul) or the Gulf (Dubai, Doha, Abu Dhabi). The cheapest fares are often on one-stop carriers such as Scandinavian Airlines, Emirates, Qatar Airways and Royal Jordanian.",
     transfer:
       "Prepaid taxis and app cabs run from Terminal 2. Allow extra time at rush hour; traffic into South Mumbai can be heavy.",
     tips: [
@@ -247,6 +247,187 @@ export const destinations: Destination[] = [
     tips: [
       "For December travel, compare connections through different hubs; prices can vary widely.",
       "Check your baggage allowance; many fares to Nigeria include two checked bags, but not all.",
+    ],
+  },
+  {
+    slug: "manila",
+    city: "Manila",
+    country: "Philippines",
+    code: "MNL",
+    region: "Asia",
+    airports: [
+      { code: "MNL", name: "Ninoy Aquino International (NAIA)", note: "Philippine Airlines uses Terminal 1; United uses Terminal 3. Terminal assignments changed in 2026, so check your ticket." },
+      { code: "CRK", name: "Clark International", note: "About 80 km north of Manila; some Asian connections, but no nonstop flights from the US." },
+    ],
+    intro:
+      "Manila is the main gateway for Filipino-American families and for travellers heading on to Cebu, Boracay and Palawan. The US–Philippines route is one of the busiest long-haul markets from the West Coast, and nonstop choices are growing: Philippine Airlines added Chicago in November 2026, United now flies San Francisco twice daily, and Delta plans Los Angeles from March 2027.",
+    bestTime:
+      "December to May is the dry season (PAGASA). December to February is the coolest and most comfortable; March to May is hot and dry. June to November is the rainy season, when most typhoons hit.",
+    cheapest:
+      "In KAYAK's fare data, March–April or September is the cheapest time to fly from every US city we checked. December is the most expensive month from all of them, and June is the second most expensive.",
+    fromUs:
+      "Philippine Airlines flies nonstop to Manila from Los Angeles, San Francisco, Seattle, New York JFK, Chicago O'Hare and Honolulu, and United flies nonstop from San Francisco (about 15 hours). Delta's daily Los Angeles–Manila flight is scheduled to start on March 27, 2027. From other US cities you usually connect in Seoul, Tokyo, Taipei, Hong Kong or Singapore, or on a Philippine Airlines domestic US connection to one of its gateways.",
+    transfer:
+      "Grab and metered taxis run from all NAIA terminals; at Terminal 3 they use a central pickup hub in the car park. UBE Express point-to-point buses link the terminals with Makati, Manila, Pasay, Quezon City and the PITX transport hub. Manila traffic is heavy, so allow extra time.",
+    tips: [
+      "Register on the official eTravel site (etravel.gov.ph) within 72 hours before arrival. It's free; ignore look-alike sites that charge a fee.",
+      "Former Filipino citizens can enter under the Balikbayan privilege (one year visa-free). Carry proof such as an old Philippine passport.",
+      "For December, compare Philippine Airlines and United nonstops with one-stop fares via Seoul, Tokyo or Taipei; one-stop fares are often lower on peak dates.",
+    ],
+  },
+  {
+    slug: "ho-chi-minh-city",
+    city: "Ho Chi Minh City",
+    country: "Vietnam",
+    code: "SGN",
+    region: "Asia",
+    airports: [
+      { code: "SGN", name: "Tan Son Nhat International", note: "International flights use Terminal 2, inside the city." },
+      { code: "LTH", name: "Long Thanh International (new)", note: "About 40 km east of the city. Long-haul flights are planned to move here during 2027, so check which airport your ticket shows." },
+    ],
+    intro:
+      "Ho Chi Minh City (Saigon) is Vietnam's largest city and the main arrival point for Vietnamese-American families, especially from California, Texas and the Pacific Northwest. Only one airline flies nonstop from the US, so most fares are one-stop through an Asian hub, and comparing those hubs is where the savings are.",
+    bestTime:
+      "The dry season in southern Vietnam runs from about November to April. Tet (Lunar New Year) falls on February 6, 2027; flights around Tet sell out early and many businesses close for the holiday week.",
+    cheapest:
+      "In KAYAK's fare data, March and April are the cheapest months from 6 of the 8 US cities we checked. June or December is the most expensive month from 7 of the 8.",
+    fromUs:
+      "Vietnam Airlines flies nonstop from San Francisco, about 15 hours, but not every day. From other US cities you connect: EVA Air, China Airlines and Starlux via Taipei, Korean Air via Seoul, Japan Airlines and ANA via Tokyo, Cathay Pacific and United via Hong Kong, Philippine Airlines via Manila and Singapore Airlines via Singapore.",
+    transfer:
+      "City buses 109 and 152 leave from the bus station in front of the international terminal, and Grab and metered taxis run from the arrivals area. If your flight uses the new Long Thanh airport, allow much more time to reach the city.",
+    tips: [
+      "US citizens need a visa. Apply for the e-visa (up to 90 days, single or multiple entry) only on the official portal, evisa.gov.vn; many look-alike sites add fees.",
+      "Check the airport code on your ticket: SGN and the new LTH are both 'Ho Chi Minh City' but are about 46 km apart.",
+      "Keep connections on one ticket so the airline rebooks you if a long-haul flight is late.",
+    ],
+  },
+  {
+    slug: "accra",
+    city: "Accra",
+    country: "Ghana",
+    code: "ACC",
+    region: "Africa",
+    airports: [
+      { code: "ACC", name: "Kotoka International", note: "International flights use Terminal 3." },
+    ],
+    intro:
+      "Accra is the gateway to Ghana and one of the most popular West African destinations for Ghanaian-Americans, heritage travellers and December festival-goers. There are a few nonstop flights from the East Coast and many one-stop options through Europe, North Africa, the Gulf and Addis Ababa.",
+    bestTime:
+      "November to March is the main dry season, with dusty Harmattan winds from about December to February. December is the busiest month, with Christmas, New Year and 'Detty December' events drawing large crowds from the US and UK.",
+    cheapest:
+      "In KAYAK's fare data, February is the cheapest month to fly to Accra from 6 of the 7 US cities we checked (Chicago was cheapest in January). December is the most expensive month from 5 of the 7, and July from the other 2.",
+    fromUs:
+      "Delta flies nonstop from New York JFK (about 11 hours) and United from Washington Dulles. Delta has also flown Atlanta–Accra seasonally around the holidays. From other cities you connect, often in Casablanca (Royal Air Maroc), Addis Ababa (Ethiopian), Istanbul (Turkish), Cairo (Egyptair), Doha (Qatar Airways) or a European hub.",
+    transfer:
+      "Uber and Bolt both serve Kotoka airport, and there's an official taxi rank outside arrivals. Agree the fare before you get into a taxi, and expect heavy traffic in central Accra.",
+    tips: [
+      "US citizens need a visa before travel; apply through the Ghana Immigration Service e-visa portal (evisa.immigration.gov.gh) or the embassy, and check the CDC page for the yellow fever certificate requirement.",
+      "For mid-December to early January, book early; diaspora demand pushes December fares far above the rest of the year.",
+      "Check the checked-bag allowance on your exact fare; it varies by airline and fare type on Africa routes.",
+    ],
+  },
+  {
+    slug: "punta-cana",
+    city: "Punta Cana",
+    country: "Dominican Republic",
+    code: "PUJ",
+    region: "Americas",
+    airports: [
+      { code: "PUJ", name: "Punta Cana International", note: "The Dominican Republic's busiest airport, close to the Bávaro resort area." },
+      { code: "SDQ", name: "Santo Domingo Las Américas", note: "The capital's airport; sometimes cheaper, but a long drive to the eastern resorts." },
+    ],
+    intro:
+      "Punta Cana is the Caribbean's big all-inclusive resort area and the Dominican Republic's busiest airport. Nonstop flights leave from dozens of US cities, and budget airlines compete with the big carriers, so it's one of the easiest beach trips to price-compare from the US.",
+    bestTime:
+      "November to March is the cooler, drier period. May to October is hot and humid. Atlantic hurricane season runs June 1 to November 30 (NOAA), and sargassum seaweed tends to wash up in spring and summer.",
+    cheapest:
+      "In KAYAK's fare data, January or February is the cheapest month from 5 of the 8 US cities we checked. Despite lower hotel rates, summer and autumn are not cheaper for flights: the most expensive month fell between June and November from 7 of the 8 cities.",
+    fromUs:
+      "Nonstops run from New York, Newark, Boston, Miami, Atlanta, Charlotte, Philadelphia, Chicago, Dallas, Houston, Washington, Orlando and many more, on American, Delta, United, JetBlue, Southwest, Frontier, Arajet and Breeze. Several routes, such as Boston, Detroit and Minneapolis, are winter-seasonal for some airlines.",
+    transfer:
+      "The main Bávaro resort strip is a short drive from the airport. Most resorts offer pre-booked transfers; taxis wait outside arrivals. Resorts further north, such as Uvero Alto, take longer to reach.",
+    tips: [
+      "The US$10 tourist card is already included in your airfare. Complete the free official E-Ticket at eticket.migracion.gob.do before you fly.",
+      "On budget airlines, add bag fees before comparing; a cheap base fare plus two bags can cost more than a full-service ticket.",
+      "If you're staying in Santo Domingo or the south coast, compare fares into SDQ as well.",
+    ],
+  },
+  {
+    slug: "san-jose-costa-rica",
+    city: "San José, Costa Rica",
+    country: "Costa Rica",
+    code: "SJO",
+    region: "Americas",
+    airports: [
+      { code: "SJO", name: "Juan Santamaría International", note: "In Alajuela, about 20 km northwest of downtown San José. Best for the Central Valley, Arenal, the central Pacific and the Caribbean coast." },
+      { code: "LIR", name: "Guanacaste (Liberia)", note: "Best for Tamarindo and the Guanacaste beaches; the drive between the two airports can take over 5 hours." },
+    ],
+    intro:
+      "San José's Juan Santamaría airport is Costa Rica's main gateway, used for trips to the volcanoes, rainforests and both coasts. Nonstop flights leave from most large US hubs, and Miami, Houston and Dallas usually have the most choice.",
+    bestTime:
+      "December to April is the dry season. May to November is the 'green season', with September and October the wettest months around San José. The Caribbean side is wetter and more humid than the Pacific side.",
+    cheapest:
+      "In KAYAK's fare data, January or February is the cheapest month from 6 of the 7 US cities we checked (New York was cheapest in May). The most expensive months were July to October or December.",
+    fromUs:
+      "United, American, Delta, JetBlue, Southwest, Alaska, Frontier, Avianca and others fly nonstop to SJO from cities including Miami, Fort Lauderdale, Houston, Dallas, Atlanta, Charlotte, Newark, New York JFK, Los Angeles and Orlando. Many routes, including Chicago and Denver, are seasonal.",
+    transfer:
+      "Official airport taxis are orange; regular red taxis also operate. A 24-hour public bus runs to downtown San José. Ride-hailing exists but its airport status is unsettled, so check before relying on it.",
+    tips: [
+      "Immigration may ask for a return or onward ticket and proof of funds; book a round trip. See visitcostarica.com for current entry rules.",
+      "Fly into the airport closest to where you're staying: SJO for most of the country, Liberia (LIR) for Guanacaste beaches.",
+      "Book dry-season trips early; several US routes only fly in the dry season, so there are fewer seats at other times.",
+    ],
+  },
+  {
+    slug: "rome",
+    city: "Rome",
+    country: "Italy",
+    code: "FCO",
+    region: "Europe",
+    airports: [
+      { code: "FCO", name: "Fiumicino (Leonardo da Vinci)", note: "All nonstop flights from the US land here." },
+      { code: "CIA", name: "Ciampino", note: "Mainly low-cost flights within Europe." },
+    ],
+    intro:
+      "Rome is one of the most popular European trips from the US, with nonstop flights from more than a dozen US cities. ITA Airways, Delta, United and American all fly the route, and one-stop fares through other European hubs are often cheaper, so it pays to compare both.",
+    bestTime:
+      "April–May and September–October usually bring the best weather and fewer crowds. June to August is hot and busy.",
+    cheapest:
+      "In KAYAK's fare data, January or February is the cheapest month to fly to Rome from all 8 US cities we checked. June is the most expensive month from 6 of the 8.",
+    fromUs:
+      "ITA Airways flies nonstop from New York JFK, Boston, Washington Dulles, Miami, Los Angeles, San Francisco and Houston. Delta flies from Atlanta, Boston, Detroit, Minneapolis and New York JFK; United from Newark, Chicago and Washington Dulles; American from Dallas and Philadelphia. Several routes, including Charlotte, Denver and Seattle, are summer-seasonal. New York–Rome takes about 8 hours 20 minutes.",
+    transfer:
+      "The Leonardo Express train runs nonstop from Fiumicino to Roma Termini in about 32 minutes for €14 (ADR). Official white taxis charge a fixed €55 to anywhere inside the Aurelian Walls.",
+    tips: [
+      "US citizens can stay up to 90 days in any 180-day period in the Schengen area; the EU's Entry/Exit System now records fingerprints and a photo at the border.",
+      "ETIAS is not yet in operation; check travel-europe.europa.eu for the start date before you travel.",
+      "Compare nonstops with one-stop fares via London, Madrid, Lisbon or Reykjavik; one-stops were the cheapest airlines on most routes we checked.",
+    ],
+  },
+  {
+    slug: "istanbul",
+    city: "Istanbul",
+    country: "Türkiye",
+    code: "IST",
+    region: "Europe",
+    airports: [
+      { code: "IST", name: "Istanbul Airport", note: "On the European side; all nonstop flights from the US land here." },
+      { code: "SAW", name: "Sabiha Gökçen", note: "On the Asian side; mainly short- and medium-haul flights." },
+    ],
+    intro:
+      "Istanbul is both a destination and one of the world's biggest connecting hubs. Turkish Airlines flies nonstop from more US cities than any other foreign airline, and one-stop fares through European hubs keep prices competitive.",
+    bestTime:
+      "April–May and September–October usually bring the most pleasant weather. July and August are hot and crowded.",
+    cheapest:
+      "In KAYAK's fare data, February is the cheapest month to fly to Istanbul from 5 of the 6 US cities we checked (Chicago was cheapest in March). June is the most expensive month from all 6.",
+    fromUs:
+      "Turkish Airlines flies nonstop to Istanbul Airport from about 14 US airports, including New York JFK, Newark, Boston, Washington Dulles, Chicago, Atlanta, Miami, Houston, Dallas, Denver, Detroit, Los Angeles, San Francisco and Seattle; some routes fly fewer times a week in winter. New York–Istanbul takes about 10 hours.",
+    transfer:
+      "The M11 metro links Istanbul Airport with Gayrettepe in about 30 minutes, and Havaist buses run to Taksim and other districts. Taxis are available outside arrivals; journeys into the old city can take an hour or more in traffic.",
+    tips: [
+      "US citizens with ordinary passports don't need a visa for tourist stays of up to 90 days in 180 (Turkish Ministry of Foreign Affairs). Your passport must be valid at least 60 days beyond your stay.",
+      "Flying on to Asia, Africa or the Middle East? Turkish Airlines' free Touristanbul city tour is open to international transfer passengers with a 6–24 hour layover.",
+      "Compare the Turkish Airlines nonstop with one-stop fares on Lufthansa, British Airways or Air France; they were among the cheapest airlines on 5 of the 6 routes we checked.",
     ],
   },
 ];
