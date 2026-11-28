@@ -430,4 +430,305 @@ export const destinations: Destination[] = [
       "Compare the Turkish Airlines nonstop with one-stop fares on Lufthansa, British Airways or Air France; they were among the cheapest airlines on 5 of the 6 routes we checked.",
     ],
   },
+  {
+    slug: "amman",
+    city: "Amman",
+    country: "Jordan",
+    code: "AMM",
+    region: "Middle East",
+    airports: [
+      { code: "AMM", name: "Queen Alia International", note: "About 35 km south of central Amman; all flights from the US land here." },
+    ],
+    intro:
+      "Amman is Jordan's capital and the gateway to Petra, Wadi Rum and the Dead Sea. It is also a major family-travel route for Jordanian and Palestinian Americans. Royal Jordanian is the only airline flying nonstop from the US; most other fares connect in Europe, Istanbul or the Gulf.",
+    bestTime:
+      "March to May and September to November bring the most comfortable weather. Summers are hot, and winters are cool with some rain.",
+    cheapest:
+      "In KAYAK's fare data, January to March is the cheapest time to fly to Amman from all 7 US cities we checked. June is the most expensive month from 5 of the 7.",
+    fromUs:
+      "Royal Jordanian flies nonstop from New York JFK, Chicago O'Hare, Detroit, Washington Dulles and Dallas–Fort Worth (Dallas launched in May 2026). Detroit–Amman takes about 11h 25m and Chicago–Amman about 11h 45m. From other US cities, one-stop routes via Istanbul, Frankfurt, Doha or Abu Dhabi are common.",
+    transfer:
+      "The Sariyah Airport Express bus runs between the airport and Amman around the clock, roughly every 30–60 minutes, for about JOD 3.30. Airport taxis charge set fares by zone; agree the price before you leave.",
+    tips: [
+      "US citizens can get a visa on arrival (JOD 40). A Jordan Pass bought before you fly covers that fee if you stay at least 3 days, and includes Petra entry.",
+      "The US State Department rated Jordan Level 3 (Reconsider Travel) in October 2026; check travel.state.gov before you book.",
+      "Royal Jordanian schedules changed several times in 2026 because of regional airspace closures, so confirm your flight a few days before departure.",
+    ],
+  },
+  {
+    slug: "doha",
+    city: "Doha",
+    country: "Qatar",
+    code: "DOH",
+    region: "Middle East",
+    airports: [
+      { code: "DOH", name: "Hamad International", note: "Qatar Airways hub, with a Metro Red Line station." },
+    ],
+    intro:
+      "Doha is Qatar's capital and Qatar Airways' hub, so it is both a destination and one of the busiest connecting points between the US and India, the Gulf, Africa and Asia. Qatar Airways is the only airline flying nonstop from the US.",
+    bestTime:
+      "November to March is the best time to visit; summers are extremely hot.",
+    cheapest:
+      "In KAYAK's fare data, February, March or September is the cheapest month to fly to Doha from the 4 US cities with complete data. December is the most expensive month from 2 of the 4.",
+    fromUs:
+      "Qatar Airways flies nonstop from about a dozen US cities, including New York JFK, Washington Dulles, Chicago, Dallas–Fort Worth, Houston, Miami, Los Angeles, Atlanta, Boston, Seattle and Philadelphia (Philadelphia returned in August 2026). New York–Doha takes about 12h 10m. Qatar's airspace was closed for part of 2026 and flights now run on approved routes, so check your schedule.",
+    transfer:
+      "Doha Metro's Red Line runs from the airport to the city for QAR 2 plus a QAR 10 travel card (from 5am, and 9am on Fridays). Karwa taxis start at QAR 25 plus about QAR 1.6 per km.",
+    tips: [
+      "US citizens can enter Qatar without a visa; check the length of stay at visitqatar.com before you travel.",
+      "The US State Department rated Qatar Level 3 (Reconsider Travel) in October 2026; check travel.state.gov before you book.",
+      "Flying on to India, Africa or Asia? A stopover in Doha can split a long trip, and Qatar Airways often has the cheapest one-stop fares on those routes.",
+    ],
+  },
+  {
+    slug: "tel-aviv",
+    city: "Tel Aviv",
+    country: "Israel",
+    code: "TLV",
+    region: "Middle East",
+    airports: [
+      { code: "TLV", name: "Ben Gurion International", note: "Most international flights use Terminal 3." },
+    ],
+    intro:
+      "Tel Aviv is Israel's beach city and the gateway for trips to Jerusalem. US airlines cut and restored service several times in 2025–2026, so schedules change often and fares have been higher than usual; compare nonstops with one-stop routes through Europe.",
+    bestTime:
+      "Spring (March–May) and autumn (September–November) have the most comfortable weather. Summer is hot and humid.",
+    cheapest:
+      "In KAYAK's fare data, January or February is the cheapest month to fly to Tel Aviv from 6 of the 8 US cities we checked. June is the most expensive month from 4 of the 8.",
+    fromUs:
+      "In late 2026, Delta flies daily from New York JFK and United twice daily from Newark. El Al flies from New York, Newark, Miami, Los Angeles, Boston and San Francisco, and plans more flights in summer 2027. American's JFK flights are suspended, and Delta's Atlanta and Boston flights are paused. New York–Tel Aviv takes about 10–11 hours.",
+    transfer:
+      "Israel Railways trains run from the airport station to Tel Aviv in about 15–20 minutes, except on Shabbat (Friday evening to Saturday evening). Metered taxis and shared sherut vans also run.",
+    tips: [
+      "US citizens must get an ETA-IL online before flying (NIS 25, valid up to 2 years).",
+      "The US State Department rated Israel Level 3 (Reconsider Travel) in October 2026; check travel.state.gov before you book.",
+      "With schedules changing often, booking with a flexible fare or through an agent who can rebook you can save money if a flight is cancelled.",
+    ],
+  },
+  {
+    slug: "cairo",
+    city: "Cairo",
+    country: "Egypt",
+    code: "CAI",
+    region: "Africa",
+    airports: [
+      { code: "CAI", name: "Cairo International", note: "EgyptAir hub in Heliopolis, about 15 km from downtown." },
+    ],
+    intro:
+      "Cairo is the gateway to the Pyramids of Giza, the Nile and the rest of Egypt, and a major family-travel route for Egyptian Americans. EgyptAir flies nonstop from the US, and many cheaper fares connect in Europe, Amman or Istanbul.",
+    bestTime:
+      "October to April is the most comfortable time to visit. Summers are very hot.",
+    cheapest:
+      "In KAYAK's fare data, the cheapest month to fly to Cairo varies by city (January, February, April or October), but December is the most expensive month from 6 of the 7 US cities we checked.",
+    fromUs:
+      "EgyptAir flies nonstop from New York JFK, Newark and Washington Dulles, and added Chicago (3 a week, from June 2026) and Los Angeles in 2026. New York–Cairo takes about 10h 15m and Chicago–Cairo about 11h 10m. Royal Jordanian, Turkish Airlines and Delta were among the cheapest one-stop options on many routes.",
+    transfer:
+      "Taxis and ride-hailing apps are the most common way into the city; agree the fare before you get in a regular taxi. Shuttle buses also run to Downtown and Giza.",
+    tips: [
+      "US citizens can get an e-visa at visa2egypt.gov.eg (apply at least 7 days before travel) or a visa on arrival; bring US dollars in cash for the arrival option.",
+      "Your passport must be valid for at least 6 months on arrival.",
+      "Check the US State Department's Egypt advisory at travel.state.gov before you book.",
+    ],
+  },
+  {
+    slug: "nairobi",
+    city: "Nairobi",
+    country: "Kenya",
+    code: "NBO",
+    region: "Africa",
+    airports: [
+      { code: "NBO", name: "Jomo Kenyatta International", note: "About 18 km southeast of the city; Kenya Airways uses Terminal 1A." },
+    ],
+    intro:
+      "Nairobi is Kenya's capital and the starting point for most East African safaris, as well as a big family-travel route for Kenyan Americans. Kenya Airways flies the only nonstop from the US (New York JFK); most other routes connect in Europe, the Gulf, Istanbul or Addis Ababa.",
+    bestTime:
+      "June to October and January to February are usually the driest months and the main safari season. The long rains fall around March to May.",
+    cheapest:
+      "In KAYAK's fare data, February to April is the cheapest time to fly to Nairobi from all 7 US cities we checked. December is the most expensive month from 6 of the 7.",
+    fromUs:
+      "Kenya Airways flies nonstop from New York JFK, taking about 13h 30m to Nairobi. From other US cities you connect: Turkish Airlines, Qatar Airways, Etihad, Delta/Air France and Ethiopian were among the cheapest airlines on the routes we checked.",
+    transfer:
+      "Taxis and ride-hailing apps are the usual way into the city. The Nairobi Expressway links the airport area with Westlands and cuts travel time at busy hours.",
+    tips: [
+      "US citizens need a Kenya eTA before travel (from $30) at etakenya.go.ke; apply at least 2 weeks ahead.",
+      "A yellow fever certificate is needed if you arrive from a country with yellow fever risk, which can include connections through some West African airports.",
+      "Kenya Airways lets families pool checked bags on US flights; check the allowance on your ticket.",
+    ],
+  },
+  {
+    slug: "addis-ababa",
+    city: "Addis Ababa",
+    country: "Ethiopia",
+    code: "ADD",
+    region: "Africa",
+    airports: [
+      { code: "ADD", name: "Bole International", note: "Ethiopian Airlines' hub and Africa's busiest connecting airport." },
+    ],
+    intro:
+      "Addis Ababa is Ethiopia's capital and Ethiopian Airlines' hub, so it is both a home destination for Ethiopian Americans and one of the main connecting points between the US and East, West and Southern Africa.",
+    bestTime:
+      "October to May is the main dry season. The heaviest rains fall from June to September.",
+    cheapest:
+      "In KAYAK's fare data, the cheapest month to fly to Addis Ababa ranges from January to April, or October, depending on the US city. June is the most expensive month from 6 of the 8 US cities we checked.",
+    fromUs:
+      "Ethiopian Airlines flies to Addis Ababa from Washington Dulles, Chicago, Atlanta and New York JFK. Chicago and Atlanta are nonstop to Addis, with the return via Rome; Washington flights go via Rome or Lomé, and New York flights via Abidjan or Lomé (winter 2026–27 schedule). Turkish Airlines, Qatar Airways and Etihad were also among the cheapest airlines.",
+    transfer:
+      "Taxis and ride-hailing apps such as Ride serve Bole Airport, which is close to the city centre. Agree the fare before you start.",
+    tips: [
+      "US citizens can apply for an e-visa at evisa.gov.et; e-visa holders must arrive at Bole Airport.",
+      "Ethiopian Airlines allows 2 checked bags of 23 kg in economy on its intercontinental flights.",
+      "Holidays such as Ethiopian Christmas (January 7), Timkat and Fasika (Ethiopian Easter) are busy; book early for those dates.",
+    ],
+  },
+  {
+    slug: "abuja",
+    city: "Abuja",
+    country: "Nigeria",
+    code: "ABV",
+    region: "Africa",
+    airports: [
+      { code: "ABV", name: "Nnamdi Azikiwe International", note: "About 20 km from the city, with separate international and domestic terminals." },
+    ],
+    intro:
+      "Abuja is Nigeria's capital and a major family-travel route for Nigerian Americans, especially at Christmas. There are no nonstop flights from the US, so every trip connects, usually in Addis Ababa, Istanbul, Doha, London, Casablanca or Lagos.",
+    bestTime:
+      "November to March is the dry season (with Harmattan haze from December). The rainy season runs from about April to October.",
+    cheapest:
+      "In KAYAK's fare data, January to March is the cheapest time to fly to Abuja from 6 of the 7 US cities we checked. December is the most expensive month from 6 of the 7.",
+    fromUs:
+      "No airline flies nonstop from the US to Abuja. Ethiopian Airlines, Turkish Airlines, Qatar Airways, Royal Air Maroc and British Airways were the cheapest airlines on the routes we checked. You can also fly nonstop to Lagos and connect on a domestic flight.",
+    transfer:
+      "Taxis and ride-hailing apps such as Bolt and Uber are the usual way into the city.",
+    tips: [
+      "Nigeria ended visa on arrival in May 2025: apply for an e-visa at evisa.immigration.gov.ng and fill in the online landing card before boarding.",
+      "Former Nigerian citizens can travel on their foreign passport with their old Nigerian passport; check the Nigeria Immigration Service site for the rules.",
+      "Christmas fares can be very high (up to $2,132 median from Boston in our data), so book holiday trips early or call us for multi-city or family itineraries.",
+    ],
+  },
+  {
+    slug: "mexico-city",
+    city: "Mexico City",
+    country: "Mexico",
+    code: "MEX",
+    region: "Americas",
+    airports: [
+      { code: "MEX", name: "Benito Juárez International", note: "Terminal 1: American, United, Volaris, Viva. Terminal 2: Aeroméxico and Delta." },
+      { code: "NLU", name: "Felipe Ángeles International (AIFA)", note: "About 45 km north; no US passenger routes in late 2026." },
+    ],
+    intro:
+      "Mexico City is one of the cheapest international trips from the US and one of the busiest family routes. Aeroméxico, American, Delta, United, Volaris and Viva all fly nonstop from many US cities, so it pays to compare low-cost and full-service fares.",
+    bestTime:
+      "November to April is the dry season. June to October brings afternoon storms. The city sits at 2,240 m (7,350 ft), so take it easy on day one.",
+    cheapest:
+      "In KAYAK's fare data, January or February is the cheapest month to fly to Mexico City from 5 of the 7 US cities we checked. December is the most expensive month from all 7.",
+    fromUs:
+      "Nonstop flights leave from most large US cities, including Los Angeles, Chicago, Dallas, Houston, New York, Miami, Atlanta and San Francisco. Dallas–Mexico City takes about 2h 50m and Los Angeles–Mexico City about 3h 45m. Volaris, Viva and Frontier were the cheapest airlines on most routes we checked.",
+    transfer:
+      "Metrobús Line 4 links both terminals with central Mexico City and Reforma for MXN 30. Use the authorised taxi booths inside the terminal, or a ride-hailing app.",
+    tips: [
+      "US citizens don't need a visa; air arrivals get a digital FMM entry permit.",
+      "Check whether your airline uses Terminal 1 or Terminal 2 before you head to the airport.",
+      "Low-cost fares (Volaris, Viva, Frontier) charge for carry-on and checked bags; add bags before comparing with full-service airlines.",
+    ],
+  },
+  {
+    slug: "guatemala-city",
+    city: "Guatemala City",
+    country: "Guatemala",
+    code: "GUA",
+    region: "Americas",
+    airports: [
+      { code: "GUA", name: "La Aurora International", note: "In Zona 13, close to the city centre and about an hour from Antigua." },
+    ],
+    intro:
+      "Guatemala City is the gateway to Antigua, Lake Atitlán and Tikal, and one of the busiest family-travel routes from the US to Central America. Nonstop flights leave from Los Angeles, Houston, Miami, Dallas, Atlanta, New York and more.",
+    bestTime:
+      "November to April is the dry season. May to October is the rainy season. Semana Santa (Easter week) is the busiest and priciest time in Antigua.",
+    cheapest:
+      "In KAYAK's fare data, January or February is the cheapest month to fly to Guatemala City from 5 of the 7 US cities we checked. December is the most expensive month from 4 of the 7, and October–December are expensive from all of them.",
+    fromUs:
+      "United flies nonstop from Houston, Newark, Chicago and Los Angeles; American from Miami and Dallas; Delta from Atlanta; JetBlue from Fort Lauderdale; Avianca from New York JFK and Los Angeles; and Frontier on seasonal routes. Miami–Guatemala City takes about 3 hours.",
+    transfer:
+      "Taxis and Uber serve La Aurora; INGUAT sells taxi vouchers in arrivals. Shared shuttles to Antigua cost about US$15–18; book 48 hours ahead.",
+    tips: [
+      "US citizens don't need a visa for stays up to 90 days; the 90 days are shared across Guatemala, El Salvador, Honduras and Nicaragua (CA-4).",
+      "Fill in the free electronic traveller declaration on the SAT website before you fly.",
+      "Low-cost airlines (Frontier, Volaris, Arajet) were often cheapest; add bag fees before comparing.",
+    ],
+  },
+  {
+    slug: "montego-bay",
+    city: "Montego Bay",
+    country: "Jamaica",
+    code: "MBJ",
+    region: "Americas",
+    airports: [
+      { code: "MBJ", name: "Sangster International", note: "Jamaica's busiest airport, close to the Montego Bay hotel strip." },
+    ],
+    intro:
+      "Montego Bay is Jamaica's main resort airport and the gateway to Negril and Ocho Rios, as well as a busy family route for Jamaican Americans. American, Delta, United, JetBlue, Southwest and others fly nonstop from many US cities.",
+    bestTime:
+      "December to April is the driest and busiest season. Hurricane season runs from June 1 to November 30, and October is usually the wettest month.",
+    cheapest:
+      "In KAYAK's fare data, the cheapest month to fly to Montego Bay varies by US city, from January to May (or September from Philadelphia). December is the most expensive month from 5 of the 8 US cities we checked.",
+    fromUs:
+      "Nonstops leave from cities including New York JFK, Newark, Boston, Philadelphia, Washington, Atlanta, Miami, Fort Lauderdale, Orlando, Charlotte, Chicago, Dallas, Houston and Denver. New York–Montego Bay takes about 4 hours.",
+    transfer:
+      "Knutsford Express coaches run from a terminal next to the airport to Negril (J$2,500) and Ocho Rios (J$2,900), with small discounts online. Resort shuttles and licensed taxis also run.",
+    tips: [
+      "US citizens need a passport but no visa; complete the free online C5 immigration and customs form before you fly.",
+      "The US State Department rates Jamaica Level 2; check travel.state.gov before you book.",
+      "Travelling June–November? Buy travel insurance that covers hurricane disruption.",
+    ],
+  },
+  {
+    slug: "lisbon",
+    city: "Lisbon",
+    country: "Portugal",
+    code: "LIS",
+    region: "Europe",
+    airports: [
+      { code: "LIS", name: "Humberto Delgado (Lisbon Airport)", note: "About 7 km from the centre, connected to the Metro red line." },
+    ],
+    intro:
+      "Lisbon is one of the shortest and best-value flights from the US to Europe, with TAP Air Portugal, United, Delta and American flying nonstop. It is also a good starting point for Porto, the Algarve and the rest of Europe.",
+    bestTime:
+      "April–May and September–October bring warm weather and fewer crowds. July and August are peak season.",
+    cheapest:
+      "In KAYAK's fare data, January or February is the cheapest month to fly to Lisbon from all 8 US cities we checked, and June is the most expensive month from all 8.",
+    fromUs:
+      "TAP Air Portugal flies nonstop from Boston, Chicago, Los Angeles, Miami, Newark, New York JFK, Orlando, San Francisco and Washington Dulles. United flies from Newark and Washington, Delta from Boston and JFK, and American from Philadelphia. New York–Lisbon takes about 6h 35m–7h.",
+    transfer:
+      "The Metro red line runs from the airport into the city for €1.90 plus a €0.50 card (or contactless). Taxis from the official rank charge set fares to central Lisbon (about €19 by day).",
+    tips: [
+      "US citizens can stay up to 90 days in any 180-day period in the Schengen area; the EU Entry/Exit System records fingerprints and a photo at the border.",
+      "ETIAS is not yet in operation; check travel-europe.europa.eu before you travel.",
+      "TAP often lets you add a free stopover in Lisbon or Porto on the way to other European cities.",
+    ],
+  },
+  {
+    slug: "athens",
+    city: "Athens",
+    country: "Greece",
+    code: "ATH",
+    region: "Europe",
+    airports: [
+      { code: "ATH", name: "Athens International (Eleftherios Venizelos)", note: "Connected to the city by Metro Line 3 and 24-hour buses." },
+    ],
+    intro:
+      "Athens is the gateway to the Greek islands, and the most seasonal European route from the US: most nonstop flights only run in summer, which is also when fares peak. Off-season trips usually connect through another European city.",
+    bestTime:
+      "April–June and September–October are the best months. August is the hottest and busiest.",
+    cheapest:
+      "In KAYAK's fare data, January or February is the cheapest month to fly to Athens from all 8 US cities we checked, and June is the most expensive month from all 8.",
+    fromUs:
+      "Emirates flies nonstop from Newark year-round. Delta (Atlanta, Boston, JFK), United (Chicago, Newark, Washington) and American (Charlotte, Chicago, Dallas, JFK, Philadelphia) fly nonstop in summer only. Alaska plans Seattle–Athens from May 2027. New York–Athens takes about 9h 20m.",
+    transfer:
+      "Metro Line 3 runs from the airport to central Athens for €9 one way (a regular city ticket is not valid). The X95 bus to Syntagma Square costs €5.50 and runs 24 hours. Taxis charge a flat fare to the centre.",
+    tips: [
+      "US citizens can stay up to 90 days in any 180-day period in the Schengen area; the EU Entry/Exit System records fingerprints and a photo at the border.",
+      "ETIAS is not yet in operation; check travel-europe.europa.eu before you travel.",
+      "Heading to the islands? Compare flying straight to Mykonos or Santorini with a connection in Athens plus a ferry.",
+    ],
+  },
 ];

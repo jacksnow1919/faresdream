@@ -622,4 +622,426 @@ export const destinationFares: Record<string, DestinationFares> = {
       },
     ],
   },
+  "amman": {
+    checked: "2026-11-28",
+    summary:
+      "January to March is the cheapest time to fly from the US to Amman. On all 7 US routes we checked, the cheapest month fell in that window, with median round-trip fares from $732 (Washington, January) to $921 (Detroit, February). June is the most expensive month on 5 of the 7 routes, at 63–93% above the cheapest month.",
+    keyFacts: [
+      "Cheapest months: January–March on all 7 routes",
+      "Priciest month: June on 5 of 7 routes",
+      "Lowest monthly median: $732, Washington DC in January",
+      "Washington ($994) and Atlanta ($995) had the lowest 12-month averages; Detroit the highest ($1,228) (our calculation)",
+      "Nonstop: Royal Jordanian from JFK, Chicago, Detroit, Washington Dulles and Dallas",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Amman-AMM", monthly: [949, 922, 912, 974, 1245, 1403, 1334, 1135, 1045, 1031, 1047, 1455], cheapestMonth: "March · $912", priciestMonth: "December · $1,455", typical: "$1,028–$1,482", cheapestDay: "Wednesday", cheapestAirlines: ["Ethiopian Air", "Etihad Airways", "SAUDIA"], nonstop: null },
+      { from: "Chicago", kayak: "Chicago-CHI/Amman-AMM", monthly: [924, 883, 902, 1083, 1318, 1556, 1359, 1124, 987, 969, 1028, 1268], cheapestMonth: "February · $883", priciestMonth: "June · $1,556", typical: "$976–$1,515", cheapestDay: "Sunday", cheapestAirlines: ["Iberia", "Turkish Airlines", "Etihad Airways"], nonstop: "Royal Jordanian, about 11h 44m" },
+      { from: "Detroit", kayak: "Detroit-DTT/Amman-AMM", monthly: [1048, 921, 955, 1121, 1380, 1623, 1414, 1322, 1116, 1113, 1134, 1594], cheapestMonth: "February · $921", priciestMonth: "June · $1,623", typical: "$1,016–$1,571", cheapestDay: "Thursday", cheapestAirlines: ["Turkish Airlines", "Royal Jordanian", "Lufthansa"], nonstop: "Royal Jordanian, about 11h 23m" },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Amman-AMM", monthly: [928, 913, 967, 1376, 1302, 1484, 1302, 1151, 1016, 982, 969, 1192], cheapestMonth: "February · $913", priciestMonth: "June · $1,484", typical: null, cheapestDay: "Sunday", cheapestAirlines: ["Lufthansa", "Turkish Airlines", "Royal Jordanian"], nonstop: null },
+      { from: "Washington, DC", kayak: "Washington-WAS/Amman-AMM", monthly: [732, 766, 787, 910, 1173, 1315, 1211, 973, 982, 944, 907, 1231], cheapestMonth: "January · $732", priciestMonth: "June · $1,315", typical: "$882–$1,368", cheapestDay: "Monday", cheapestAirlines: ["Etihad Airways", "SAUDIA", "Ethiopian Air"], nonstop: null },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Amman-AMM", monthly: [762, 774, 789, 883, 1275, 1195, 1181, 1097, 1011, 984, 927, 1059], cheapestMonth: "January · $762", priciestMonth: "May · $1,275", typical: "$946–$1,286", cheapestDay: "Wednesday", cheapestAirlines: ["Etihad Airways", "Turkish Airlines", "Royal Jordanian"], nonstop: null },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Amman-AMM", monthly: [797, 811, 930, 994, 1392, 1539, 1396, 1129, 967, 1010, 993, 1319], cheapestMonth: "January · $797", priciestMonth: "June · $1,539", typical: "$1,040–$1,574", cheapestDay: "Saturday", cheapestAirlines: ["Turkish Airlines", "Qatar Airways", "Austrian Airlines"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "How much more do summer flights to Amman cost?",
+        a: "June was the priciest month on 5 of the 7 routes we checked, 63–93% above each route's cheapest month: for example $1,539 vs $797 from Dallas (KAYAK data, our calculation).",
+      },
+      {
+        q: "Which US airlines fly nonstop to Amman?",
+        a: "None. Royal Jordanian is the only airline with nonstop flights, from New York JFK, Chicago, Detroit, Washington Dulles and Dallas–Fort Worth (schedules checked November 2026).",
+      },
+      {
+        q: "Do US citizens need a visa for Jordan?",
+        a: "Yes, but you can get it on arrival at Queen Alia Airport for JOD 40. The Jordan Pass waives that fee if you stay 3+ days and also covers Petra; there is no visa on arrival at the Allenby/King Hussein Bridge.",
+      },
+    ],
+  },
+  "doha": {
+    checked: "2026-11-28",
+    summary:
+      "February and March are usually the cheapest months to fly from the US to Doha. On the 4 routes with a full year of KAYAK data, the cheapest median round-trip fares were $822 (Chicago, March) to $993 (Dallas, September). December cost 75–147% more than the cheapest month on every route.",
+    keyFacts: [
+      "Cheapest months: February–March on 3 of 4 routes (Dallas: September)",
+      "December is 75–147% above each route's cheapest month",
+      "Lowest monthly median: $822, Chicago in March",
+      "Chicago had the lowest 12-month average ($1,139); Dallas the highest ($1,371) (our calculation)",
+      "Nonstop: Qatar Airways only, from about a dozen US cities",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Doha-DOH", monthly: [1478, 931, 1076, 1119, 1478, 1464, 1639, 1165, 1068, 943, 1273, 1630], cheapestMonth: "February · $931", priciestMonth: "July · $1,639", typical: "$1,067–$1,631", cheapestDay: "Sunday", cheapestAirlines: ["Royal Jordanian", "Gulf Air", "Etihad Airways"], nonstop: "Qatar Airways, about 12h 10m" },
+      { from: "Washington, DC", kayak: "Washington-WAS/Doha-DOH", monthly: [1008, 872, 983, 1180, 1253, 1539, 1006, 1279, 1038, 979, 1134, 1529], cheapestMonth: "February · $872", priciestMonth: "June · $1,539", typical: "$948–$1,344", cheapestDay: "Friday", cheapestAirlines: ["KLM", "Royal Jordanian", "Etihad Airways"], nonstop: null },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Doha-DOH", monthly: [1114, 1112, 1190, 1034, 1697, 1533, 1533, 1376, 993, 1504, 1396, 1966], cheapestMonth: "September · $993", priciestMonth: "December · $1,966", typical: "$1,085–$1,719", cheapestDay: "Tuesday", cheapestAirlines: ["Royal Jordanian", "British Airways", "Qatar Airways"], nonstop: null },
+      { from: "Chicago", kayak: "Chicago-CHI/Doha-DOH", monthly: [960, 1073, 822, 1073, 1179, 1151, 1099, 1385, 877, 1021, 1005, 2027], cheapestMonth: "March · $822", priciestMonth: "December · $2,027", typical: "$986–$1,771", cheapestDay: "Thursday", cheapestAirlines: ["Royal Jordanian", "Etihad Airways", "Turkish Airlines"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "How much more do Christmas flights to Doha cost?",
+        a: "On the routes we checked, December cost 75–147% more than the cheapest month: for example $2,027 vs $822 from Chicago (KAYAK data, our calculation). Book early for holiday travel.",
+      },
+      {
+        q: "Is Doha a good stop on the way to India?",
+        a: "Yes. Qatar Airways connects its US flights in Doha to many Indian cities, and it was among the cheapest airlines on several US–India routes in our data. Compare it with Emirates and Etihad.",
+      },
+      {
+        q: "Are flights to Doha running normally?",
+        a: "Qatar Airways is flying, but Qatar's airspace was closed for part of 2026 and some routes still use approved corridors. Check your flight a few days before departure.",
+      },
+    ],
+  },
+  "tel-aviv": {
+    checked: "2026-11-28",
+    summary:
+      "January and February are usually the cheapest months to fly from the US to Tel Aviv. On 6 of the 8 US routes we checked, the cheapest month fell in that window, with median round-trip fares from $877 (Dallas, January) to $1,119 (New York, January). Seasonal swings are smaller than on most routes: the priciest month was 33–70% above the cheapest.",
+    keyFacts: [
+      "Cheapest months: January–February on 6 of 8 routes",
+      "Priciest month: June on 4 of 8 routes",
+      "Lowest monthly median: $877, Dallas in January",
+      "Miami had the lowest 12-month average ($1,229); Atlanta the highest ($1,565) (our calculation)",
+      "Nonstop (late 2026): Delta from JFK, United from Newark, El Al from several cities",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Tel-Aviv-TLV", monthly: [1119, 1129, 1248, 1268, 1454, 1463, 1482, 1492, 1431, 1437, 1251, 1319], cheapestMonth: "January · $1,119", priciestMonth: "August · $1,492", typical: "$1,103–$1,621", cheapestDay: "Monday", cheapestAirlines: ["ITA Airways", "Condor", "Air Europa"], nonstop: null },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/Tel-Aviv-TLV", monthly: [964, 978, 1047, 1125, 1344, 1497, 1360, 1264, 1293, 1455, 1119, 1300], cheapestMonth: "January · $964", priciestMonth: "June · $1,497", typical: "$997–$1,611", cheapestDay: "Friday", cheapestAirlines: ["ITA Airways", "Virgin Atlantic", "Air Europa"], nonstop: "EL AL, about 11h 40m" },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Tel-Aviv-TLV", monthly: [1175, 1089, 1270, 1386, 1364, 1704, 1573, 1680, 1472, 1312, 1241, 1619], cheapestMonth: "February · $1,089", priciestMonth: "June · $1,704", typical: "$1,139–$1,751", cheapestDay: "Friday", cheapestAirlines: ["Austrian Airlines", "Air Canada", "Delta"], nonstop: null },
+      { from: "Chicago", kayak: "Chicago-CHI/Tel-Aviv-TLV", monthly: [1239, 1065, 1200, 1068, 1343, 1302, 1279, 1352, 1242, 1337, 1175, 1439], cheapestMonth: "February · $1,065", priciestMonth: "December · $1,439", typical: "$1,068–$1,519", cheapestDay: "Thursday", cheapestAirlines: ["Air Canada", "LOT", "Etihad Airways"], nonstop: null },
+      { from: "Boston (BOS)", kayak: "Boston-BOS/Tel-Aviv-TLV", monthly: [1069, 1037, 1228, 1163, 1208, 1463, 1283, 1197, 1366, 1306, 1067, 1373], cheapestMonth: "February · $1,037", priciestMonth: "June · $1,463", typical: "$1,048–$1,493", cheapestDay: "Friday", cheapestAirlines: ["ITA Airways", "Air Canada", "TAP AIR PORTUGAL"], nonstop: null },
+      { from: "Washington, DC", kayak: "Washington-WAS/Tel-Aviv-TLV", monthly: [1287, 1244, 1364, 1281, 1271, 1561, 1404, 1429, 1443, 1406, 1085, 1576], cheapestMonth: "November · $1,085", priciestMonth: "December · $1,576", typical: "$1,150–$1,665", cheapestDay: "Thursday", cheapestAirlines: ["ITA Airways", "EL AL", "Etihad Airways"], nonstop: "United Airlines, about 10h 50m" },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Tel-Aviv-TLV", monthly: [1369, 1463, 1479, 1563, 1519, 1647, 1591, 1873, 1359, 1710, 1496, 1708], cheapestMonth: "September · $1,359", priciestMonth: "August · $1,873", typical: null, cheapestDay: "Saturday", cheapestAirlines: ["Ethiopian Air", "Etihad Airways", "EL AL"], nonstop: "Delta, about 11h 30m" },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Tel-Aviv-TLV", monthly: [877, 936, 1215, 1110, 1101, 1488, 1209, 1425, 1483, 1353, 1225, 1468], cheapestMonth: "January · $877", priciestMonth: "June · $1,488", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["Air Canada", "United Airlines", "Iberia"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "Why are flights to Tel Aviv expensive right now?",
+        a: "US airlines suspended and restored service several times in 2025–2026, which reduced seats. In our data even the cheapest month cost $877–$1,359 round trip, depending on the US city (KAYAK medians).",
+      },
+      {
+        q: "Which airlines fly nonstop from the US to Tel Aviv?",
+        a: "In late 2026: Delta from New York JFK, United from Newark, and El Al from New York, Newark, Miami, Los Angeles, Boston and San Francisco. American's flights are suspended. Check before booking, as schedules change often.",
+      },
+      {
+        q: "Do Americans need an ETA to visit Israel?",
+        a: "Yes. US citizens need an approved ETA-IL before flying. It costs NIS 25, lasts up to 2 years and allows stays of up to 90 days per visit.",
+      },
+    ],
+  },
+  "cairo": {
+    checked: "2026-11-28",
+    summary:
+      "December is the most expensive time to fly from the US to Cairo: it was the priciest month on 6 of the 7 US routes we checked, at 35–92% above the cheapest month. The cheapest months were January, February, April or October, with median round-trip fares from $690 (Chicago, October) to $776 (Dallas, April).",
+    keyFacts: [
+      "Priciest month: December on 6 of 7 routes",
+      "Cheapest months vary: January, February, April or October",
+      "Lowest monthly median: $690, Chicago in October",
+      "Los Angeles had the lowest 12-month average ($832); Dallas the highest ($1,000) (our calculation)",
+      "Nonstop: EgyptAir from JFK, Newark, Washington Dulles, Chicago and Los Angeles",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Cairo-CAI", monthly: [757, 759, 819, 810, 882, 1096, 1087, 969, 794, 821, 821, 1133], cheapestMonth: "January · $757", priciestMonth: "December · $1,133", typical: "$783–$1,135", cheapestDay: "Tuesday", cheapestAirlines: ["Royal Jordanian", "Royal Air Maroc", "Gulf Air"], nonstop: "Egyptair, about 10h 17m" },
+      { from: "Washington, DC", kayak: "Washington-WAS/Cairo-CAI", monthly: [694, 715, 812, 704, 1052, 1186, 1107, 971, 898, 810, 832, 1219], cheapestMonth: "January · $694", priciestMonth: "December · $1,219", typical: "$800–$1,195", cheapestDay: "Wednesday", cheapestAirlines: ["Royal Jordanian", "Egyptair", "Turkish Airlines"], nonstop: null },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Cairo-CAI", monthly: [761, 734, 812, 740, 860, 929, 969, 824, 794, 796, 777, 989], cheapestMonth: "February · $734", priciestMonth: "December · $989", typical: "$759–$987", cheapestDay: "Tuesday", cheapestAirlines: ["Royal Air Maroc", "Turkish Airlines", "Egyptair"], nonstop: null },
+      { from: "Chicago", kayak: "Chicago-CHI/Cairo-CAI", monthly: [754, 730, 903, 801, 1051, 1097, 866, 748, 732, 690, 720, 1117], cheapestMonth: "October · $690", priciestMonth: "December · $1,117", typical: "$733–$1,121", cheapestDay: "Wednesday", cheapestAirlines: ["Royal Jordanian", "Delta", "Turkish Airlines"], nonstop: "Egyptair, about 11h 10m" },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Cairo-CAI", monthly: [820, 790, 977, 776, 1086, 1237, 1299, 942, 829, 883, 876, 1489], cheapestMonth: "April · $776", priciestMonth: "December · $1,489", typical: "$843–$1,309", cheapestDay: "Wednesday", cheapestAirlines: ["Turkish Airlines", "Royal Jordanian", "Delta"], nonstop: null },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Cairo-CAI", monthly: [828, 774, 840, 824, 931, 1183, 1034, 922, 823, 844, 863, 1361], cheapestMonth: "February · $774", priciestMonth: "December · $1,361", typical: null, cheapestDay: "Monday", cheapestAirlines: ["Delta", "KLM", "Air France"], nonstop: null },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/Cairo-CAI", monthly: [798, 760, 840, 706, 913, 956, 1028, 843, 822, 825, 806, 1001], cheapestMonth: "April · $706", priciestMonth: "July · $1,028", typical: "$759–$1,061", cheapestDay: "Thursday", cheapestAirlines: ["ITA Airways", "Turkish Airlines", "Delta"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "How much more do Christmas flights to Cairo cost?",
+        a: "December was the priciest month on 6 of 7 routes we checked: for example $1,489 vs $776 from Dallas, and $1,219 vs $694 from Washington (KAYAK data, our calculation).",
+      },
+      {
+        q: "Is there a nonstop flight from Chicago to Cairo?",
+        a: "Yes. EgyptAir started Chicago–Cairo in June 2026, three times a week, taking about 11h 10m. It also flies from New York JFK, Newark, Washington Dulles and Los Angeles.",
+      },
+      {
+        q: "Do Americans need a visa for Egypt?",
+        a: "Yes. Apply for an e-visa at visa2egypt.gov.eg at least 7 days ahead, or buy a visa on arrival at Cairo airport. Your passport needs 6 months' validity.",
+      },
+    ],
+  },
+  "nairobi": {
+    checked: "2026-11-28",
+    summary:
+      "February to April is the cheapest time to fly from the US to Nairobi. On all 7 US routes we checked, the cheapest month fell in that window, with median round-trip fares from $889 (Chicago, February) to $1,085 (Minneapolis, February). December is the most expensive month on 6 of the 7 routes, at 39–68% above the cheapest month.",
+    keyFacts: [
+      "Cheapest months: February–April on all 7 routes",
+      "Priciest month: December on 6 of 7 routes",
+      "Lowest monthly median: $889, Chicago in February",
+      "Chicago had the lowest 12-month average ($1,057); Minneapolis the highest ($1,354) (our calculation)",
+      "Nonstop: Kenya Airways from New York JFK only, about 13h 30m",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Nairobi-NBO", monthly: [1089, 1009, 975, 1059, 1155, 1364, 1407, 1284, 1036, 982, 1017, 1636], cheapestMonth: "March · $975", priciestMonth: "December · $1,636", typical: "$1,027–$1,551", cheapestDay: "Monday", cheapestAirlines: ["Air France", "Delta", "Turkish Airlines"], nonstop: "Kenya Airways, about 13h 30m" },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Nairobi-NBO", monthly: [957, 946, 983, 938, 1271, 1341, 1351, 1017, 941, 1065, 1047, 1418], cheapestMonth: "April · $938", priciestMonth: "December · $1,418", typical: "$966–$1,432", cheapestDay: "Monday", cheapestAirlines: ["Turkish Airlines", "Qatar Airways", "Etihad Airways"], nonstop: null },
+      { from: "Washington, DC", kayak: "Washington-WAS/Nairobi-NBO", monthly: [988, 907, 1002, 971, 1139, 1336, 1239, 1260, 965, 1044, 983, 1399], cheapestMonth: "February · $907", priciestMonth: "December · $1,399", typical: "$978–$1,429", cheapestDay: "Thursday", cheapestAirlines: ["Ethiopian Air", "Turkish Airlines", "Etihad Airways"], nonstop: null },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Nairobi-NBO", monthly: [1039, 993, 991, 1087, 1317, 1376, 1233, 1147, 1028, 1068, 1216, 1466], cheapestMonth: "March · $991", priciestMonth: "December · $1,466", typical: "$1,029–$1,470", cheapestDay: "Monday", cheapestAirlines: ["Delta", "Emirates", "Turkish Airlines"], nonstop: null },
+      { from: "Chicago", kayak: "Chicago-CHI/Nairobi-NBO", monthly: [1008, 889, 963, 918, 1260, 1202, 1207, 1138, 966, 930, 971, 1233], cheapestMonth: "February · $889", priciestMonth: "May · $1,260", typical: "$944–$1,313", cheapestDay: "Sunday", cheapestAirlines: ["Etihad Airways", "Qatar Airways", "Turkish Airlines"], nonstop: null },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Nairobi-NBO", monthly: [1086, 1103, 1084, 1022, 1285, 1338, 1474, 1463, 1103, 1082, 1157, 1535], cheapestMonth: "April · $1,022", priciestMonth: "December · $1,535", typical: "$1,088–$1,483", cheapestDay: "Tuesday", cheapestAirlines: ["Delta", "Air France", "Brussels Airlines"], nonstop: null },
+      { from: "Minneapolis (MSP)", kayak: "Minneapolis-MSP/Nairobi-NBO", monthly: [1184, 1085, 1137, 1227, 1414, 1574, 1603, 1477, 1317, 1217, 1346, 1661], cheapestMonth: "February · $1,085", priciestMonth: "December · $1,661", typical: "$1,191–$1,642", cheapestDay: "Monday", cheapestAirlines: ["Lufthansa", "Brussels Airlines", "Turkish Airlines"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "How much more do Christmas flights to Nairobi cost?",
+        a: "December was the priciest month on 6 of 7 routes we checked: for example $1,636 vs $975 from New York and $1,661 vs $1,085 from Minneapolis (KAYAK data, our calculation).",
+      },
+      {
+        q: "Is there a direct flight from the US to Nairobi?",
+        a: "Yes, one: Kenya Airways flies nonstop from New York JFK, taking about 13h 30m. From every other US city you need at least one connection.",
+      },
+      {
+        q: "Do Americans need a visa for Kenya?",
+        a: "US citizens need an electronic Travel Authorisation (eTA) from etakenya.go.ke before flying. It starts at $30; apply at least 2 weeks ahead.",
+      },
+    ],
+  },
+  "addis-ababa": {
+    checked: "2026-11-28",
+    summary:
+      "June is usually the most expensive time to fly from the US to Addis Ababa: it was the priciest month on 6 of the 8 US routes we checked. The cheapest months were January to April or October, with median round-trip fares from $733 (New York, October) to $1,353 (Minneapolis, April).",
+    keyFacts: [
+      "Priciest month: June on 6 of 8 routes",
+      "Cheapest months: January–April on 6 routes, October on 2",
+      "Lowest monthly median: $733, New York in October",
+      "New York had the lowest 12-month average ($1,145); Minneapolis the highest ($1,607) (our calculation)",
+      "Ethiopian Airlines flies from Washington, Chicago, Atlanta and New York",
+    ],
+    rows: [
+      { from: "Washington, DC", kayak: "Washington-WAS/Addis-Ababa-ADD", monthly: [1173, 1100, 1070, 1172, 1383, 1656, 1551, 1291, 1225, 1202, 1210, 1519], cheapestMonth: "March · $1,070", priciestMonth: "June · $1,656", typical: "$1,157–$1,634", cheapestDay: "Wednesday", cheapestAirlines: ["Ethiopian Air", "Turkish Airlines", "Etihad Airways"], nonstop: null },
+      { from: "New York (all airports)", kayak: "New-York-NYC/Addis-Ababa-ADD", monthly: [1128, 1074, 1035, 954, 1236, 1523, 1363, 1129, 1110, 733, 984, 1473], cheapestMonth: "October · $733", priciestMonth: "June · $1,523", typical: null, cheapestDay: "Monday", cheapestAirlines: ["Qatar Airways", "JetBlue", "Turkish Airlines"], nonstop: null },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Addis-Ababa-ADD", monthly: [1004, 986, 998, 1154, 1383, 1395, 1278, 1077, 1078, 1137, 1078, 1409], cheapestMonth: "February · $986", priciestMonth: "December · $1,409", typical: null, cheapestDay: "Saturday", cheapestAirlines: ["Turkish Airlines", "Etihad Airways", "Ethiopian Air"], nonstop: null },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Addis-Ababa-ADD", monthly: [1153, 1240, 1209, 1236, 1646, 1652, 1366, 1257, 1330, 1257, 1388, 1482], cheapestMonth: "January · $1,153", priciestMonth: "June · $1,652", typical: null, cheapestDay: "Monday", cheapestAirlines: ["Turkish Airlines", "Emirates", "Qatar Airways"], nonstop: null },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Addis-Ababa-ADD", monthly: [1077, 1227, 1109, 1414, 1415, 1558, 1475, 1309, 1301, 1375, 1439, 1483], cheapestMonth: "January · $1,077", priciestMonth: "June · $1,558", typical: null, cheapestDay: "Monday", cheapestAirlines: ["Emirates", "Turkish Airlines", "ITA Airways"], nonstop: null },
+      { from: "Chicago", kayak: "Chicago-CHI/Addis-Ababa-ADD", monthly: [1342, 1236, 1208, 1217, 1462, 1528, 1622, 1400, 1456, 1082, 1239, 1819], cheapestMonth: "October · $1,082", priciestMonth: "December · $1,819", typical: "$1,238–$1,627", cheapestDay: "Saturday", cheapestAirlines: ["Turkish Airlines", "Qatar Airways", "Etihad Airways"], nonstop: null },
+      { from: "Minneapolis (MSP)", kayak: "Minneapolis-MSP/Addis-Ababa-ADD", monthly: [1435, 1454, 1444, 1353, 1820, 2050, 1893, 1459, 1416, 1580, 1582, 1793], cheapestMonth: "April · $1,353", priciestMonth: "June · $2,050", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["Qatar Airways", "Turkish Airlines", "Ethiopian Air"], nonstop: null },
+      { from: "Seattle (SEA)", kayak: "Seattle-SEA/Addis-Ababa-ADD", monthly: [1317, 1276, 1246, 1204, 1341, 1796, 1622, 1361, 1280, 1306, 1339, 1453], cheapestMonth: "April · $1,204", priciestMonth: "June · $1,796", typical: "$1,244–$1,578", cheapestDay: "Monday", cheapestAirlines: ["Emirates", "Qatar Airways", "SAUDIA"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "When are flights to Addis Ababa most expensive?",
+        a: "June was the priciest month on 6 of 8 routes we checked, followed by December. From Washington, June cost $1,656 vs $1,070 in March (KAYAK data, our calculation).",
+      },
+      {
+        q: "Does Ethiopian Airlines fly nonstop from the US?",
+        a: "Yes, from Chicago and Atlanta to Addis Ababa (returns stop in Rome). Washington and New York flights stop in Rome, Lomé or Abidjan on the winter 2026–27 schedule.",
+      },
+      {
+        q: "Do Americans need a visa for Ethiopia?",
+        a: "Yes. Apply for an e-visa at evisa.gov.et before you fly and enter through Bole International Airport.",
+      },
+    ],
+  },
+  "abuja": {
+    checked: "2026-11-28",
+    summary:
+      "December is the most expensive time to fly from the US to Abuja: it was the priciest month on 6 of the 7 US routes we checked, at 49–106% above the cheapest month. January to March is cheapest on 6 of the 7 routes, with median round-trip fares from $969 (Los Angeles, January) to $1,092 (Boston, March).",
+    keyFacts: [
+      "Priciest month: December on 6 of 7 routes",
+      "Cheapest months: January–March on 6 of 7 routes",
+      "Lowest monthly median: $969, Los Angeles in January",
+      "Washington had the lowest 12-month average ($1,214); Los Angeles the highest ($1,403) (our calculation)",
+      "No nonstop flights from the US; connect via Africa, Europe or the Gulf",
+    ],
+    rows: [
+      { from: "Washington, DC", kayak: "Washington-WAS/Abuja-ABV", monthly: [1075, 1040, 1113, 1099, 1177, 1361, 1342, 1173, 1118, 1316, 1087, 1670], cheapestMonth: "February · $1,040", priciestMonth: "December · $1,670", typical: "$1,104–$1,665", cheapestDay: "Sunday", cheapestAirlines: ["Ethiopian Air", "Turkish Airlines", "Royal Air Maroc"], nonstop: null },
+      { from: "New York (all airports)", kayak: "New-York-NYC/Abuja-ABV", monthly: [1288, 1048, 979, 1238, 1350, 1322, 1528, 1515, 1052, 1183, 1250, 1744], cheapestMonth: "March · $979", priciestMonth: "December · $1,744", typical: "$1,166–$1,790", cheapestDay: "Tuesday", cheapestAirlines: ["Ethiopian Air", "Turkish Airlines", "Qatar Airways"], nonstop: null },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Abuja-ABV", monthly: [1064, 1082, 1217, 1168, 1255, 1256, 1324, 1327, 1201, 1211, 1277, 1739], cheapestMonth: "January · $1,064", priciestMonth: "December · $1,739", typical: "$1,174–$1,634", cheapestDay: "Sunday", cheapestAirlines: ["Turkish Airlines", "Qatar Airways", "Ethiopian Air"], nonstop: null },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Abuja-ABV", monthly: [1182, 1114, 1064, 1162, 1402, 1634, 1699, 1146, 1285, 1333, 1302, 2077], cheapestMonth: "March · $1,064", priciestMonth: "December · $2,077", typical: "$1,208–$1,855", cheapestDay: "Thursday", cheapestAirlines: ["Turkish Airlines", "British Airways", "Qatar Airways"], nonstop: null },
+      { from: "Chicago", kayak: "Chicago-CHI/Abuja-ABV", monthly: [1662, 1200, 1357, 1149, 1340, 1299, 1385, 1181, 1461, 1168, 1142, 1699], cheapestMonth: "November · $1,142", priciestMonth: "December · $1,699", typical: "$1,190–$1,714", cheapestDay: "Tuesday", cheapestAirlines: ["Turkish Airlines", "Qatar Airways", "British Airways"], nonstop: null },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Abuja-ABV", monthly: [969, 1094, 1318, 1136, 1388, 1430, 2214, 1499, 1323, 1307, 1160, 1996], cheapestMonth: "January · $969", priciestMonth: "July · $2,214", typical: "$1,165–$2,061", cheapestDay: "Tuesday", cheapestAirlines: ["Qatar Airways", "Royal Air Maroc", "American Airlines"], nonstop: null },
+      { from: "Boston (BOS)", kayak: "Boston-BOS/Abuja-ABV", monthly: [1196, 1178, 1092, 1197, 1313, 1287, 1711, 1508, 1260, 1211, 1319, 2132], cheapestMonth: "March · $1,092", priciestMonth: "December · $2,132", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["Turkish Airlines", "Lufthansa", "British Airways"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "How much more do Christmas flights to Abuja cost?",
+        a: "December was the priciest month on 6 of 7 routes: for example $2,077 vs $1,064 from Dallas and $1,744 vs $979 from New York (KAYAK data, our calculation).",
+      },
+      {
+        q: "Is there a direct flight from the US to Abuja?",
+        a: "No. All flights connect. Ethiopian, Turkish, Qatar, Royal Air Maroc and British Airways were the cheapest airlines on the routes we checked.",
+      },
+      {
+        q: "Can I get a visa on arrival in Nigeria?",
+        a: "No. Visa on arrival ended in May 2025. Apply for an e-visa at evisa.immigration.gov.ng before you travel.",
+      },
+    ],
+  },
+  "mexico-city": {
+    checked: "2026-11-28",
+    summary:
+      "January and February are the cheapest months to fly from the US to Mexico City, and December is the most expensive on every route we checked. Median round-trip fares in the cheapest month ranged from $309 (Dallas, January) to $639 (Atlanta, April); December cost 52–100% more.",
+    keyFacts: [
+      "Priciest month: December on all 7 routes",
+      "Cheapest months: January–February on 5 of 7 routes",
+      "Lowest monthly median: $309, Dallas in January",
+      "Dallas had the lowest 12-month average ($390); Atlanta the highest ($721) (our calculation)",
+      "Nonstops from most large US cities; Volaris, Viva and Frontier were often cheapest",
+    ],
+    rows: [
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Mexico-City-MEX", monthly: [384, 360, 395, 406, 374, 426, 430, 414, 425, 445, 483, 600], cheapestMonth: "February · $360", priciestMonth: "December · $600", typical: "$349–$539", cheapestDay: "Monday", cheapestAirlines: ["Volaris", "Viva", "Frontier"], nonstop: "Aeromexico, Volaris and others, about 3h 44m" },
+      { from: "Chicago", kayak: "Chicago-CHI/Mexico-City-MEX", monthly: [343, 327, 410, 348, 378, 430, 478, 415, 371, 434, 412, 653], cheapestMonth: "February · $327", priciestMonth: "December · $653", typical: "$335–$542", cheapestDay: "Sunday", cheapestAirlines: ["Volaris", "Viva", "Frontier"], nonstop: null },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Mexico-City-MEX", monthly: [309, 318, 368, 331, 353, 458, 444, 358, 344, 401, 388, 602], cheapestMonth: "January · $309", priciestMonth: "December · $602", typical: "$311–$527", cheapestDay: "Tuesday", cheapestAirlines: ["Volaris", "Frontier", "Viva"], nonstop: "American Airlines, Aeromexico and Volaris, about 2h 47m" },
+      { from: "New York (all airports)", kayak: "New-York-NYC/Mexico-City-MEX", monthly: [576, 584, 612, 599, 571, 563, 623, 664, 544, 645, 676, 850], cheapestMonth: "September · $544", priciestMonth: "December · $850", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["Viva", "Frontier", "Aeromexico"], nonstop: "Aeromexico, United Airlines and others, about 5h 44m" },
+      { from: "San Francisco (SFO)", kayak: "San-Francisco-SFO/Mexico-City-MEX", monthly: [456, 537, 531, 554, 532, 581, 565, 580, 604, 658, 714, 789], cheapestMonth: "January · $456", priciestMonth: "December · $789", typical: "$484–$722", cheapestDay: "Monday", cheapestAirlines: ["Frontier", "Aeromexico", "American Airlines"], nonstop: null },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Mexico-City-MEX", monthly: [660, 679, 680, 639, 664, 772, 723, 647, 731, 749, 729, 974], cheapestMonth: "April · $639", priciestMonth: "December · $974", typical: "$612–$903", cheapestDay: "Thursday", cheapestAirlines: ["Frontier", "Volaris", "Aeromexico"], nonstop: null },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/Mexico-City-MEX", monthly: [381, 360, 388, 412, 395, 518, 461, 445, 420, 474, 458, 579], cheapestMonth: "February · $360", priciestMonth: "December · $579", typical: null, cheapestDay: "Wednesday", cheapestAirlines: ["Volaris", "Viva", "Frontier"], nonstop: "Aeromexico, American Airlines and Volaris, about 3h 47m" },
+    ],
+    faqs: [
+      {
+        q: "How much more do Christmas flights to Mexico City cost?",
+        a: "December was the most expensive month on all 7 routes we checked, 52–100% above the cheapest month: for example $653 vs $327 from Chicago (KAYAK data, our calculation).",
+      },
+      {
+        q: "Which US city has the cheapest flights to Mexico City?",
+        a: "In our data, Dallas–Fort Worth had the lowest 12-month average median fare ($390), followed by Chicago ($417) and Los Angeles ($428). Atlanta was the most expensive ($721).",
+      },
+      {
+        q: "Do I need a visa to fly to Mexico City?",
+        a: "No. US citizens need a valid passport; air arrivals receive a digital FMM entry permit, with stays of up to 180 days at the officer's discretion.",
+      },
+    ],
+  },
+  "guatemala-city": {
+    checked: "2026-11-28",
+    summary:
+      "January and February are the cheapest months to fly from the US to Guatemala City. Median round-trip fares in each route's cheapest month ranged from $286 (Atlanta, January) to $434 (New York, May). Prices rise from June and peak in October–December, when fares were 69–159% above the cheapest month.",
+    keyFacts: [
+      "Cheapest months: January–February on 5 of 7 routes",
+      "Priciest months: October–December on all 7 routes",
+      "Lowest monthly median: $286, Atlanta in January",
+      "Miami had the lowest 12-month average ($439); New York the highest ($586) (our calculation)",
+      "Nonstop from at least 9 US cities on United, American, Delta, JetBlue, Avianca and Frontier",
+    ],
+    rows: [
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Guatemala-City-GUA", monthly: [410, 372, 526, 437, 420, 533, 545, 449, 459, 525, 613, 750], cheapestMonth: "February · $372", priciestMonth: "December · $750", typical: null, cheapestDay: "Wednesday", cheapestAirlines: ["Volaris Costa Rica", "Avianca", "Frontier"], nonstop: null },
+      { from: "New York (all airports)", kayak: "New-York-NYC/Guatemala-City-GUA", monthly: [442, 445, 520, 501, 434, 572, 713, 681, 579, 686, 735, 721], cheapestMonth: "May · $434", priciestMonth: "November · $735", typical: null, cheapestDay: "Sunday", cheapestAirlines: ["Arajet", "Frontier", "Copa Airlines"], nonstop: "United Airlines and Avianca, about 5h 09m" },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/Guatemala-City-GUA", monthly: [373, 333, 379, 308, 373, 377, 369, 515, 539, 589, 554, 556], cheapestMonth: "April · $308", priciestMonth: "October · $589", typical: "$311–$617", cheapestDay: "Thursday", cheapestAirlines: ["Frontier", "Avianca", "Arajet"], nonstop: "American Airlines and Frontier, about 2h 58m" },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Guatemala-City-GUA", monthly: [474, 354, 540, 390, 510, 617, 584, 563, 563, 633, 615, 806], cheapestMonth: "February · $354", priciestMonth: "December · $806", typical: "$432–$739", cheapestDay: "Monday", cheapestAirlines: ["Frontier", "Avianca", "American Airlines"], nonstop: "American Airlines and Frontier, about 3h 22m" },
+      { from: "Chicago", kayak: "Chicago-CHI/Guatemala-City-GUA", monthly: [389, 408, 528, 432, 421, 576, 586, 527, 450, 484, 543, 668], cheapestMonth: "January · $389", priciestMonth: "December · $668", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["Volaris", "Avianca", "Frontier"], nonstop: "Avianca, United Airlines and American Airlines, about 4h 37m" },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Guatemala-City-GUA", monthly: [286, 438, 445, 439, 491, 718, 739, 632, 650, 742, 701, 638], cheapestMonth: "January · $286", priciestMonth: "October · $742", typical: null, cheapestDay: "Wednesday", cheapestAirlines: ["Frontier", "Delta", "Copa Airlines"], nonstop: null },
+      { from: "Washington, DC", kayak: "Washington-WAS/Guatemala-City-GUA", monthly: [433, 353, 455, 461, 500, 542, 647, 607, 661, 676, 654, 860], cheapestMonth: "February · $353", priciestMonth: "December · $860", typical: "$408–$752", cheapestDay: "Sunday", cheapestAirlines: ["Frontier", "Air Canada", "Volaris"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "How much more do Christmas flights to Guatemala cost?",
+        a: "December was the priciest month on 4 of 7 routes: for example $860 vs $353 from Washington and $806 vs $354 from Dallas (KAYAK data, our calculation).",
+      },
+      {
+        q: "Which US city has the cheapest flights to Guatemala City?",
+        a: "In our data, Miami had the lowest 12-month average median fare ($439), with Chicago ($501) and Los Angeles ($503) next. New York was highest ($586).",
+      },
+      {
+        q: "Do Americans need a visa for Guatemala?",
+        a: "No. US citizens can stay up to 90 days without a visa, shared across the CA-4 countries. Fill in the SAT traveller declaration before arrival.",
+      },
+    ],
+  },
+  "montego-bay": {
+    checked: "2026-11-28",
+    summary:
+      "Montego Bay is one of the cheaper international trips from the US, with route averages of $448–$728 round trip. December is the most expensive month on 5 of the 8 US routes we checked. The cheapest months fall between January and May on 7 of the 8 routes, with median fares from $307 (Miami, March) to $548 (Dallas, May).",
+    keyFacts: [
+      "Priciest month: December on 5 of 8 routes",
+      "Cheapest months: January–May on 7 of 8 routes",
+      "Lowest monthly median: $307, Miami in March",
+      "Miami had the lowest 12-month average ($448); Dallas the highest ($728) (our calculation)",
+      "Nonstops from at least 14 US cities",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Montego-Bay-MBJ", monthly: [459, 526, 508, 523, 489, 566, 652, 636, 518, 521, 493, 704], cheapestMonth: "January · $459", priciestMonth: "December · $704", typical: "$439–$744", cheapestDay: "Monday", cheapestAirlines: ["Delta", "JetBlue", "American Airlines"], nonstop: "JetBlue, United Airlines and others, about 4h 10m" },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/Montego-Bay-MBJ", monthly: [372, 361, 307, 417, 392, 467, 494, 441, 563, 539, 494, 533], cheapestMonth: "March · $307", priciestMonth: "September · $563", typical: "$352–$580", cheapestDay: "Saturday", cheapestAirlines: ["American Airlines", "Copa Airlines"], nonstop: null },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Montego-Bay-MBJ", monthly: [456, 396, 436, 509, 508, 580, 580, 564, 585, 565, 549, 560], cheapestMonth: "February · $396", priciestMonth: "September · $585", typical: null, cheapestDay: "Sunday", cheapestAirlines: ["Frontier", "Air Canada", "Delta"], nonstop: null },
+      { from: "Chicago", kayak: "Chicago-CHI/Montego-Bay-MBJ", monthly: [570, 511, 586, 477, 512, 590, 558, 538, 512, 519, 601, 696], cheapestMonth: "April · $477", priciestMonth: "December · $696", typical: "$452–$718", cheapestDay: "Tuesday", cheapestAirlines: ["American Airlines", "Air Canada", "JetBlue"], nonstop: null },
+      { from: "Boston (BOS)", kayak: "Boston-BOS/Montego-Bay-MBJ", monthly: [487, 532, 462, 657, 517, 534, 561, 582, 520, 606, 621, 674], cheapestMonth: "March · $462", priciestMonth: "December · $674", typical: "$461–$719", cheapestDay: "Monday", cheapestAirlines: ["JetBlue", "Air Canada", "Delta"], nonstop: "Delta and JetBlue, about 4h 32m" },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Montego-Bay-MBJ", monthly: [728, 800, 713, 603, 548, 781, 777, 817, 802, 797, 785, 587], cheapestMonth: "May · $548", priciestMonth: "August · $817", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["Frontier", "Air Canada", "American Airlines"], nonstop: null },
+      { from: "Philadelphia (PHL)", kayak: "Philadelphia-PHL/Montego-Bay-MBJ", monthly: [598, 609, 621, 601, 608, 590, 677, 659, 585, 640, 710, 762], cheapestMonth: "September · $585", priciestMonth: "December · $762", typical: null, cheapestDay: "Tuesday", cheapestAirlines: ["JetBlue", "Delta", "Air Canada"], nonstop: null },
+      { from: "Washington, DC", kayak: "Washington-WAS/Montego-Bay-MBJ", monthly: [501, 635, 707, 549, 592, 634, 652, 655, 581, 555, 620, 774], cheapestMonth: "January · $501", priciestMonth: "December · $774", typical: "$501–$782", cheapestDay: "Sunday", cheapestAirlines: ["American Airlines", "JetBlue", "Southwest"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "Is hurricane season cheaper for Jamaica?",
+        a: "Not much in our data. Across the 8 routes, the average fare for June–November was higher than for January–May. September was the priciest month from Miami ($563) and Atlanta ($585) (KAYAK data, our calculation).",
+      },
+      {
+        q: "Which US city has the cheapest flights to Montego Bay?",
+        a: "Miami had the lowest 12-month average median fare in our data ($448), then Atlanta ($524). Dallas was the highest ($728).",
+      },
+      {
+        q: "Do Americans need a visa for Jamaica?",
+        a: "No. You need a valid passport and must complete the free online C5 immigration and customs form before arrival.",
+      },
+    ],
+  },
+  "lisbon": {
+    checked: "2026-11-28",
+    summary:
+      "January and February are the cheapest months to fly from the US to Lisbon, and June is the most expensive on all 8 routes we checked. Median round-trip fares in the cheapest month ranged from $543 (New York, January) to $698 (Boston, February); June cost 57–119% more.",
+    keyFacts: [
+      "Cheapest months: January–February on all 8 routes",
+      "Priciest month: June on all 8 routes",
+      "Lowest monthly median: $543, New York in January",
+      "New York had the lowest 12-month average ($792); Washington the highest ($1,035) (our calculation)",
+      "Nonstop: TAP from 9 US cities, plus United, Delta and American",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Lisbon-LIS", monthly: [543, 616, 697, 731, 853, 983, 973, 878, 856, 793, 709, 868], cheapestMonth: "January · $543", priciestMonth: "June · $983", typical: "$664–$1,045", cheapestDay: "Monday", cheapestAirlines: ["Icelandair", "TAP AIR PORTUGAL", "Scandinavian Airlines"], nonstop: null },
+      { from: "Boston (BOS)", kayak: "Boston-BOS/Lisbon-LIS", monthly: [737, 698, 744, 876, 994, 1099, 1071, 881, 902, 836, 753, 936], cheapestMonth: "February · $698", priciestMonth: "June · $1,099", typical: "$757–$1,107", cheapestDay: "Tuesday", cheapestAirlines: ["TAP AIR PORTUGAL", "Aer Lingus", "Iberia"], nonstop: null },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/Lisbon-LIS", monthly: [591, 597, 670, 708, 917, 1296, 1113, 999, 855, 763, 757, 958], cheapestMonth: "January · $591", priciestMonth: "June · $1,296", typical: "$662–$1,128", cheapestDay: "Wednesday", cheapestAirlines: ["Delta", "TAP AIR PORTUGAL", "Finnair"], nonstop: "TAP AIR PORTUGAL, about 8h 10m" },
+      { from: "Chicago", kayak: "Chicago-CHI/Lisbon-LIS", monthly: [624, 558, 785, 677, 982, 1101, 1056, 949, 906, 795, 777, 1087], cheapestMonth: "February · $558", priciestMonth: "June · $1,101", typical: "$692–$1,124", cheapestDay: "Tuesday", cheapestAirlines: ["Iberia", "TAP AIR PORTUGAL", "Air Canada"], nonstop: null },
+      { from: "Washington, DC", kayak: "Washington-WAS/Lisbon-LIS", monthly: [665, 769, 1045, 882, 1198, 1418, 1257, 1110, 1045, 916, 908, 1206], cheapestMonth: "January · $665", priciestMonth: "June · $1,418", typical: "$855–$1,356", cheapestDay: "Wednesday", cheapestAirlines: ["TAP AIR PORTUGAL", "Air Canada", "Royal Air Maroc"], nonstop: "TAP AIR PORTUGAL and United Airlines, about 7h 03m" },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Lisbon-LIS", monthly: [559, 579, 718, 700, 1005, 1193, 1173, 1093, 947, 865, 752, 1095], cheapestMonth: "January · $559", priciestMonth: "June · $1,193", typical: "$702–$1,201", cheapestDay: "Monday", cheapestAirlines: ["Air Canada", "Lufthansa", "United Airlines"], nonstop: null },
+      { from: "San Francisco (SFO)", kayak: "San-Francisco-SFO/Lisbon-LIS", monthly: [654, 630, 698, 704, 928, 1244, 1097, 984, 980, 838, 878, 1086], cheapestMonth: "February · $630", priciestMonth: "June · $1,244", typical: "$694–$1,176", cheapestDay: "Monday", cheapestAirlines: ["Scandinavian Airlines", "Air Canada", "TAP AIR PORTUGAL"], nonstop: null },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Lisbon-LIS", monthly: [705, 647, 742, 758, 1094, 1327, 1222, 951, 942, 1004, 790, 1145], cheapestMonth: "February · $647", priciestMonth: "June · $1,327", typical: null, cheapestDay: "Wednesday", cheapestAirlines: ["British Airways", "Air Canada", "Iberia"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "How much more do summer flights to Lisbon cost?",
+        a: "June was the most expensive month on all 8 routes, 57–119% above the cheapest month: for example $1,296 vs $591 from Miami (KAYAK data, our calculation).",
+      },
+      {
+        q: "Which US city has the cheapest flights to Lisbon?",
+        a: "New York had the lowest 12-month average median fare in our data ($792), followed by Miami ($852) and Chicago ($858). Washington was the highest ($1,035).",
+      },
+      {
+        q: "How long is the flight from the US to Lisbon?",
+        a: "About 6h 35m–7h from New York, one of the shortest transatlantic flights. TAP flies nonstop from 9 US cities.",
+      },
+    ],
+  },
+  "athens": {
+    checked: "2026-11-28",
+    summary:
+      "January and February are the cheapest months to fly from the US to Athens, and June is the most expensive on all 8 routes we checked. Median round-trip fares in the cheapest month ranged from $520 (Los Angeles, February) to $734 (Atlanta, January). June cost 81–163% more.",
+    keyFacts: [
+      "Cheapest months: January–February on all 8 routes",
+      "Priciest month: June on all 8 routes, 81–163% above the cheapest",
+      "Lowest monthly median: $520, Los Angeles in February",
+      "New York had the lowest 12-month average ($836); Washington the highest ($1,063) (our calculation)",
+      "Year-round nonstop: Emirates from Newark; US airlines fly summer-only",
+    ],
+    rows: [
+      { from: "New York (all airports)", kayak: "New-York-NYC/Athens-ATH", monthly: [599, 644, 773, 730, 866, 1083, 996, 910, 842, 824, 782, 987], cheapestMonth: "January · $599", priciestMonth: "June · $1,083", typical: "$702–$1,150", cheapestDay: "Monday", cheapestAirlines: ["SWISS", "Scandinavian Airlines", "Air Canada"], nonstop: "Emirates and Delta, about 9h 21m" },
+      { from: "Chicago", kayak: "Chicago-CHI/Athens-ATH", monthly: [728, 602, 699, 808, 1264, 1478, 1258, 977, 1092, 993, 775, 1069], cheapestMonth: "February · $602", priciestMonth: "June · $1,478", typical: "$834–$1,394", cheapestDay: "Monday", cheapestAirlines: ["Scandinavian Airlines", "Lufthansa", "Air Canada"], nonstop: null },
+      { from: "Boston (BOS)", kayak: "Boston-BOS/Athens-ATH", monthly: [688, 678, 748, 1015, 1187, 1396, 1123, 1055, 1082, 1072, 777, 1207], cheapestMonth: "February · $678", priciestMonth: "June · $1,396", typical: "$864–$1,394", cheapestDay: "Wednesday", cheapestAirlines: ["Turkish Airlines", "Scandinavian Airlines", "SWISS"], nonstop: null },
+      { from: "Los Angeles (LAX)", kayak: "Los-Angeles-LAX/Athens-ATH", monthly: [618, 520, 739, 763, 881, 1283, 1085, 885, 898, 800, 815, 1204], cheapestMonth: "February · $520", priciestMonth: "June · $1,283", typical: "$746–$1,197", cheapestDay: "Wednesday", cheapestAirlines: ["Turkish Airlines", "Scandinavian Airlines", "Air Canada"], nonstop: null },
+      { from: "Washington, DC", kayak: "Washington-WAS/Athens-ATH", monthly: [720, 630, 888, 796, 1422, 1438, 1310, 1221, 1197, 972, 852, 1308], cheapestMonth: "February · $630", priciestMonth: "June · $1,438", typical: "$899–$1,518", cheapestDay: "Sunday", cheapestAirlines: ["TAP AIR PORTUGAL", "Scandinavian Airlines", "Turkish Airlines"], nonstop: null },
+      { from: "Atlanta (ATL)", kayak: "Atlanta-ATL/Athens-ATH", monthly: [734, 748, 774, 845, 1452, 1693, 1137, 1018, 1000, 1143, 941, 1180], cheapestMonth: "January · $734", priciestMonth: "June · $1,693", typical: "$835–$1,479", cheapestDay: "Sunday", cheapestAirlines: ["Scandinavian Airlines", "Turkish Airlines", "Air Canada"], nonstop: null },
+      { from: "Miami (MIA)", kayak: "Miami-MIA/Athens-ATH", monthly: [694, 744, 703, 755, 1123, 1399, 1092, 821, 803, 910, 853, 1123], cheapestMonth: "January · $694", priciestMonth: "June · $1,399", typical: "$764–$1,230", cheapestDay: "Friday", cheapestAirlines: ["Scandinavian Airlines", "SWISS", "TAP AIR PORTUGAL"], nonstop: null },
+      { from: "Dallas–Fort Worth (DFW)", kayak: "Dallas-DFW/Athens-ATH", monthly: [684, 621, 751, 709, 1269, 1631, 1396, 1004, 939, 920, 804, 1033], cheapestMonth: "February · $621", priciestMonth: "June · $1,631", typical: "$750–$1,332", cheapestDay: "Tuesday", cheapestAirlines: ["Iberia", "British Airways", "Air Canada"], nonstop: null },
+    ],
+    faqs: [
+      {
+        q: "How much more do summer flights to Athens cost?",
+        a: "June was the most expensive month on all 8 routes, 81–163% above the cheapest month: for example $1,631 vs $621 from Dallas (KAYAK data, our calculation).",
+      },
+      {
+        q: "Are there nonstop flights to Athens in winter?",
+        a: "Yes, one: Emirates flies Newark–Athens year-round. Delta, United and American fly nonstop only in summer, so winter trips from other cities connect in Europe.",
+      },
+      {
+        q: "Which US city has the cheapest flights to Athens?",
+        a: "New York had the lowest 12-month average median fare in our data ($836), followed by Los Angeles ($874). Washington was highest ($1,063).",
+      },
+    ],
+  },
 };
