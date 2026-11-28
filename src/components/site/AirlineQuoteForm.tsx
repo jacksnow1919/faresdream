@@ -2,14 +2,14 @@ import { useState, type FormEvent } from "react";
 import { CheckCircle2, Loader2, Phone } from "lucide-react";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/brand";
 import { AirportAutocomplete } from "@/components/site/AirportAutocomplete";
-import { MonthPicker } from "@/components/site/DatePicker";
+import { DatePicker } from "@/components/site/DatePicker";
 
 /**
  * Free-quote form for airline pages. Saves to fare_leads (admin CRM inbox).
  * The Supabase client is imported only on submit, so the form adds no JS weight on page load.
  */
 export function AirlineQuoteForm({ airline, to = "", title, note }: { airline: string; to?: string; title?: string; note?: string }) {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", from: "", to, month: "", cabin: "Economy" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", from: "", to, depart: "", ret: "", cabin: "Economy" });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
@@ -35,9 +35,9 @@ export function AirlineQuoteForm({ airline, to = "", title, note }: { airline: s
         phone: form.phone.trim(),
         origin: form.from.trim() || null,
         destination: form.to.trim() || null,
-        travel_month: form.month || null,
+        travel_month: form.depart ? form.depart.slice(0, 7) : null,
         cabin: form.cabin,
-        notes: note ?? `Airline page quote request: ${airline}`,
+        notes: [note ?? `Airline page quote request: ${airline}`, form.depart && `Depart ${form.depart}`, form.ret && `Return ${form.ret}`].filter(Boolean).join(" | "),
       });
       if (insertError) throw insertError;
       setDone(true);
@@ -95,18 +95,33 @@ export function AirlineQuoteForm({ airline, to = "", title, note }: { airline: s
           <AirportAutocomplete label="To" value={form.to} onChange={(v) => set("to")({ target: { value: v } })} placeholder="City or airport" />
         </div>
         <div className="col-span-1 text-xs font-semibold text-navy">
-          Month
+          Depart
           <div className="mt-1">
-            <MonthPicker
-              ariaLabel="Travel month"
-              value={form.month}
-              onChange={(v) => set("month")({ target: { value: v } })}
-              min={new Date().toISOString().slice(0, 7)}
+            <DatePicker
+              ariaLabel="Departure date"
+              placeholder="Pick a date"
+              value={form.depart}
+              onChange={(v) => setForm((f) => ({ ...f, depart: v, ret: f.ret && v && f.ret < v ? "" : f.ret }))}
+              min={new Date().toISOString().slice(0, 10)}
               className={input}
             />
           </div>
         </div>
-        <label className="col-span-1 text-xs font-semibold text-navy">
+        <div className="col-span-1 text-xs font-semibold text-navy">
+          Return
+          <div className="mt-1">
+            <DatePicker
+              ariaLabel="Return date"
+              placeholder="One way"
+              value={form.ret}
+              onChange={(v) => setForm((f) => ({ ...f, ret: v }))}
+              min={form.depart || new Date().toISOString().slice(0, 10)}
+              defaultMonth={form.depart || undefined}
+              className={input}
+            />
+          </div>
+        </div>
+        <label className="col-span-2 text-xs font-semibold text-navy">
           Cabin
           <select className={`${input} mt-1`} value={form.cabin} onChange={set("cabin")}>
             <option>Economy</option>
